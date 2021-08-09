@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+		<link rel="stylesheet" type="text/css" href="css/demo.css" />
+		<link rel="stylesheet" type="text/css" href="css/component.css" />
+	</head>
+	<body>
+  <div class="content mt-5">
+    <div class="col-lg-12">
+      <div class="row">
+    <!--     <div class="container">
+          <h2>Thumbnail</h2>
+          <p>The .img-thumbnail class creates a thumbnail of the image:</p>            
+          <img src="img/lentes001.svg" class="img-thumbnail" alt="Cinque Terre" width="304" height="236"> 
+        </div> -->
+        
+      
+        <div class="col-lg-6">
+          <div class="col-lg-12 montura no-padding">
+            <h3 class="titulo">Monturas 2020</h3>
+          </div>
+					
+
+          <div id="contimgall" class="component">
+						<canvas id="canvas"></canvas>
+            <img src="img/iconos/texto.svg" class="img-fluid"  width="100%" height="100%"> 
+            <div class="botones-camvas">
+              <button class="btn btn-info btn-canvas" onclick="fondo();"><img src="img/iconos/subir_imagen.svg" title="Subir foto" class="btn-img"></button>  
+              <button class="btn btn-info btn-canvas" onclick="borrar_fondo();"><img src="img/iconos/borrar_imagen.svg" title="Borrar fondo" class="btn-img"></button>
+              <button class="btn btn-info btn-canvas" onclick="aumentar();"><img src="img/iconos/agrandar.svg" title="Rotar derecha" class="btn-img"></button>
+              <button class="btn btn-info btn-canvas" onclick="reducir();"><img src="img/iconos/reducir.svg" title="Rotar izquierda" class="btn-img"> </button>
+              <button class="btn btn-info btn-canvas" onclick="rotar();"><img src="img/iconos/rotar_derecha.svg" title="Rotar derecha" class="btn-img"></button>
+              <button class="btn btn-info btn-canvas" onclick="rotarm();"><img src="img/iconos/rotar_izquierda.svg" title="Rotar izquierda" class="btn-img"> </button>
+              <button class="btn btn-info btn-canvas" onclick="borrar();"><img src="img/iconos/borrar_producto.svg" title="Borrar producto" class="btn-img"> </button>
+							<!-- <button class="btn btn-info btn-canvas" onclick=""><img src="img/crop.svg" title="Recortar imagen" class="btn-img"> </button>
+								<button class="btn btn-info btn-canvas" onclick="crop();"><img src="img/crop.svg" title="Recortar producto" class="btn-img"> </button> -->
+              <button class="btn btn-info btn-canvas" id= "btn_borrar_editar"><img src="img/iconos/eraser.png" title="borrar" class="btn-img"> </button>
+							<div id = "contenedor_borrador" class="hide">							
+								 <button class="btn btn-info btn-canvas" id="borrador" ><img src="img/iconos/subir_imagen.svg" title="borrar fondo" class="btn-img"></button>
+							  <button class="btn btn-info btn-canvas" id="eraseGlasses" ><img src = "img/iconos/borrar_producto.svg" title = "borrar lentes" class = "btn-img"></button>
+
+							</div>
+							
+					    <!-- <button class="btn btn-info btn-canvas" onclick="invetirm180();"><img src="img/iconos/rotar_izquierda.svg" title="Rotar 180°" class="btn-img"></button>
+              <button class="btn btn-info btn-canvas" onclick="invetir180();"><img src="img/iconos/rotar_derecha.svg" title="Rotar -180°" class="btn-img"></button> -->
+              <input type="file" id="foto" style="display: none;">
+            </div>
+						<!-- <div class="overlay">
+							<div class="overlay-inner">
+							</div>
+					</div> -->
+
+						<div>
+							<img class="resize-image img-mont" id="mi_imagen" src=""  >
+							<canvas id="glassesCanvas"></canvas>
+						</div>
+            
+					</div>
+          <div class="col-lg-12 montura no-padding">
+           <button class="btn btn-block btn-item"> Comprar</button>
+          </div>
+        </div>
+        <div class="col-lg-6 ">
+          <div class="col-lg-12 text-center"><img src="img/iconos/up.svg" class="arrow-scroll"></div>
+          <div class="col-lg12" style="overflow:hidden;">
+            <div class="row scrollimg">
+              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
+              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes002.svg" alt=""></div>
+              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes003.svg" alt=""></div>
+              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
+              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
+              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
+              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
+              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
+              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
+              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes002.svg" alt=""></div>
+              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes003.svg" alt=""></div>
+              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
+              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
+              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
+              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
+              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
+            </div>
+          </div>
+          <div class="col-lg-12 text-center"><img src="img/iconos/dow.svg" class="arrow-scroll"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+ <img id="imgtest"></img>
+		
+    <script src="js/jquery-2.1.1.min.js"></script>
+ 
+
+		<script src="js/component.js"></script>
+		<script src="borrador.js"></script>
+		<script src="borradorLentes.js"></script>
+	</body>
+</html>
