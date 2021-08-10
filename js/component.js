@@ -3,6 +3,8 @@ let FONDO_STATUS = ""
 let GLASSES_SRC = ""
 let FONDO_SRC = ""
 let FONDO_RECTS
+let ORIGINAL_SRC
+let circularCursor
 
 if(window.location.protocol == 'file:'){
   alert('To test this demo properly please use a local server such as XAMPP or WAMP. See README.md for more details.');
@@ -22,9 +24,11 @@ var tras=1;
 var resizeableImage = function(image_target, src) {
   // Some variable and settings
 
+console.log(image_target)
+
   var $container,
       orig_src = new Image(),
-      image_target = $(image_target).get(0),
+      image_target = image_target[0],//$(image_target).get(0),
       
       event_state = {},
       constrain = false,
@@ -36,8 +40,18 @@ var resizeableImage = function(image_target, src) {
      
 
   init = function(){
-     para_rotar_w=image_target.clientWidth;
-     para_rotar_h=image_target.clientHeight;
+	console.log(image_target)
+	//console.log(image_target[0].offsetWidth)
+	//console.log(image_target.getBoundingClientRect())
+	image_target.onload = function(){
+  
+	para_rotar_w = this.width
+	para_rotar_h = this.height
+	console.log(para_rotar_w, para_rotar_h)
+}
+	//console.log(image_target.width)
+    // para_rotar_w= image_target.offsetWidth//image_target.getBoundingClientRect().width;
+     //para_rotar_h= image_target.offsetHeight//image_target.getBoundingClientRect().height;
    
     // When resizing, we will always use this copy of the original as the base
 	
@@ -51,11 +65,11 @@ var resizeableImage = function(image_target, src) {
     // Wrap the image with the container and add resize handles
     $(image_target).wrap('<div class="resize-container"></div>')
    
-    .before('<span class="resize-handle resize-handle-nw"></span>')
-    .before('<span class="resize-handle resize-handle-ne"></span>')
-    .after('<span class="resize-handle resize-handle-se"></span>')
-    .after('<span class="resize-handle resize-handle-sw"></span>')
-    .after('<span class="resize-handle resize-handle-sw"></span>');
+    .before('<span title = "presiona la tecla Shift para mantener el aspecto" class="resize-handle resize-handle-nw"></span>')
+    .before('<span title = "presiona la tecla Shift para mantener el aspecto" class="resize-handle resize-handle-ne"></span>')
+    .after('<span title = "presiona la tecla Shift para mantener el aspecto" class="resize-handle resize-handle-se"></span>')
+    .after('<span title = "presiona la tecla Shift para mantener el aspecto" class="resize-handle resize-handle-sw"></span>')
+    .after('<span title = "presiona la tecla Shift para mantener el aspecto" class="resize-handle resize-handle-sw"></span>');
 
     // Assign the container to a variable
     $container =  $(image_target).parent('.resize-container');
@@ -153,7 +167,7 @@ var resizeableImage = function(image_target, src) {
     if(width > min_width && height > min_height &&
 			 width < max_width && height < max_height){
       // To improve performance you might limit how often resizeImage() is called
-      
+      console.log(width, height)
       para_rotar_w=width;
       para_rotar_h=height;
       resizeImage(width, height);  
@@ -164,11 +178,20 @@ var resizeableImage = function(image_target, src) {
   }
   
   resizeImage = function(width, height){
-    resize_canvas.width = width;
+		const imgTemp = new Image()
+		imgTemp.src = ORIGINAL_SRC
+		imgTemp.width = width;
+		imgTemp.height = height;
+    console.log(imgTemp)
+		orig_src.src = ORIGINAL_SRC
+
+		resize_canvas.width = width;
     resize_canvas.height = height;
     resize_canvas.getContext('2d').drawImage(orig_src, 0, 0, width, height); 
 		
-		$(image_target).attr('src', resize_canvas.toDataURL("image/png")); 
+		GLASSES_SRC = resize_canvas.toDataURL("image/png")
+
+		$(image_target).attr('src', GLASSES_SRC); 
 	//	localStorage.setItem("glassesSrc", $('#mi_imagen').src )
 		
    
@@ -248,13 +271,9 @@ var resizeableImage = function(image_target, src) {
   }
 
   rotar=function(){
-   /*  width = $('.overlay').width(),
-    height = $('.overlay').height(); */
+		if(GLASSES_STATUS !== "loaded") return
+		if(FONDO_STATUS !== "loaded") return
     seg++;
- /*  resize_canvas.getContext('2d').clearRect(0, 0, para_rotar_w, para_rotar_h);
-    resize_canvas.getContext('2d').rotate(Math.PI/180);
-    resize_canvas.getContext('2d').drawImage(orig_src,-orig_src.width/2,-orig_src.height/2, para_rotar_w, para_rotar_h); 
-    $(image_target).attr('src', resize_canvas.toDataURL("image/png"));   */
     $('.resize-image')
 			.css("-moz-transform", "rotate("+seg+"deg) scaleX("+tras+")")
 			.css("-o-transform", "rotate("+seg+"deg) scaleX("+tras+")")
@@ -263,6 +282,9 @@ var resizeableImage = function(image_target, src) {
 			.css("filter", "rotate("+seg+"deg) scaleX("+tras+")")
   }
   rotarm=function(){     
+		if(GLASSES_STATUS !== "loaded") return
+		if(FONDO_STATUS !== "loaded") return
+
      seg--;
      $('.resize-image')
 		 .css("-moz-transform", "rotate("+seg+"deg) scaleX("+tras+")")
@@ -272,8 +294,11 @@ var resizeableImage = function(image_target, src) {
      .css("filter", "rotate("+seg+"deg) scaleX("+tras+")")
    }
    borrar=function(){
-	 GLASSES_STATUS = ""
-  $('.resize-container').remove();
+			if(GLASSES_STATUS !== "loaded") return
+			if(FONDO_STATUS !== "loaded") return
+
+	 		GLASSES_STATUS = ""
+  		$('.resize-container').remove();
    }
 /*    cancelar=function(){
     $('#mi_imagen').imgAreaSelect().cancelSelection()
@@ -297,16 +322,21 @@ var resizeableImage = function(image_target, src) {
     }
 
     aumentar = function(e){ 
-        para_rotar_w=para_rotar_w+15;
-        para_rotar_h=para_rotar_h+15;
+				if(GLASSES_STATUS !== "loaded") return
+				if(FONDO_STATUS !== "loaded") return
+        para_rotar_w += 15;
+        para_rotar_h += 15;
         w=para_rotar_w;
         h=para_rotar_h;
+
         resizeImage(w, h);          
     }
 
     reducir = function(e){
-        para_rotar_w=para_rotar_w-15;
-        para_rotar_h=para_rotar_h-15;
+				if(GLASSES_STATUS !== "loaded") return
+				if(FONDO_STATUS !== "loaded") return
+        para_rotar_w -= 15;
+        para_rotar_h -= 15;
         w=para_rotar_w;
         h=para_rotar_h;
     	  resizeImage(w, h);     
@@ -315,7 +345,15 @@ var resizeableImage = function(image_target, src) {
 };
 
 function fondo(){  
-  $('#foto').click();                     
+console.log(GLASSES_STATUS)
+console.log(FONDO_STATUS)
+	if((FONDO_STATUS === "" && GLASSES_STATUS === "") || 
+			(FONDO_STATUS === "loaded" && GLASSES_STATUS === "") ||
+			(FONDO_STATUS === "loaded" && GLASSES_STATUS === "loaded")
+	 ) {
+			$('#foto').click(); 
+	 }
+                       
 }
 
 if($("#foto").length != 0) {
@@ -351,6 +389,10 @@ if($("#foto").length != 0) {
 }
 
 function borrar_fondo(){
+console.log(GLASSES_STATUS)
+	if(GLASSES_STATUS !== "loaded") return
+	if(FONDO_STATUS !== "loaded") return
+
   $(".img-fluid").css("display",'')
   $(".component").removeAttr( 'style' );
   if($(".resize-container").length != 0) {
@@ -372,18 +414,27 @@ $('.imgcontent').on('click',function(e){
     $(this).addClass('select-item');	
 		let srcDataUrl = getBase64Image(e.target.src)
 
+		if(!ORIGINAL_SRC){
+			ORIGINAL_SRC = srcDataUrl
+		}
+
     if($(".resize-container").length !== 0) {
       $('.resize-container').remove();
       $('#contimgall').append('<img class="resize-image img-mont" id="mi_imagen" src="" >')
       $('#mi_imagen').attr('src',srcDataUrl)
     }else if($("#mi_imagen").length != 0 ){
+		 $('#mi_imagen').remove();
       $('#contimgall').append('<img class="resize-image img-mont" id="mi_imagen" src="" >')
       $('#mi_imagen').attr('src',srcDataUrl)
     }else{
+			$('#contimgall').append('<img class="resize-image img-mont" id="mi_imagen" src="" >')
       $('#mi_imagen').attr('src',srcDataUrl)
     }
 		GLASSES_SRC =srcDataUrl
 		GLASSES_STATUS = "loaded"
+
+		
+	
     resizeableImage($('#mi_imagen'), GLASSES_SRC);
 	}
 })

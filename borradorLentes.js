@@ -4,6 +4,9 @@ btnBorradorLentes.addEventListener("click", borrarLentes);
 var glassesCanvas = document.getElementById('glassesCanvas');
 glassesCanvas.style.display = "none";
 
+circularCursor = document.getElementById("circularcursor")
+circularCursor.style.display = "none"
+
 function borrarLentes(){
 
 	if($('.img-fluid').css("display")!="none"){
@@ -16,6 +19,7 @@ function borrarLentes(){
 
 
 	if(GLASSES_STATUS !== "loaded") return;
+	if(FONDO_STATUS === "borrando") return
 
 	//if(localStorage.getItem("fondoStatus") !== "loaded") return
 
@@ -58,9 +62,21 @@ function borrarLentes(){
 
 	var isPress = false;
 	var old = null;
+	
+
+	glassesCanvas.addEventListener("mouseenter", () => {
+		circularCursor.style.display = "block"
+	})
+
+	glassesCanvas.addEventListener("mouseleave", () => {
+		circularCursor.style.display = "none"
+	})
+
+
 	glassesCanvas.addEventListener('mousedown', function (e){
 		isPress = true;
 		old = {x: e.offsetX, y: e.offsetY};
+		
 	});
 	glassesCanvas.addEventListener('mousemove', function (e){
 		if (isPress) {
@@ -77,10 +93,24 @@ function borrarLentes(){
 			ctx.stroke();
 			old = {x: x, y: y};
 		}
+		const circularCursor = document.getElementById("circularcursor")
+		circularCursor.style.zIndex = 1;
+
+		circularCursor.style.left =  e.pageX
+		+"px";
+		circularCursor.style.top = e.pageY  +"px";
+		glassesCanvas.classList.add("hide-cursor")
+
+
 	});
 	glassesCanvas.addEventListener('mouseup', function (e){
 		isPress = false;
+		
 	});
+
+
+
+
 	btnBorradorLentes.addEventListener("click", guardarImagenLentes)
 	btnBorradorLentes.removeEventListener("click", borrarLentes)
 }
@@ -105,6 +135,10 @@ function guardarImagenLentes(){
 	document.querySelector(".component").style.
 	backgroundSize = "cover"
 
+	
+	const imgElm = document.createElement("img")
+	imgElm.setAttribute("id", "imgtest")
+	document.body.appendChild(imgElm)
 	document.querySelector("#imgtest").src = GLASSES_SRC
 	document.getElementById("mi_imagen").src =  document.querySelector("#imgtest").src 
 	GLASSES_STATUS = "loaded"
@@ -113,6 +147,10 @@ function guardarImagenLentes(){
 	btnBorradorLentes.removeEventListener("click", guardarImagenLentes )
 	document.getElementById("mi_imagen").style.display = "block"
 }
+
+
+
+
 
 
 

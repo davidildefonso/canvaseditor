@@ -3,11 +3,15 @@ btnBorrador.addEventListener("click", dibujarCanvas);
 var canvas = document.getElementById('canvas');
 canvas.style.display = "none";
 
+const circularPointer = document.getElementById("circularcursor2")
+
 function dibujarCanvas(){
 	if($('.img-fluid').css("display")!="none"){
 			alert("debe subir una imagen primero")
 			return;
 	}
+
+	if(GLASSES_STATUS === "borrando") return
 	
 	FONDO_STATUS = "borrando"
 	btnBorrador.firstChild.src = "img/iconos/ok-mark.png"
@@ -41,6 +45,39 @@ function dibujarCanvas(){
 		centerShift_x,centerShift_y,img.width*ratio, img.height*ratio);
 	};
 
+
+	window.addEventListener("mousemove", (e) => {
+		circularPointer.style.left = e.pageX + "px"
+		circularPointer.style.top = e.pageY + "px"
+		circularPointer.style.zIndex = 10
+	})
+
+
+	window.addEventListener("mousedown", (e) => {
+	console.log(e.target.id)
+		if(e.target.id == "circularcursor2"){
+			circularPointer.style.zIndex = 1
+		}
+	})
+
+		window.addEventListener("mousemove", (e) => {
+	console.log(e.target.id)
+		if(e.target.id == "circularcursor2"){
+			circularPointer.style.zIndex = 1
+		}
+	})
+
+
+	window.addEventListener("mouseup", (e) => {
+	console.log(e.target.id)
+		if(e.target.id == "circularcursor2"){
+			circularPointer.style.zIndex = 10
+		}
+	})
+
+		
+
+
 	var isPress = false;
 	var old = null;
 	canvas.addEventListener('mousedown', function (e){
@@ -61,6 +98,8 @@ function dibujarCanvas(){
 			ctx.lineTo(x, y);
 			ctx.stroke();
 			old = {x: x, y: y};
+
+			circularPointer.style.zIndex = 9
 		}
 	});
 	canvas.addEventListener('mouseup', function (e){
@@ -77,6 +116,9 @@ function guardarImagen(){
 	btnBorrador.firstChild.src = "img/iconos/subir_imagen.svg"
 	btnBorrador.style.background = "transparent"
 	FONDO_SRC = image	
+	const imgElm = document.createElement("img")
+	imgElm.setAttribute("id", "imgtest")
+	document.body.appendChild(imgElm)
 	document.querySelector("#imgtest").src = FONDO_SRC
 	document.querySelector(".component").style.backgroundImage = 
 		"url("+ document.querySelector("#imgtest").src + ")"	
