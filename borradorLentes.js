@@ -9,56 +9,57 @@ circularCursor.style.display = "none"
 
 function borrarLentes(){
 
-	if($('.img-fluid').css("display")!="none"){
-			alert("debe subir una imagen primero")
-			return;
-	}
-
-
-
 
 
 	if(GLASSES_STATUS !== "loaded") return;
 	if(FONDO_STATUS === "borrando") return
 
-	//if(localStorage.getItem("fondoStatus") !== "loaded") return
-
 	GLASSES_STATUS = "borrando"
-	//localStorage.setItem("glassesStatus", "borrando")
-	document.getElementById("mi_imagen").style.display = "none"
+	document.querySelector(".resize-container").style.display = "none"
 
-	btnBorradorLentes.firstChild.src = "img/iconos/ok-mark.png"
-	btnBorradorLentes.style.background = "#17a2b8"
 
+	console.log(document.querySelector(".bg_producto").getBoundingClientRect().width)
+
+	glassesCanvas.width = document.querySelector(".bg_producto").getBoundingClientRect().width;
+	glassesCanvas.height = document.querySelector(".bg_producto").getBoundingClientRect().height;
+	
 	glassesCanvas.style.display = "block";
 	glassesCanvas.style.position = "absolute";
-	glassesCanvas.style.top = "5%";
-	glassesCanvas.style.left = "20%" ;
-	glassesCanvas.style.border = "2px solid #fff"
+	//glassesCanvas.style.top = "5%";
+	//glassesCanvas.style.left = "20%" ;
+	//glassesCanvas.style.border = "2px solid #fff"
 
-	var url = document.querySelector(".component").style
-		.backgroundImage.slice(4, -1).replace(/["']/g, ""); 	document.querySelector(".component").style.backgroundImage =
+	var url = document.querySelector(".bg_producto").style
+		.backgroundImage.slice(4, -1).replace(/["']/g, ""); 
+		
+	document.querySelector(".bg_producto").style.backgroundImage =
 	'linear-gradient(rgba(0,0,0,.4), rgba(0,0,0,.4)), url(' + url + ')';
-	document.querySelector(".component").style.
+	document.querySelector(".bg_producto").style.
 	backgroundPosition = "center"
-	document.querySelector(".component").style.
+	document.querySelector(".bg_producto").style.
 	backgroundRepeat = "no-repeat"
-	document.querySelector(".component").style.
+	document.querySelector(".bg_producto").style.
 	backgroundSize = "cover"
 	glassesCanvas.style.background = "transparent"
 	glassesCanvas.style.zIndex = 10	
 	src = GLASSES_SRC
 	var ctx = glassesCanvas.getContext('2d');
 		ctx.fillStyle = "#FF0000";
-	var img = new Image();
-	img.src = src;
-	img.onload = function () {
-		var width = img.width
-		var height = img.height 
-		glassesCanvas.width = width;
-		glassesCanvas.height = height;
-		ctx.drawImage(img, 0, 0, width, height);
-	};
+
+
+	drawImage(glassesCanvas, src)
+	// var img = new Image();
+	// img.src = src;
+	
+	// img.onload = function () {
+	// 	var width = img.width
+	// 	var height = img.height 
+	// 	glassesCanvas.width = width;
+	// 	glassesCanvas.height = height;
+	// 	ctx.drawImage(img, 0, 0, width, height);
+	
+	
+	// };
 
 	var isPress = false;
 	var old = null;
@@ -123,16 +124,16 @@ function guardarImagenLentes(){
 	btnBorradorLentes.firstChild.src = "img/iconos/borrar_producto.svg"
 	btnBorradorLentes.style.background = "transparent";	
 	GLASSES_SRC = image
-	document.querySelector(".component").style.backgroundImage =
+	document.querySelector(".bg_producto").style.backgroundImage =
  	'url(' + FONDO_SRC + ')';
 
-	document.querySelector(".component").style.
+	document.querySelector(".bg_producto").style.
 	backgroundPosition = "center"
 
-	document.querySelector(".component").style.
+	document.querySelector(".bg_producto").style.
 	backgroundRepeat = "no-repeat"
 
-	document.querySelector(".component").style.
+	document.querySelector(".bg_producto").style.
 	backgroundSize = "cover"
 
 	
@@ -145,7 +146,7 @@ function guardarImagenLentes(){
 	document.querySelector("#imgtest").remove()
 	btnBorradorLentes.addEventListener("click", borrarLentes)
 	btnBorradorLentes.removeEventListener("click", guardarImagenLentes )
-	document.getElementById("mi_imagen").style.display = "block"
+	document.querySelector(".resize-container").style.display = "block"
 }
 
 
@@ -154,3 +155,20 @@ function guardarImagenLentes(){
 
 
 
+function drawImage(canvas, src){
+	const img = new Image;
+	var context = canvas.getContext('2d')
+	img.src = src
+	img.onload = function() {
+		
+		
+		var hRatio = canvas.width / img.width    
+		var vRatio = canvas.height / img.height  
+		var ratio  = Math.min(vRatio, hRatio)
+		var centerShift_x = ( canvas.width - img.width*ratio ) / 2;
+		var centerShift_y = ( canvas.height - img.height*ratio ) / 2;
+		context.drawImage(img, 0,0, img.width, img.height,
+		centerShift_x,centerShift_y,img.width*ratio, img.height*ratio);
+		
+	}
+}

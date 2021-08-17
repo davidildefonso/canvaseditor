@@ -1,9 +1,10 @@
-let btnBorrador = document.getElementById("borrador");
-btnBorrador.addEventListener("click", dibujarCanvas);
+//let btnBorrador = document.getElementById("borrador");
+//btnBorrador.addEventListener("click", dibujarCanvas);
 var canvas = document.getElementById('canvas');
-canvas.style.display = "none";
+//canvas.style.display = "none";
+let pointer = document.getElementById("circularcursor2")
+pointer.style.display = "none"
 
-const circularPointer = document.getElementById("circularcursor2")
 
 function dibujarCanvas(){
 	if($('.img-fluid').css("display")!="none"){
@@ -23,10 +24,11 @@ function dibujarCanvas(){
 	canvas.style.left = 125;
 	canvas.style.zIndex = 10;
 
-	var url = document.querySelector(".component").style
+	var url = document.querySelector(".bg_producto").style
 		.backgroundImage.slice(4, -1).replace(/["']/g, ""); 
 	document.querySelector(".component").style.backgroundImage =
 	'linear-gradient(rgba(0,0,0,.4), rgba(0,0,0,.4)), url(' + url + ')';
+
 	var ctx = canvas.getContext('2d');
 	ctx.fillStyle = "#FF0000";
 	var img = new Image();
@@ -44,39 +46,6 @@ function dibujarCanvas(){
 		ctx.drawImage(img, 0,0, img.width, img.height,
 		centerShift_x,centerShift_y,img.width*ratio, img.height*ratio);
 	};
-
-
-	window.addEventListener("mousemove", (e) => {
-		circularPointer.style.left = e.pageX + "px"
-		circularPointer.style.top = e.pageY + "px"
-		circularPointer.style.zIndex = 10
-	})
-
-
-	window.addEventListener("mousedown", (e) => {
-	console.log(e.target.id)
-		if(e.target.id == "circularcursor2"){
-			circularPointer.style.zIndex = 1
-		}
-	})
-
-		window.addEventListener("mousemove", (e) => {
-	console.log(e.target.id)
-		if(e.target.id == "circularcursor2"){
-			circularPointer.style.zIndex = 1
-		}
-	})
-
-
-	window.addEventListener("mouseup", (e) => {
-	console.log(e.target.id)
-		if(e.target.id == "circularcursor2"){
-			circularPointer.style.zIndex = 10
-		}
-	})
-
-		
-
 
 	var isPress = false;
 	var old = null;
@@ -98,8 +67,6 @@ function dibujarCanvas(){
 			ctx.lineTo(x, y);
 			ctx.stroke();
 			old = {x: x, y: y};
-
-			circularPointer.style.zIndex = 9
 		}
 	});
 	canvas.addEventListener('mouseup', function (e){
@@ -122,10 +89,11 @@ function guardarImagen(){
 	document.querySelector("#imgtest").src = FONDO_SRC
 	document.querySelector(".component").style.backgroundImage = 
 		"url("+ document.querySelector("#imgtest").src + ")"	
-	FONDO_STATUS = ""
+	FONDO_STATUS = "loaded"
 	canvas.style.zIndex = 1;
 	btnBorrador.addEventListener("click", dibujarCanvas)
 	btnBorrador.removeEventListener("click", guardarImagen)	
+	imgElm.remove()
 }
 
 

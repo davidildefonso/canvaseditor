@@ -1,106 +1,147 @@
 <!DOCTYPE html>
-<html lang="en" class="no-js">
+<html lang="es">
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
-		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
-		<link rel="stylesheet" type="text/css" href="css/demo.css" />
-		<link rel="stylesheet" type="text/css" href="css/component.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">		
+		<title>Montaggio - Copyright © 2008-2021 | Imagina. Decora</title>
+
+		<link rel="canonical" href="ithaliano.com" />
+		<meta name="description" content="Se parte del creativo mundo de Ithaliano, donde todo es posible diseñar parar decorar tu dormitorio, sala, cocina, departamento, casa, casa de playa, oficina, tienda o stand." />
+		<meta name="keywords" content="ithaliano, fotomurales, fotomurales en peru, vinil decorativo, decoraciones ithaliano, fotografia, fotomural bebe, fotomural para dormitorio de bebe, decoracion con fotomurales, fotomural para dormitorio niño, decoracion con fotomurales, tallimetro, cenefas, adhesivos" />
+		<meta name="author" content="https://marketing70.com/">
+		<meta name="theme-color" content="#2F4E6F"/>		
+		
+		<link rel="shortcut icon" href="rg/img/iconos/favicon.png">
+		<link rel="apple-touch-icon" href="rg/img/iconos/apple-touch-icon.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="rg/img/iconos/apple-touch-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="rg/img/iconos/apple-touch-icon-114x114.png">
+		
+		<link rel="stylesheet" href="code/css/montaggio.css" />
 	</head>
 	<body>
-  <div class="content mt-5">
-    <div class="col-lg-12">
-      <div class="row">
-    <!--     <div class="container">
-          <h2>Thumbnail</h2>
-          <p>The .img-thumbnail class creates a thumbnail of the image:</p>            
-          <img src="img/lentes001.svg" class="img-thumbnail" alt="Cinque Terre" width="304" height="236"> 
-        </div> -->
-        
-      
-        <div class="col-lg-6">
-          <div class="col-lg-12 montura no-padding">
-            <h3 class="titulo">Monturas 2020</h3>
-          </div>
-					
+  
 
-          <div id="contimgall" class="component">
-						<canvas id="canvas"></canvas>
-            <img src="img/iconos/texto.svg" class="img-fluid"  width="100%" height="100%"> 
-            <div class="botones-camvas">
-              <button class="btn btn-info btn-canvas" onclick="fondo();"><img src="img/iconos/subir_imagen.svg" title="Subir foto" class="btn-img"></button>  
-              <button class="btn btn-info btn-canvas" onclick="borrar_fondo();"><img src="img/iconos/borrar_imagen.svg" title="Borrar fondo" class="btn-img"></button>
-              <button class="btn btn-info btn-canvas" onclick="aumentar();"><img src="img/iconos/agrandar.svg" title="Rotar derecha" class="btn-img"></button>
-              <button class="btn btn-info btn-canvas" onclick="reducir();"><img src="img/iconos/reducir.svg" title="Rotar izquierda" class="btn-img"> </button>
-              <button class="btn btn-info btn-canvas" onclick="rotar();"><img src="img/iconos/rotar_derecha.svg" title="Rotar derecha" class="btn-img"></button>
-              <button class="btn btn-info btn-canvas" onclick="rotarm();"><img src="img/iconos/rotar_izquierda.svg" title="Rotar izquierda" class="btn-img"> </button>
-              <button class="btn btn-info btn-canvas" onclick="borrar();"><img src="img/iconos/borrar_producto.svg" title="Borrar producto" class="btn-img"> </button>
-							<!-- <button class="btn btn-info btn-canvas" onclick=""><img src="img/crop.svg" title="Recortar imagen" class="btn-img"> </button>
-								<button class="btn btn-info btn-canvas" onclick="crop();"><img src="img/crop.svg" title="Recortar producto" class="btn-img"> </button> -->
-              <button class="btn btn-info btn-canvas" id= "btn_borrar_editar"><img src="img/iconos/eraser.png" title="borrar" class="btn-img"> </button>
-							<div id = "contenedor_borrador" class="hide">							
-								 <button class="btn btn-info btn-canvas" id="borrador" ><img src="img/iconos/subir_imagen.svg" title="borrar fondo" class="btn-img"></button>
-							  <button class="btn btn-info btn-canvas" id="eraseGlasses" ><img src = "img/iconos/borrar_producto.svg" title = "borrar lentes" class = "btn-img"></button>
-
-							</div>
-							
-					    <!-- <button class="btn btn-info btn-canvas" onclick="invetirm180();"><img src="img/iconos/rotar_izquierda.svg" title="Rotar 180°" class="btn-img"></button>
-              <button class="btn btn-info btn-canvas" onclick="invetir180();"><img src="img/iconos/rotar_derecha.svg" title="Rotar -180°" class="btn-img"></button> -->
-              <input type="file" id="foto" style="display: none;">
+		<div class="bgp">
+            <div class="montaggio">
+                <div class="header_app">
+                    <div class="header">
+                        <div class="titulo_producto">
+                            <h1>Fotomural Torre Eiffel</h1>
+                        </div>
+                        <div class="botones_final">
+                            <div class="descargar_foto">
+                                <span><img src="rg/img/iconos/guardar_producto.png" alt=""></span>
+                            </div>
+                            <div class="comprar_foto">
+                                <span><img src="rg/img/iconos/comprar_producto.png" alt=""></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="body_app">
+                    <div class="left_app">
+                        <div class="bg_botones">
+                            <div class="botones_foto">
+                                <div  class="subir_foto" onclick="fondo();" >
+                                    <span><img src="rg/img/iconos/subir_foto.png" alt=""></span>
+                                </div>
+																<div  style="color:#fff;" class="subir_foto" onclick="subirFondo();" >
+                                    subir fondo
+                                </div>
+																	<div  style="color:#fff;" class="subir_foto" onclick="eliminarFondo();" >
+                                    eliminar fondo
+                                </div>
+                                <div class="recortar_foto"  >
+                                    <span><img src="rg/img/iconos/recortar_foto.png" alt=""></span>
+                                </div>
+                                <div class="eliminar_foto" onclick="borrar_fondo();"  >
+                                    <span><img src="rg/img/iconos/eliminar_foto.png" alt=""></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="app">
+                        <div class="logo">
+                            <img src="rg/img/iconos/isotipo_ithaliano.png" alt="">
+                        </div>
+                        <div class="bg_producto">
+                            <div class="producto">
+                                <img id="mi_imagen" src="rg/img/20/102012111004.jpg" alt="">
+														
+                            </div>
+																<canvas id="glassesCanvas"></canvas>
+														<canvas id="canvasCrop" class="hidden"></canvas>
+                        </div>
+												
+												<input type="file" id="foto" style="display: none;">
+												
+ <input type="file" id="fotoHiddenInputBtn" style="display: none;"> 
+                   
+									 
+									  </div>
+                    <div class="right_app">
+                        <div class="bg_botones">
+                            <div class="botones_producto">
+                                <div class="agrandar_producto"  onclick="aumentar();">
+                                    <span><img src="rg/img/iconos/agrandar_producto.png" alt=""></span>
+                                </div>
+                                <div class="reducir_producto"  onclick="reducir();">
+                                    <span><img src="rg/img/iconos/reducir_producto.png" alt=""></span>
+                                </div>
+                                <div class="rotar_derecha"  onclick="rotar();">
+                                    <span><img src="rg/img/iconos/rotar_derecha.png" alt=""></span>
+                                </div>
+                                <div class="rotar_izquierda" onclick="rotarm();">
+                                    <span><img src="rg/img/iconos/rotar_izquierda.png" alt=""></span>
+                                </div>
+                                <div class="mas_transparencia" onclick= "masTransparencia()">
+                                    <span><img src="rg/img/iconos/transparencia_mas.png" alt=""></span>
+                                </div>
+                                <div class="menos_transparencia" onclick="menosTransparencia()" >
+                                    <span><img src="rg/img/iconos/transparencia_menos.png" alt=""></span>
+                                </div>
+                                <div class="borrar_producto" name="recortar aqui"  onclick="" >
+                                    <span><img src="rg/img/iconos/recortar_producto.png" alt=""></span>
+                                </div>
+                                <div  id= "eraseGlasses" class="borrar_producto">
+                                    <span><img src="rg/img/iconos/borrar_producto.png" alt=""></span>
+                                </div>
+																
+                                <div class="resetear_producto" onclick = "resetear()">
+                                    <span><img src="rg/img/iconos/producto_original.png" alt=""></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-						<!-- <div class="overlay">
-							<div class="overlay-inner">
-							</div>
-					</div> -->
-
-						<div>
-							<img class="resize-image img-mont" id="mi_imagen" src=""  >
+						   
 						
-							<canvas id="glassesCanvas"></canvas>
-						</div>
-            
-					</div>
-          <div class="col-lg-12 montura no-padding">
-           <button class="btn btn-block btn-item"> Comprar</button>
-          </div>
-        </div>
-        <div class="col-lg-6 ">
-          <div class="col-lg-12 text-center"><img src="img/iconos/up.svg" class="arrow-scroll"></div>
-          <div class="col-lg12" style="overflow:hidden;">
-            <div class="row scrollimg">
-              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
-              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes002.svg" alt=""></div>
-              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes003.svg" alt=""></div>
-              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
-              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
-              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
-              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
-              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
-              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
-              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes002.svg" alt=""></div>
-              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes003.svg" alt=""></div>
-              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
-              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
-              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
-              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
-              <div class="col-lg-6 contentimg"><img class="imgcontent" src="img/lentes001.svg" alt=""></div>
+            <div class="footer">
+                <div class="f1">
+                    <p>Copyright © 2008-2021 Ithaliano. Todos los derechos reservados. Un producto de Marketing 70 RUC 20606312998 | Lima - Perú</p>
+                </div>
             </div>
-          </div>
-          <div class="col-lg-12 text-center"><img src="img/iconos/dow.svg" class="arrow-scroll"></div>
-        </div>
-
-      </div>
     </div>
-  </div>
 
-			<div id="circularcursor"></div>
-			<div id="circularcursor2"></div>
-    <script src="js/jquery-2.1.1.min.js"></script>
- 
-
-		<script src="js/component.js"></script>
+		<div id="circularcursor"></div>
+		<div id="circularcursor2"></div>
+	
+	
+		<script src="code/js/ImagenEditable.js"></script>
+		<script src="code/js/ImagenMovil.js"></script>
+		<script src="code/js/ImagenRedimensionable.js"></script>
+		<script src="code/js/funciones.js"></script>
+		<script src="code/js/app.js"></script>
+		<script src="code/lib/jquery-latest.js"></script>
+		<script src="code/js/component.js"></script>
 		<script src="borrador.js"></script>
-		<script src="borradorLentes.js"></script>
+		<script src="borradorLentes.js"></script>		
+    <!-- <script src="code/lib/typed.js"></script> -->
+    <!-- <script src="code/js/escritura.js"></script>  -->
+		<!-- <script src="code/js/menu_scroll.js"></script> -->
+		<script src = "code/js/foto.js"></script>		
+		<script src="code/js/producto.js"></script>
 	</body>
 </html>
+
