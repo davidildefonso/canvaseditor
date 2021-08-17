@@ -448,13 +448,14 @@ function borrar_fondo(){
       $('#mi_imagen').attr('src',srcDataUrl)
     }*/
 
-		let producto1 = document.getElementById("mi_imagen")
-		ORIGINAL_SRC = producto1.src
+//		let producto1 = document.getElementById("mi_imagen")
+	//	ORIGINAL_SRC = producto1.src
 
-		GLASSES_SRC = producto1.src
-		GLASSES_STATUS = "loaded"
+		//GLASSES_SRC = producto1.src
+		//GLASSES_STATUS = "loaded"
 	
-    resizeableImage($('#mi_imagen'), GLASSES_SRC);
+    //resizeableImage($('#mi_imagen'), GLASSES_SRC);
+	
 	//}
 //})
 

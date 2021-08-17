@@ -11,7 +11,7 @@ const producto = document.getElementById("mi_imagen")
 
  
 
-ORIGINAL_SRC = producto.src;
+//ORIGINAL_SRC = producto.src;
 
 
 if(window.location.protocol == 'file:'){
@@ -383,3 +383,8 @@ var tras=1;
 // 	}	
 // })
 
+
+function download(){
+	
+	editor.downloadImagesOnCanvas();
+}

@@ -135,6 +135,8 @@ html{
         z-index: 10;
     }
     .producto{
+				position: absolute;
+				z-index: 15;
         display: flex;
         width: 100%;
         height: 100%;
@@ -290,6 +292,9 @@ html{
         z-index: 10;
     }
     .producto{
+				
+				position: absolute;
+				z-index: 15;
         display: flex;
         width: 100%;
         height: 100%;
@@ -445,6 +450,9 @@ html{
         z-index: 10;
     }
     .producto{
+		
+				position: absolute;
+				z-index: 15;
         display: flex;
         width: 100%;
         height: 100%;
@@ -596,6 +604,9 @@ html{
         z-index: 10;
     }
     .producto{
+		
+				position: absolute;
+				z-index: 15;
         display: flex;
         width: 100%;
         height: 100%;
@@ -747,6 +758,9 @@ html{
         z-index: 10;
     }
     .producto{
+		
+				position: absolute;
+				z-index: 15;
         display: flex;
         width: 100%;
         height: 100%;

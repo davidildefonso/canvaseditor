@@ -1,6 +1,7 @@
 class ImagenEditable{
   constructor(
 		estado,
+		editor,
 		contenedor,
 		source, 
 		tipo,  
@@ -10,12 +11,12 @@ class ImagenEditable{
 		canvas) 
 	{
     this.estado = estado;
-		this.container = contenedor;    
+//		this.container = contenedor;    
 		this.source = source;
-		this.tipe = tipo;
-		//this.originalSize = originalSize;
+		this.tipo = tipo;
+		this.container = this.getContainerElement(contenedor); 
 		this.rotation = rotacion;
-		this.editor = this.getContainerElement();
+		this.editor = editor;
 		this.transparency = transparencia;
 		this.role = rol;
 		this.canvas = canvas;
@@ -24,36 +25,27 @@ class ImagenEditable{
 		this.image = this.generateImage()
   }
 
-	getContainerElement(){
-	console.log(this.container)
-	console.log(document.querySelector(this.container))
-		return document.querySelector(this.container)
+	getContainerElement(cont){
+		console.log(cont)
+		console.log(document.querySelector(cont))
+		return document.querySelector(cont)
 	}
 
 	getContainerRects(){
-		return this.getContainerElement().getBoundingClientRect()
+		return this.container.getBoundingClientRect()
 	}
 
 
-	getPosition(){
-	
-			return {
-				x: this.getContainerRects().x,
-				y: this.getContainerRects().y
-			}
-		
-		
+	getPosition(){	
+			let rects =  this.getContainerRects()		
+			return { x : rects.x, y: rects.y }
 	}
 
 	
 	getCurrentSize(){
-	
-			return {
-				width: this.getContainerRects().width,
-				height: this.getContainerRects().height
-			}
-	
-		
+			let rects =  this.getContainerRects()		
+			console.log(rects)
+			return { width : rects.width, height: rects.height }
 	}
 
 	generateImage(){
@@ -67,20 +59,33 @@ class ImagenEditable{
 	}
 
 	insertImage(){
+		if(this.editor.estado === ""){
+			this.editor.images[this.role] = {
+				role : "fondo",
+				img:  this.generateImage()
+			}
+			console.log(this.editor)
+		}else{
+			console.log("editor dibujando en canvas")
+		}
 		
-		this.editor.appendChild(this.image);
 	}
 
 	removeImage(){	
 	//	console.log(this.image.id)
-		this.editor.removeChild(this.image)
+		if(this.editor.estado === ""){
+			this.editor.containerremoveChild(this.image)
+		}else{
+			console.log("editor dibujando en canvas")
+		}
+		
 	
 	}
 
 
 	empty(){
 	
-	this.estado = ""
+		this.estado = ""
 		this.container = ""    
 		this.source = ""
 		this.tipe = ""

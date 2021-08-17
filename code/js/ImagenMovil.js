@@ -28,6 +28,29 @@ class ImagenMovil extends ImagenEditable {
 	}
 
   moveInEditor() {
-    
+
   }
+
+
+	select(){
+	
+	}
+
+	unselect(){
+	
+	}
+
+	drag(){
+	
+	}
+
+
+	reset(){
+	
+	}
+
+
+
+
+
 }
