@@ -47,6 +47,7 @@ class Editor{
 		editorCanvas.width = this.currentSize.width
 		editorCanvas.height = this.currentSize.height
 		editorCanvas.style.position = "absolute";
+		editorCanvas.style.display = "none";
 		editorCanvas.style.left = this.position.x + "px";
 		this.canvas = editorCanvas
 	}
@@ -62,11 +63,6 @@ class Editor{
 
 	drawImages(canvas, images){
 		let ctx = canvas.getContext("2d")
-		// images.forEach(img => {
-		// 	ctx.drawImage(img.image,0,0,img.currentSize.width,img.currentSize.height)
-		// });
-
-//		ctx.drawImage(images[2].image,0,0,images[2].image.naturalWidth,images[2].image.naturalHeight,0,0,canvas.width, canvas.height)
 		
 		for(let i = 0; i< images.length; i++){
 			if(images[i]){
@@ -99,7 +95,8 @@ class Editor{
 							ctx.drawImage(
 								currentImg,
 								0, 0, currentImg.naturalWidth, currentImg.naturalHeight,
-								images[i].position.x, images[i].position.y,  currentRects.width, currentRects.height
+								//images[i].position.x, images[i].position.y,  currentRects.width, currentRects.height
+								0, 0,  currentRects.width, currentRects.height
 							)
 
 					}else if(currentRole === "logo") {
@@ -119,49 +116,10 @@ class Editor{
 		}
 
 
-		// let fondoImg = images[0].image;
-		// let fondoContainer = images[0].container;
-		// let fondoRects = fondoContainer.getBoundingClientRect()
-		
-		// ctx.drawImage(fondoImg,0,0,fondoImg.naturalWidth,fondoImg.naturalHeight,0,0,fondoRects.width, fondoRects.height)
-
-
-
-		// let productoImg = images[1].image;
-		// let productoContainer = images[1].container;
-		// let productoRects = productoContainer.getBoundingClientRect()
-		
-		// ctx.drawImage(productoImg,0,0,productoImg.naturalWidth,productoImg.naturalHeight,0,0,productoRects.width, productoRects.height)
-
-		
-
-		// let logoImg = images[2].image;
-		// let logoContainer = images[2].container;
-		// let logoRects = logoContainer.getBoundingClientRect()
-		
-		// ctx.drawImage(logoImg,0,0,logoImg.naturalWidth,logoImg.naturalHeight,0,0,logoRects.width, logoRects.height)
-
-
-
-//console.log(images[0].image, 0, 0, images[0].currentSize.width,    images[0].currentSize.height,     // source rectangle
-  //                 0, 0, canvas.width, canvas.height
-		//							 )
-
-
-//ctx.drawImage(images[0].image, 0, 0, images[0].currentSize.width,    images[0].currentSize.height,     // source rectangle
-  //                 0, 0, canvas.width, canvas.height)
-
-		//ctx.drawImage(images[2].image,0,0,images[2].currentSize.width,images[2].currentSize.height,
-			// 0,0,canvas.width, canvas.height)
-		//ctx.drawImage(images[1].image,0,0,images[0].currentSize.width,images[0].currentSize.height)
-		//ctx.drawImage(images[2].image,0,0,images[0].currentSize.width,images[0].currentSize.height)
 		
 
 	}
 
-
-//context.drawImage(newImg, 0,0, newImg.width, newImg.height ,
-// 						// centerShift_x,centerShift_y,newImg.width, newImg.height);
 
 
 
@@ -170,6 +128,26 @@ class Editor{
 		this.createCanvas();
 		this.showCanvas()
 		this.drawImages(this.canvas, this.images)
+		let dataUrl =   this.convertDrawToDataUrl()
+		this.download(dataUrl)
+
+	}
+
+	download(dataUrl){
+		const anchor = document.createElement("a");
+		document.body.appendChild(anchor)
+		anchor.style.display = "none"
+		anchor.setAttribute("href", dataUrl);
+		anchor.setAttribute("download", "img.png");
+		anchor.setAttribute("id", "downloadanchor");
+		anchor.innerText = "download"
+		anchor.click()
+		anchor.remove()
+	}
+
+
+	convertDrawToDataUrl(){
+			return  this.canvas.toDataURL("image/png");	
 	}
 
 
@@ -253,7 +231,3 @@ class Editor{
 
 
 
-function loadImages(sources, callback){
-
-
-}
