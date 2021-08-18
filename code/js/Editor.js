@@ -47,6 +47,7 @@ class Editor{
 		editorCanvas.width = this.currentSize.width
 		editorCanvas.height = this.currentSize.height
 		editorCanvas.style.position = "absolute";
+		editorCanvas.style.left = this.position.x + "px";
 		this.canvas = editorCanvas
 	}
 
@@ -66,10 +67,81 @@ class Editor{
 		// });
 
 //		ctx.drawImage(images[2].image,0,0,images[2].image.naturalWidth,images[2].image.naturalHeight,0,0,canvas.width, canvas.height)
-		let conte = images[2].container;
-		let rectss = conte.getBoundingClientRect()
-		console.log(rectss.width, rectss.height)
-ctx.drawImage(images[2].image,0,0,images[2].image.naturalWidth,images[2].image.naturalHeight,0,0,rectss.width, rectss.height)
+		
+		for(let i = 0; i< images.length; i++){
+			if(images[i]){
+
+					let currentRole = images[i].role
+					let currentImg = images[i].image;
+					let currentContainer = images[i].container;
+					let currentRects = currentContainer.getBoundingClientRect()
+		
+					if(currentRole === "producto"){
+							var hRatio = canvas.width / currentImg.naturalWidth    
+							var vRatio = canvas.height / currentImg.naturalHeight  
+							var ratio  = Math.min(vRatio, hRatio)
+
+							var centerShift_x = ( canvas.width - currentImg.naturalWidth*ratio ) / 2;
+							var centerShift_y = ( canvas.height - currentImg.naturalHeight *ratio ) / 2;
+							
+							console.log(images[i])
+
+							ctx.drawImage(
+								currentImg,
+							 	0, 0, currentImg.naturalWidth, currentImg.naturalHeight ,
+								centerShift_x, centerShift_y, currentImg.naturalWidth * ratio , currentImg.naturalHeight * ratio
+							);
+
+					
+					}else if(currentRole === "fondo") {
+					console.log(images[i])
+
+							ctx.drawImage(
+								currentImg,
+								0, 0, currentImg.naturalWidth, currentImg.naturalHeight,
+								images[i].position.x, images[i].position.y,  currentRects.width, currentRects.height
+							)
+
+					}else if(currentRole === "logo") {
+							console.log(images[i])
+
+							ctx.drawImage(
+								currentImg,
+								0, 0, currentImg.naturalWidth, currentImg.naturalHeight,
+								images[i].position.x - currentImg.naturalWidth, images[i].position.y,  currentRects.width, currentRects.height
+							)
+
+					}
+
+
+					
+			}
+		}
+
+
+		// let fondoImg = images[0].image;
+		// let fondoContainer = images[0].container;
+		// let fondoRects = fondoContainer.getBoundingClientRect()
+		
+		// ctx.drawImage(fondoImg,0,0,fondoImg.naturalWidth,fondoImg.naturalHeight,0,0,fondoRects.width, fondoRects.height)
+
+
+
+		// let productoImg = images[1].image;
+		// let productoContainer = images[1].container;
+		// let productoRects = productoContainer.getBoundingClientRect()
+		
+		// ctx.drawImage(productoImg,0,0,productoImg.naturalWidth,productoImg.naturalHeight,0,0,productoRects.width, productoRects.height)
+
+		
+
+		// let logoImg = images[2].image;
+		// let logoContainer = images[2].container;
+		// let logoRects = logoContainer.getBoundingClientRect()
+		
+		// ctx.drawImage(logoImg,0,0,logoImg.naturalWidth,logoImg.naturalHeight,0,0,logoRects.width, logoRects.height)
+
+
 
 //console.log(images[0].image, 0, 0, images[0].currentSize.width,    images[0].currentSize.height,     // source rectangle
   //                 0, 0, canvas.width, canvas.height

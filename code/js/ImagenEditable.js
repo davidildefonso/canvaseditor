@@ -32,13 +32,17 @@ class ImagenEditable{
 	}
 
 	getContainerRects(){
+		console.log(this.container.getBoundingClientRect())
+		console.log(this.container.parentElement.getBoundingClientRect())
+
 		return this.container.getBoundingClientRect()
 	}
 
 
 	getPosition(){	
 			let rects =  this.getContainerRects()		
-			return { x : rects.x, y: rects.y }
+			let parentRects = this.container.parentElement.getBoundingClientRect()
+			return { x : rects.x - parentRects.x , y: rects.y - parentRects.y }
 	}
 
 	
