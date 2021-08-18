@@ -296,11 +296,15 @@ function eliminarFondo(){
 
 
 
-//const fondo1 = new ImagenEditable("",".bg_producto", "plop.jpg", "jpg",0, 1, "fondo"  )
+function recortarFondo(){
 
-
-
-console.log(fondo1)
-
-//fondo1.insertImage();
-
+	if(editor.estado === ""){
+		editor.estado = "crop"
+		editor.showCropBox()
+		editor.sendFondoToFront()
+		
+	}else if(editor.estado === "crop"){
+		editor.drawFondoOnCanvas()
+	}
+	
+}

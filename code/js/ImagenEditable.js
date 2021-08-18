@@ -23,7 +23,10 @@ class ImagenEditable{
 		this.position = this.getPosition();
 		this.currentSize = this.getCurrentSize();
 		this.image = this.generateImage()
+		
   }
+
+	
 
 	getContainerElement(cont){
 		console.log(cont)

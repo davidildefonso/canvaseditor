@@ -11,6 +11,7 @@ class Editor{
 		this.position = this.getPosition();
 		this.currentSize = this.getCurrentSize();
 		this.canvas = canvas;
+		this.tools = []
   }
 
 
@@ -63,7 +64,11 @@ class Editor{
 
 	drawImages(canvas, images){
 		let ctx = canvas.getContext("2d")
-		
+		ctx.fillStyle = "black";
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+
+
 		for(let i = 0; i< images.length; i++){
 			if(images[i]){
 
@@ -92,6 +97,8 @@ class Editor{
 					}else if(currentRole === "fondo") {
 					console.log(images[i])
 
+
+								
 							ctx.drawImage(
 								currentImg,
 								0, 0, currentImg.naturalWidth, currentImg.naturalHeight,
@@ -121,7 +128,37 @@ class Editor{
 	}
 
 
+	drawFondoOnCanvas(){
+			this.createCanvas();
+			this.showCanvas()
+			this.drawCropImage(this.canvas, this.images[0],this.tools[0])
+			let dataUrl =   this.convertDrawToDataUrl()
+			console.log(dataUrl)	
+	}
 
+	drawCropImage(canvas, img, cropbox){
+		
+		let ctx = canvas.getContext("2d")
+		ctx.fillStyle = "black";
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+		
+		let imgX = cropbox.position.x
+		let imgY = cropbox.position.y
+		let imgWidth = cropbox.size.width
+		let imgHeight = cropbox.size.height
+
+		console.log(img.image)
+		console.log(imgX, imgY, imgWidth, imgHeight)
+		console.log(canvas.width, canvas.height)
+		ctx.drawImage(
+			img.image,
+			imgX, imgY, imgWidth, imgHeight,
+			0, 0,  canvas.width, canvas.height
+		)		
+
+		
+	
+	}
 
 
 	downloadImagesOnCanvas(){
@@ -226,6 +263,31 @@ class Editor{
 	
 	}
 
+	addTool(object){
+		this.tools.push(object)
+	}
+
+	createCropBox(){
+		const cb = new ResizeableObject("unselected", this, { width: 100, height: 100})
+		this.addTool(cb)
+		console.log(cb)
+		this.container.appendChild(this.tools[0].element)
+		console.log(cb)
+		console.log(editor)
+	}
+
+	showCropBox(){
+		this.createCropBox()
+		
+
+	}
+
+
+	sendFondoToFront(){
+		console.log("fondo !")
+		document.getElementById("fondo").style.zIndex = 17;
+		document.getElementById("producto").style.display = "none";
+	}
 
 }
 
