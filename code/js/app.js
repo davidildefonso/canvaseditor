@@ -1,30 +1,9 @@
-let FONDO_STATUS = ""
-let FONDO_SRC = ""
-let FONDO_RECTS = ""
-let ORIGINAL_SRC = ""
-let circularCursor = ""
-let GLASSES_STATUS = ""
-let GLASSES_SRC = ""
-
-
 const producto = document.getElementById("mi_imagen")
-
- 
-
-//ORIGINAL_SRC = producto.src;
-
-
-if(window.location.protocol == 'file:'){
-  alert('To test this demo properly please use a local server such as XAMPP or WAMP. See README.md for more details.');
-}
 
 var  para_rotar_w;
 var  para_rotar_h;
 var seg=0;
 var tras=1;
-
-
-
 
 // var resizeableImage = function(image_target, src) {
 //   // Some variable and settings
@@ -384,7 +363,6 @@ var tras=1;
 // })
 
 
-function download(){
-	
+function download(){	
 	editor.downloadImagesOnCanvas();
 }

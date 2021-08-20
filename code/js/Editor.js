@@ -44,12 +44,12 @@ class Editor{
 
 
 	createCanvas(){
-		console.log(editor)
 		const editorCanvas = document.createElement("canvas")	
 		if(editor.estado === ""){
 				editorCanvas.width = this.currentSize.width
 				editorCanvas.height = this.currentSize.height
-				editorCanvas.style.display = "none";
+				editorCanvas.style.display = "";
+		//		editorCanvas.style.display = "none";
 		}else if(editor.estado === "crop"){
 				editorCanvas.width = this.currentSize.width / this.images[0].drawRatio.ratio
 				editorCanvas.height = this.currentSize.height / this.images[0].drawRatio.ratio
@@ -81,14 +81,20 @@ class Editor{
 					let currentImg = images[i].image;
 					let currentContainer = images[i].container;
 					let currentRects = currentContainer.getBoundingClientRect()
+
+					let hRatio   
+					let vRatio 
+					let ratio  
+					let centerShift_x
+					let centerShift_y
 		
 					if(currentRole === "producto"){
-							var hRatio = canvas.width / currentImg.naturalWidth    
-							var vRatio = canvas.height / currentImg.naturalHeight  
-							var ratio  = Math.min(vRatio, hRatio)
+							 hRatio = canvas.width / currentImg.naturalWidth    
+							 vRatio = canvas.height / currentImg.naturalHeight  
+							 ratio  = Math.min(vRatio, hRatio)
 
-							var centerShift_x = ( canvas.width - currentImg.naturalWidth*ratio ) / 2;
-							var centerShift_y = ( canvas.height - currentImg.naturalHeight *ratio ) / 2;						
+							 centerShift_x = ( canvas.width - currentImg.naturalWidth*ratio ) / 2;
+							 centerShift_y = ( canvas.height - currentImg.naturalHeight *ratio ) / 2;						
 					
 
 							ctx.drawImage(
@@ -99,12 +105,31 @@ class Editor{
 
 					
 					}else if(currentRole === "fondo") {	
+
+
+
+							 hRatio = canvas.width / currentImg.naturalWidth    
+							 vRatio = canvas.height / currentImg.naturalHeight  
+							 ratio  = Math.min(vRatio, hRatio)
+
+							 centerShift_x = ( canvas.width - currentImg.naturalWidth*ratio ) / 2;
+							 centerShift_y = ( canvas.height - currentImg.naturalHeight *ratio ) / 2;	
+
+console.log(this)
+
+							canvas.width = this.currentSize.width
+							canvas.height = this.currentSize.height
+							ctx.fillStyle = "black";
+							ctx.fillRect(0, 0, canvas.width, canvas.height);
 							ctx.drawImage(
-								currentImg,
-								0, 0, currentImg.naturalWidth, currentImg.naturalHeight,
-								//images[i].position.x, images[i].position.y,  currentRects.width, currentRects.height
-								0, 0,  currentRects.width, currentRects.height
-							)
+								images[i].element,
+								centerShift_x, centerShift_y, images[i].element.width, images[i].element.height	 )// ,
+		//						0, 0, canvas.width,canvas.height
+								//centerShift_x, centerShift_y,  currentImg.width, currentImg.height
+					//		)
+
+
+
 
 					}else if(currentRole === "logo") {		
 
