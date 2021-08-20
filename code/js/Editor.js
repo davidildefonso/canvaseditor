@@ -44,11 +44,18 @@ class Editor{
 
 
 	createCanvas(){
-		const editorCanvas = document.createElement("canvas")
-		editorCanvas.width = this.currentSize.width / this.images[0].drawRatio.ratio
-		editorCanvas.height = this.currentSize.height / this.images[0].drawRatio.ratio
-		editorCanvas.style.position = "absolute";
-		editorCanvas.style.display = "";
+		console.log(editor)
+		const editorCanvas = document.createElement("canvas")	
+		if(editor.estado === ""){
+				editorCanvas.width = this.currentSize.width
+				editorCanvas.height = this.currentSize.height
+				editorCanvas.style.display = "none";
+		}else if(editor.estado === "crop"){
+				editorCanvas.width = this.currentSize.width / this.images[0].drawRatio.ratio
+				editorCanvas.height = this.currentSize.height / this.images[0].drawRatio.ratio
+				editorCanvas.style.display = "";
+		}			
+		editorCanvas.style.position = "absolute";		
 		editorCanvas.style.left = this.position.x + "px";
 		this.canvas = editorCanvas
 	}
