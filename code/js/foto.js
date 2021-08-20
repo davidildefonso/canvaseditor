@@ -218,6 +218,8 @@ editor.images.forEach(img => {
 });
 
 
+
+
 const fotoFile = document.getElementById("fotoHiddenInputBtn")
 
 fotoFile.addEventListener('change', archivo, true)
@@ -236,27 +238,29 @@ function archivo(e) {
 	reader.readAsDataURL(foto);	
 	reader.onload = (function (){
 		return function (e) {									
-				const fondo1 = new ImagenEditable("",editor,"." + editor.container.className, e.target.result , "jpg",0, 1, "fondo"  )
-				editor.addImage(fondo1)
-						
+				const fondo1 = new ImagenEditable("",editor,"." + editor.container.className, e.target.result , "jpg",0, 1, "fondo" ,null,e.target.result )		
+				editor.addImage(fondo1)						
 		}
 	})(foto);	
 }
 
 
 function eliminarFondo(){
-	editor.removeImage("fondo")
-	console.log(editor)
+	if(editor.images[0] && editor.estado === ""){
+		editor.removeImage("fondo")
+	}
 }
 
 function recortarFondo(){
-	if(editor.estado === ""){
-	console.log(editor)
-		editor.estado = "crop"
-		editor.showCropBox()
-		editor.sendFondoToFront()		
-		
-	}else if(editor.estado === "crop"){
-		editor.drawFondoOnCanvas()
-	}	
+	if(editor.images[0]){
+		if(editor.estado === ""){	
+			editor.estado = "crop"
+			editor.showCropBox()
+			editor.sendFondoToFront()		
+			
+		}else if(editor.estado === "crop"){
+			editor.drawFondoOnCanvas()
+		}	
+	}
+
 }

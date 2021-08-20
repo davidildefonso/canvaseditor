@@ -125,13 +125,9 @@ class Editor{
 			this.showCanvas()
 			this.drawCropImage(this.canvas, this.images[0],this.tools[0])
 		
-		//	let dataUrl =   this.convertDrawToDataUrl()
-		//	console.log(dataUrl)	
 	}
 
-	drawCropImage(canvas, img, cropbox){
-		console.log(img)
-	
+	drawCropImage(canvas, img, cropbox){			
 		let ctx = canvas.getContext("2d")
 		ctx.fillStyle = "black";
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -143,35 +139,48 @@ class Editor{
 		let imgX = cropbox.position.x / img.drawRatio.ratio
 		let imgY = cropbox.position.y / img.drawRatio.ratio
 		let imgWidth = cropbox.size.width / img.drawRatio.ratio
-		let imgHeight = cropbox.size.height / img.drawRatio.ratio
+		let imgHeight = cropbox.size.height / img.drawRatio.ratio	
 
-// //console.log(img.image)
-// 		ctx.drawImage(
-// 			img.image,
-// 			imgX, imgY, imgWidth, imgHeight,
-// 			0, 0,  canvas.width, canvas.height
-// 		)		
-console.log(editor.tools[0])
-console.log(imgX, imgY, imgWidth, imgHeight)
-		// ctx.drawImage(
-		// 	img.image,
-		// 	centerShift_x + imgX, centerShift_y + imgY, imgWidth,  imgHeight,
-		// 	0, 0,  canvas.width, canvas.height)		
-		
-		// ctx.drawImage(
-		// 	img.image,
-		// 	centerShift_x, centerShift_y, img.image.naturalWidth,  img.image.naturalHeight)		
-		
-	console.log(img)
-			ctx.drawImage(
+		let editorCanvasRatio = this.currentSize.width / this.currentSize.height
+		let scaleWidth, scaleHeight	
+
+		if(img.drawRatio.side === "height"){
+				scaleHeight = canvas.height
+				scaleWidth = canvas.height * editorCanvasRatio
+				
+		}else if(img.drawRatio.side === "width"){
+				scaleWidth = canvas.width
+				scaleHeight = canvas.width / editorCanvasRatio		
+		}	
+	
+		canvas.width = imgWidth
+		canvas.height = imgHeight
+
+		ctx.drawImage(
 			img.image,
 			(cropbox.position.x - img.centerShift_x )/ img.drawRatio.ratio, (cropbox.position.y - img.centerShift_y )/ img.drawRatio.ratio, imgWidth,  imgHeight,
-			centerShift_x + (cropbox.position.x )/ img.drawRatio.ratio, centerShift_y +  (cropbox.position.y )/ img.drawRatio.ratio, imgWidth, imgHeight)		
+			0,0,canvas.width, canvas.height	)	
+
+	/* ESTO NO ESCALA LA IMAGEN AL EDITOR SINO QUE SE MANTIENE EN EL TAMAÑO CORTADO */
+		// ctx.drawImage(
+		// img.image,
+		// (cropbox.position.x - img.centerShift_x )/ img.drawRatio.ratio, (cropbox.position.y - img.centerShift_y )/ img.drawRatio.ratio, imgWidth,  imgHeight,
+		// centerShift_x + (cropbox.position.x )/ img.drawRatio.ratio, centerShift_y +  (cropbox.position.y )/ img.drawRatio.ratio, imgWidth, imgHeight)		
 		
-	
-
-
+		let dataUrl = this.convertDrawToDataUrl(canvas)
+		this.updateFondo(dataUrl, this.images[0].originalsource)
+		this.removeCropBox()
+		
+		
 	}
+
+	removeCropBox(){
+		console.log(editor)
+		this.sendFondoToBack()
+		this.tools[0].element.remove()
+		this.tools[0]= ""
+		this.estado = ""	
+	}	
 
 
 	downloadImagesOnCanvas(){
@@ -196,8 +205,14 @@ console.log(imgX, imgY, imgWidth, imgHeight)
 	}
 
 
-	convertDrawToDataUrl(){
-			return  this.canvas.toDataURL("image/png");	
+	convertDrawToDataUrl(canvas){
+			return canvas.toDataURL("image/png");			
+	}
+
+	updateFondo(dataurl, originalsource){			
+			const newfondo = new ImagenEditable("",editor,"." + editor.container.className, dataurl , "jpg",0, 1, "fondo" ,null, originalsource )
+			editor.removeImage("fondo")			
+			editor.addImage(newfondo)
 	}
 
 
@@ -218,25 +233,21 @@ console.log(imgX, imgY, imgWidth, imgHeight)
 		img.id = imagen_editable.role	
 		img.width = imagen_editable.currentSize.width;
 		img.height =  imagen_editable.currentSize.height;
-		return img
-	
+		return img	
 	}
 
-	generateFondoElement(imagen_editable){
-		
-		const img = new Image;			
-
-		img.onload = () => {			
-
+	generateFondoElement(imagen_editable){		
+		const img = new Image;	
+		img.onload = () => {		
 				let ratioWidth = this.currentSize.width / imagen_editable.image.naturalWidth
 				let ratioHeight = this.currentSize.height / imagen_editable.image.naturalHeight
 
 				if(ratioWidth < ratioHeight){				
 					imagen_editable.drawRatio.ratio = ratioWidth
-					imagen_editable.drawRatio.side = "width"
+					imagen_editable.drawRatio.side = "height"
 				}else{
 					imagen_editable.drawRatio.ratio = ratioHeight
-					imagen_editable.drawRatio.side = "height"
+					imagen_editable.drawRatio.side = "width"
 				}
 
 				let ratio = Math.min(ratioWidth, ratioHeight)
@@ -269,47 +280,38 @@ console.log(imgX, imgY, imgWidth, imgHeight)
 
 		img.src = imagen_editable.source;
 		img.id = imagen_editable.role
+		
 	}
 
 
 	insertFondo(){
-
 			this.container.appendChild(this.images[0].element);
-
 	}
 
 
 	insertImage(img){	
-	
 		if(img.role === "fondo"){
 			img.container.appendChild(this.generateFondo(img));
 		}else{
 			img.container.appendChild(this.generateImage(img));
 		}
-
 		img.estado= "loaded"
 	}
 
 
 	removeImage(role){
-
 		if(role === "fondo"){
 			let fondo = this.images[0]
 			fondo.empty()
 			this.images[0] = ""
 			document.getElementById("fondo").remove()
-
-		}
-		
-	
+		}	
 	}
 
 	loadImage(role,img){
 		if(role === "fondo"){
 			this.insertImage(img)
-		}
-			
-	
+		}	
 	}
 
 
@@ -321,9 +323,6 @@ console.log(imgX, imgY, imgWidth, imgHeight)
 		this.currentSize = ""
 		this.canvas = ""	
 	}
-
-
-
 
 	loadToEditor() {
 
@@ -342,7 +341,7 @@ console.log(imgX, imgY, imgWidth, imgHeight)
 	}
 
 	createCropBox(){
-		const cb = new ResizeableObject("unselected", this, { width: 100, height: 100})
+		const cb = new ResizeableObject("unselected", this, { width: 50, height: 50})
 		this.addTool(cb)	
 		this.container.appendChild(this.tools[0].element)
 	}
@@ -351,10 +350,16 @@ console.log(imgX, imgY, imgWidth, imgHeight)
 		this.createCropBox()
 	}
 
-
 	sendFondoToFront(){
 		document.getElementById("fondo").style.zIndex = 17;
 		document.getElementById("producto").style.display = "none";
+	}
+
+	sendFondoToBack(){
+		
+		document.getElementById("producto").style.display = "";
+		this.estado = ""
+	
 	}
 
 }

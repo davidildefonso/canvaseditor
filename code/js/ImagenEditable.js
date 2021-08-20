@@ -8,7 +8,9 @@ class ImagenEditable{
 		rotacion, 	
 		transparencia, 
 		rol, 
-		canvas) 
+		canvas,
+		originalsource = ""
+		) 
 	{
     this.estado = estado;
 //		this.container = contenedor;    
@@ -24,7 +26,7 @@ class ImagenEditable{
 		this.currentSize = this.getCurrentSize();
 		this.image = this.generateImage()
 		this.drawRatio = {}
-		this.originalsource = source
+		this.originalsource = originalsource
 		
   }
 
