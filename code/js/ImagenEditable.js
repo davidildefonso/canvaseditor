@@ -23,21 +23,18 @@ class ImagenEditable{
 		this.position = this.getPosition();
 		this.currentSize = this.getCurrentSize();
 		this.image = this.generateImage()
+		this.drawRatio = {}
+		this.originalsource = source
 		
   }
 
 	
 
 	getContainerElement(cont){
-		console.log(cont)
-		console.log(document.querySelector(cont))
 		return document.querySelector(cont)
 	}
 
 	getContainerRects(){
-		console.log(this.container.getBoundingClientRect())
-		console.log(this.container.parentElement.getBoundingClientRect())
-
 		return this.container.getBoundingClientRect()
 	}
 
@@ -51,14 +48,13 @@ class ImagenEditable{
 	
 	getCurrentSize(){
 			let rects =  this.getContainerRects()		
-			console.log(rects)
 			return { width : rects.width, height: rects.height }
 	}
 
-	generateImage(){
+	generateImage(id  = "image"){
 		const img = new Image;
 		img.src = this.source;
-		img.id = "fondo1img"
+		img.id = id
 		img.width = this.currentSize.width;
 		img.height = this.currentSize.height;
 		return img
@@ -69,9 +65,9 @@ class ImagenEditable{
 		if(this.editor.estado === ""){
 			this.editor.images[this.role] = {
 				role : "fondo",
-				img:  this.generateImage()
+				img:  this.generateImage("fondo")
 			}
-			console.log(this.editor)
+			
 		}else{
 			console.log("editor dibujando en canvas")
 		}
@@ -79,7 +75,7 @@ class ImagenEditable{
 	}
 
 	removeImage(){	
-	//	console.log(this.image.id)
+	
 		if(this.editor.estado === ""){
 			this.editor.containerremoveChild(this.image)
 		}else{

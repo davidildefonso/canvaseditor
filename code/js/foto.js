@@ -206,41 +206,16 @@
 
 const editor = new Editor("", ".bg_producto", [])
 
-console.log(editor)
-
 let productoFoto = new ImagenEditable("",editor, ".producto","rg/img/20/102012111004.jpg","jpg",0,0,"producto")
 
-console.log(productoFoto)
-
-
 let logo = new ImagenEditable("", editor, ".logo", "rg/img/iconos/isotipo_ithaliano.png", "png", 0, 1, "logo")
-
-
-console.log(logo)
 
 editor.addImage(productoFoto)
 editor.addImage(logo)
 
-
-console.log(editor)
-
-
-
-editor.images.forEach(img => {
-	console.log(img)
+editor.images.forEach(img => {	
 	if(img)	editor.insertImage(img)
 });
-
-
-
-
-
-
-
-
-
-
-
 
 
 const fotoFile = document.getElementById("fotoHiddenInputBtn")
@@ -248,12 +223,11 @@ const fotoFile = document.getElementById("fotoHiddenInputBtn")
 fotoFile.addEventListener('change', archivo, true)
 
 function subirFondo(){  
-	if(FONDO_STATUS === "" ||FONDO_STATUS === "loaded"){
+	if(editor.estado === ""){
 		fotoFile.click()
 	}                       
 }
 
-let fondo1
 
 function archivo(e) {
 	const foto = e.target.files[0]
@@ -261,50 +235,28 @@ function archivo(e) {
 	const reader = new FileReader();
 	reader.readAsDataURL(foto);	
 	reader.onload = (function (){
-		return function (e) {
-				FONDO_SRC = e.target.result
-				ORIGINAL_SRC = FONDO_SRC							
-				FONDO_STATUS = "loaded"										
-				fondo1 = new ImagenEditable("",editor,"." + editor.container.className, FONDO_SRC , "jpg",0, 1, "fondo"  )
+		return function (e) {									
+				const fondo1 = new ImagenEditable("",editor,"." + editor.container.className, e.target.result , "jpg",0, 1, "fondo"  )
 				editor.addImage(fondo1)
-				editor.insertImage(fondo1)
-				console.log(editor)
+						
 		}
-
 	})(foto);	
 }
 
 
-
-
-
-
-
-
-
 function eliminarFondo(){
 	editor.removeImage("fondo")
-
 	console.log(editor)
-	console.log(fondo1)
-	
-
-
 }
 
-
-
-
-
 function recortarFondo(){
-
 	if(editor.estado === ""){
+	console.log(editor)
 		editor.estado = "crop"
 		editor.showCropBox()
-		editor.sendFondoToFront()
+		editor.sendFondoToFront()		
 		
 	}else if(editor.estado === "crop"){
 		editor.drawFondoOnCanvas()
-	}
-	
+	}	
 }
