@@ -178,7 +178,7 @@ class Editor{
 		console.log(editor)
 		this.sendFondoToBack()
 		this.tools[0].element.remove()
-		this.tools[0]= ""
+		this.tools = [] 
 		this.estado = ""	
 	}	
 
@@ -342,6 +342,7 @@ class Editor{
 
 	createCropBox(){
 		const cb = new ResizeableObject("unselected", this, { width: 50, height: 50})
+		console.log(cb)
 		this.addTool(cb)	
 		this.container.appendChild(this.tools[0].element)
 	}
