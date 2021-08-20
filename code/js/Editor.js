@@ -175,19 +175,27 @@ class Editor{
 	}
 
 	removeCropBox(){
-		console.log(editor)
-		this.sendFondoToBack()
+	
+		this.sendFondoToBack()		
+		this.removeHandles(this.tools[0].tools)		
 		this.tools[0].element.remove()
 		this.tools = [] 
 		this.estado = ""	
+			console.log(editor)
 	}	
+
+	removeHandles(arr){
+		arr.forEach(element => {
+			element.remove()
+		});
+	}
 
 
 	downloadImagesOnCanvas(){
 		this.createCanvas();
 		this.showCanvas()
 		this.drawImages(this.canvas, this.images)
-		let dataUrl =   this.convertDrawToDataUrl()
+		let dataUrl =   this.convertDrawToDataUrl(this.canvas)
 		this.download(dataUrl)
 
 	}
@@ -341,10 +349,11 @@ class Editor{
 	}
 
 	createCropBox(){
-		const cb = new ResizeableObject("unselected", this, { width: 50, height: 50})
-		console.log(cb)
+		const cb = new ResizeableObject("unselected", this, { width: 200, height: 200})
 		this.addTool(cb)	
-		this.container.appendChild(this.tools[0].element)
+		this.container.appendChild(this.tools[0].element)	
+		this.tools[0].generateTools()
+			console.log(this)
 	}
 
 	showCropBox(){
