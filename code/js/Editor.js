@@ -37,6 +37,8 @@ class Editor{
 
 	
 	getCurrentSize(){
+console.log(this)
+	
 			return {
 				width: this.getContainerRects().width,
 				height: this.getContainerRects().height
@@ -71,7 +73,7 @@ class Editor{
 	}
 
 	drawImages(canvas, images){
-	console.log(images)
+	
 		let ctx = canvas.getContext("2d")
 		ctx.fillStyle = "black";
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -108,34 +110,153 @@ class Editor{
 						
 						
 						}else{
-								hRatio = canvas.width / currentImg.naturalWidth    
-							 	vRatio = canvas.height / currentImg.naturalHeight  
+							
+
+							//	centerShift_x = ( canvas.width - currentImg.naturalWidth*ratio ) / 2;
+						//	 	centerShift_y = ( canvas.height - currentImg.naturalHeight *ratio ) / 2;
+	
+								let imgScaledPositionX = images[i].position.x
+								let imgScaledPositionY = images[i].position.y
+								let imgScaledWidth = images[i].size.width
+								let imgScaledHeight = images[i].size.height
+								
+								let imgRealWidth= images[i].image.naturalWidth
+								let imgRealHeight= images[i].image.naturalHeight		
+
+								let imgPortionWidth
+								let imgPortionHeight			
+
+								let realPortionWidth  
+								let realPortionHeight 
+
+								let canvasXstart
+								let canvasYstart	
+								let realXstart
+								let realYstart
+
+								hRatio = imgScaledWidth / currentImg.naturalWidth    
+							 	vRatio = imgScaledHeight / currentImg.naturalHeight  
 							 	ratio  = Math.min(vRatio, hRatio)
 
-								centerShift_x = ( canvas.width - currentImg.naturalWidth*ratio ) / 2;
-							 	centerShift_y = ( canvas.height - currentImg.naturalHeight *ratio ) / 2;	
+								if(imgScaledPositionY >= 0 && imgScaledPositionX < 0){
 
-								//canvas.width = images[i].size.width 
-								//canvas.height = images[i].size.height 
-								console.log(images[i].element)
-								console.log(canvas.getBoundingClientRect().x, canvas.getBoundingClientRect().y ,
-								 images[i].position.x,  images[i].position.y, canvas.width, canvas.height, images[i].size.width, images[i].size.height)
-								console.log(images[i])
+									if(imgScaledPositionY + imgScaledHeight <= canvas.height){
+										imgPortionHeight = imgScaledHeight
+										imgPortionWidth = imgScaledWidth + imgScaledPositionX
+										canvasXstart = 0
+										canvasYstart = imgScaledPositionY
+										realPortionWidth = imgRealWidth * imgPortionWidth / imgScaledWidth
+										realPortionHeight = imgRealHeight * imgPortionHeight / imgScaledHeight
+										realXstart = imgRealWidth - realPortionWidth
+										realYstart = imgRealHeight -	realPortionHeight
 
-								let imgRealWidth= images[i].image.naturalWidth
-								let imgRealHeight= images[i].image.naturalHeight
-								let imgScaledWidth = images[i].image.naturalWidth * ratio
-								let imgScaledHeight = images[i].image.naturalHeight * ratio
-								let imgPortionWidth = images[i].size.width - Math.abs(images[i].position.x) - 2 * centerShift_x
-								let imgPortionHeight = images[i].size.height - Math.abs(images[i].position.y) - 2 * centerShift_y
-
-						
-						
-
-								let realPortionWidth = imgRealWidth * imgPortionWidth / imgScaledWidth
-								let realPortionHeight = imgRealHeight * imgPortionHeight / imgScaledHeight
+									}else if(imgScaledPositionY + imgScaledHeight > canvas.height){
+										imgPortionHeight = canvas.height-   imgScaledPositionY 
+										imgPortionWidth = imgScaledWidth + imgScaledPositionX
+										canvasXstart = 0
+										canvasYstart = imgScaledPositionY
+										realPortionWidth = imgRealWidth * imgPortionWidth / imgScaledWidth
+										realPortionHeight = imgRealHeight * imgPortionHeight / imgScaledHeight
+										realXstart = -1 * imgScaledPositionX / ratio 
+										realYstart = 0
 
 
+									}
+
+								}else if(imgScaledPositionY < 0 && imgScaledPositionX < 0){
+										imgPortionHeight = imgScaledWidth +    imgScaledPositionY 
+										imgPortionWidth = imgScaledWidth + imgScaledPositionX
+										canvasXstart = 0
+										canvasYstart = 0
+										realPortionWidth = imgRealWidth * imgPortionWidth / imgScaledWidth
+										realPortionHeight = imgRealHeight * imgPortionHeight / imgScaledHeight
+										realXstart = -1 * imgScaledPositionX / ratio 
+										realYstart = -1 * imgScaledPositionY / ratio 
+								
+								}else if(imgScaledPositionY < 0 && imgScaledPositionX >= 0){
+
+										if(imgScaledPositionX + imgScaledWidth <= canvas.width){
+												imgPortionHeight = imgScaledHeight + imgScaledPositionY
+												imgPortionWidth = imgScaledWidth 
+												canvasXstart = imgScaledPositionX
+												canvasYstart = 0
+												realPortionWidth = imgRealWidth * imgPortionWidth / imgScaledWidth
+												realPortionHeight = imgRealHeight * imgPortionHeight / imgScaledHeight
+												realXstart = 0
+												realYstart = imgRealHeight -imgPortionHeight	/ ratio 
+
+										}else if(imgScaledPositionX + imgScaledWidth  > canvas.height){
+											imgPortionHeight = imgScaledHeight + imgScaledPositionY
+											imgPortionWidth = imgScaledWidth - imgScaledPositionX
+											canvasXstart = imgScaledPositionX
+											canvasYstart = 0
+											realPortionWidth = imgRealWidth * imgPortionWidth / imgScaledWidth
+											realPortionHeight = imgRealHeight * imgPortionHeight / imgScaledHeight
+											realXstart = 0
+											realYstart = imgRealHeight -imgPortionHeight	/ ratio 
+
+
+										}
+
+								}else if(imgScaledPositionY >= 0 && imgScaledPositionX >= 0){
+
+										if(imgScaledPositionX + imgScaledWidth > canvas.width										
+											&& imgScaledPositionY + imgScaledHeight <= canvas.height){
+												imgPortionHeight = imgScaledHeight 
+												imgPortionWidth = canvas.width - imgScaledPositionX 
+												canvasXstart = imgScaledPositionX
+												canvasYstart = imgScaledPositionY
+												realPortionWidth = imgRealWidth * imgPortionWidth / imgScaledWidth
+												realPortionHeight = imgRealHeight * imgPortionHeight / imgScaledHeight
+												realXstart = 0
+												realYstart = 0
+
+										}else if(imgScaledPositionX + imgScaledWidth > canvas.width										
+											&& imgScaledPositionY + imgScaledHeight > canvas.height){
+											imgPortionHeight = canvas.height -  imgScaledPositionY
+											imgPortionWidth = canvas.width - imgScaledPositionX 
+											canvasXstart = imgScaledPositionX
+											canvasYstart = imgScaledPositionY
+											realPortionWidth = imgRealWidth * imgPortionWidth / imgScaledWidth
+											realPortionHeight = imgRealHeight * imgPortionHeight / imgScaledHeight
+											realXstart = 0
+											realYstart = 0
+
+
+										}else if(imgScaledPositionX + imgScaledWidth <= canvas.width										
+											&& imgScaledPositionY + imgScaledHeight > canvas.height){
+											imgPortionHeight = canvas.height -  imgScaledPositionY
+											imgPortionWidth = imgScaledWidth 
+											canvasXstart = imgScaledPositionX
+											canvasYstart = imgScaledPositionY
+											realPortionWidth = imgRealWidth * imgPortionWidth / imgScaledWidth
+											realPortionHeight = imgRealHeight * imgPortionHeight / imgScaledHeight
+											realXstart = 0
+											realYstart = 0
+
+
+										}else if(imgScaledPositionX + imgScaledWidth <= canvas.width										
+											&& imgScaledPositionY + imgScaledHeight <= canvas.height){
+											imgPortionHeight = imgScaledHeight
+											imgPortionWidth = imgScaledWidth 
+											canvasXstart = imgScaledPositionX
+											canvasYstart = imgScaledPositionY
+											realPortionWidth = imgRealWidth * imgPortionWidth / imgScaledWidth
+											realPortionHeight = imgRealHeight * imgPortionHeight / imgScaledHeight
+											realXstart = 0
+											realYstart = 0
+
+
+										}
+
+								}
+
+
+
+				
+
+								console.log("position img en el editor", imgScaledPositionX, imgScaledPositionY)
+								console.log("position img real ", realXstart, realYstart)
 								console.log("canvas width and height", canvas.width, canvas.height)
 								console.log("imagen width real: ", imgRealWidth)
 								console.log("imagen height real: ", imgRealHeight)
@@ -150,12 +271,12 @@ class Editor{
 
 								ctx.drawImage(
 										images[i].element,
-										imgRealWidth - realPortionWidth,
-										imgRealHeight -	realPortionHeight, 
+										realXstart,
+										realYstart, 
 										realPortionWidth ,
 										realPortionHeight,
-										centerShift_x, 
-										centerShift_y,
+										canvasXstart, 
+										canvasYstart,
 										imgPortionWidth, 
 										imgPortionHeight
 								);
@@ -189,10 +310,17 @@ class Editor{
 
 
 					}else if(currentRole === "logo") {	
+
+
+					  currentContainer = images[i].container;
+					  currentRects = currentContainer.getBoundingClientRect()
+
+				
+			
 							ctx.drawImage(
 								currentImg,
 								0, 0, currentImg.naturalWidth, currentImg.naturalHeight,
-								images[i].position.x - currentImg.naturalWidth, images[i].position.y,  currentRects.width, currentRects.height
+							currentRects.x - this.position.x,	 currentRects.y - this.position.y,	 currentRects.width, 	 currentRects.height
 							)
 					}					
 			}
@@ -307,17 +435,21 @@ class Editor{
 
 
 	addImage(imagen_editable){
+	console.log(imagen_editable)
 		if(imagen_editable.role === "fondo"){
 			this.estado	= "loading fondo"
 			this.generateFondoElement(imagen_editable)
 		}else if(imagen_editable.role === "producto"){
+		
 			this.images[1] = imagen_editable
 		}else if(imagen_editable.role === "logo"){
 			this.images[2] = imagen_editable
 		}
+
 	}
 
 	generateImage(imagen_editable){	
+	
 		const img = new Image;
 		img.src = imagen_editable.source
 		img.id = imagen_editable.role	
@@ -382,7 +514,11 @@ class Editor{
 	insertImage(img){	
 		if(img.role === "fondo"){
 			img.container.appendChild(this.generateFondo(img));
-		}else{
+		}else if(img.role === "producto"){
+			img.container.appendChild(img.generateElement());
+		}	
+		else{
+		
 			img.container.appendChild(this.generateImage(img));
 		}
 		img.estado= "loaded"
@@ -435,7 +571,7 @@ class Editor{
 		this.addTool(cb)	
 		this.container.appendChild(this.tools[0].element)	
 		this.tools[0].generateTools()
-			console.log(this)
+		
 	}
 
 	showCropBox(){

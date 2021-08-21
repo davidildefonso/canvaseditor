@@ -64,7 +64,7 @@ class ResizeableObject  {
 			z-index: 21;
 			transform: translate(-50%,-50%);
 		`
-
+console.log(this)
 	
 		for(let i = 0; i <= 3; i++){
 			let handle = document.createElement("span")
@@ -171,7 +171,7 @@ class ResizeableObject  {
 				this.updatePosition()
 				this.updateToolsPosition()
 		}
-	console.log(this)
+	
 	}
 
 	updateSize(){

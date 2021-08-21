@@ -20,8 +20,8 @@ class ImagenRedimensionable extends ResizeableObject {
 			this.source = this.element.src , 		
 			this.originalSource = this.source, 
 			this.rotacion = 0,
-			this.position = this.getPosition(this.getRects(this.container)),  
-			this.size = this.getSize(this.getRects(this.container))
+			this.position = this.getPosition(this.getRects(this.element)),  
+			this.size = this.getSize(this.getRects(this.element))
 			this.transparencia = 1, 
 			this.rol = rol, 
 			this.canvas = null; 
@@ -73,10 +73,14 @@ class ImagenRedimensionable extends ResizeableObject {
 
 
 			this.positions = [
-				{left: "0px", top: "0px"},
-				{left: this.size.width + "px", top:  "0px"},
-				{left: this.size.width + "px", top: this.size.height  + "px"},
-				{left:  "0px", top:  this.size.height + "px"}
+				{left: this.position.x - this.getRects(this.container).x +   "0px", 
+					top:  this.position.y - this.getRects(this.container).y  + "0px"},
+				{left: this.size.width +  this.position.x - this.getRects(this.container).x +"px",
+				 top: this.position.y -  this.getRects(this.container).y  + "0px"},
+				{left: this.size.width + this.position.x -this.getRects(this.container).x  + "px",
+				 top: this.size.height  +  this.position.y - this.getRects(this.container).y + "px"},
+				{left: this.position.x -  this.getRects(this.container).x +  "0px", 
+				top:  this.size.height + this.position.y  - this.getRects(this.container).y + "px"}
 			]
 
 
@@ -115,8 +119,10 @@ class ImagenRedimensionable extends ResizeableObject {
 
 
 	showResizeableImage(){	
+
 		this.editor.addTool(this)	
 		this.editor.estado = "editando producto"
+		console.log(this.positions)
 		super.generateTools()
 		
 	}
@@ -133,6 +139,7 @@ class ImagenRedimensionable extends ResizeableObject {
 	
 
 	getRects(elm){
+
 		return elm.getBoundingClientRect()
 	}
 
