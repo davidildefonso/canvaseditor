@@ -49,8 +49,8 @@ class Editor{
 		if(editor.estado === ""){
 				editorCanvas.width = this.currentSize.width
 				editorCanvas.height = this.currentSize.height
-				//editorCanvas.style.display = "";
-				editorCanvas.style.display = "none";
+				editorCanvas.style.display = "";
+			//	editorCanvas.style.display = "none";
 		}else if(editor.estado === "crop"){
 				editorCanvas.width = this.currentSize.width / this.images[0].drawRatio.ratio
 				editorCanvas.height = this.currentSize.height / this.images[0].drawRatio.ratio
@@ -71,6 +71,7 @@ class Editor{
 	}
 
 	drawImages(canvas, images){
+	console.log(images)
 		let ctx = canvas.getContext("2d")
 		ctx.fillStyle = "black";
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -89,6 +90,8 @@ class Editor{
 					let centerShift_y
 		
 					if(currentRole === "producto"){
+
+						if(!images[i].modified){
 							 hRatio = canvas.width / currentImg.naturalWidth    
 							 vRatio = canvas.height / currentImg.naturalHeight  
 							 ratio  = Math.min(vRatio, hRatio)
@@ -102,6 +105,69 @@ class Editor{
 							 	0, 0, currentImg.naturalWidth, currentImg.naturalHeight ,
 								centerShift_x, centerShift_y, currentImg.naturalWidth * ratio , currentImg.naturalHeight * ratio
 							);
+						
+						
+						}else{
+								hRatio = canvas.width / currentImg.naturalWidth    
+							 	vRatio = canvas.height / currentImg.naturalHeight  
+							 	ratio  = Math.min(vRatio, hRatio)
+
+								centerShift_x = ( canvas.width - currentImg.naturalWidth*ratio ) / 2;
+							 	centerShift_y = ( canvas.height - currentImg.naturalHeight *ratio ) / 2;	
+
+								//canvas.width = images[i].size.width 
+								//canvas.height = images[i].size.height 
+								console.log(images[i].element)
+								console.log(canvas.getBoundingClientRect().x, canvas.getBoundingClientRect().y ,
+								 images[i].position.x,  images[i].position.y, canvas.width, canvas.height, images[i].size.width, images[i].size.height)
+								console.log(images[i])
+
+								let imgRealWidth= images[i].image.naturalWidth
+								let imgRealHeight= images[i].image.naturalHeight
+								let imgScaledWidth = images[i].image.naturalWidth * ratio
+								let imgScaledHeight = images[i].image.naturalHeight * ratio
+								let imgPortionWidth = images[i].size.width - Math.abs(images[i].position.x) - 2 * centerShift_x
+								let imgPortionHeight = images[i].size.height - Math.abs(images[i].position.y) - 2 * centerShift_y
+
+						
+						
+
+								let realPortionWidth = imgRealWidth * imgPortionWidth / imgScaledWidth
+								let realPortionHeight = imgRealHeight * imgPortionHeight / imgScaledHeight
+
+
+								console.log("canvas width and height", canvas.width, canvas.height)
+								console.log("imagen width real: ", imgRealWidth)
+								console.log("imagen height real: ", imgRealHeight)
+								console.log("imagen width en editor (escalado): ", imgScaledWidth)
+								console.log("imagen height en editor (escalado): ", imgScaledHeight)
+								console.log("imagen width visible en editor: ", imgPortionWidth)
+								console.log("imagen height visible en editor: ", imgPortionHeight)
+								console.log("imagen width parte visible escalado  real: ", realPortionWidth)
+								console.log("imagen height parte visible escalado  real:  ", realPortionHeight)
+								
+								
+
+								ctx.drawImage(
+										images[i].element,
+										imgRealWidth - realPortionWidth,
+										imgRealHeight -	realPortionHeight, 
+										realPortionWidth ,
+										realPortionHeight,
+										centerShift_x, 
+										centerShift_y,
+										imgPortionWidth, 
+										imgPortionHeight
+								);
+						
+						}
+							
+
+							// ctx.drawImage(
+							// 	currentImg,
+							//  	0, 0, currentImg.naturalWidth, currentImg.naturalHeight ,
+							// 	centerShift_x, centerShift_y, currentImg.naturalWidth * ratio , currentImg.naturalHeight * ratio
+							// );
 
 					
 					}else if(currentRole === "fondo") {	
@@ -207,6 +273,7 @@ class Editor{
 
 
 	downloadImagesOnCanvas(){
+	console.log(this)
 		this.createCanvas();
 		this.showCanvas()
 		this.drawImages(this.canvas, this.images)

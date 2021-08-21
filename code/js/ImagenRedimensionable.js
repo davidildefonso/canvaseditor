@@ -26,8 +26,10 @@ class ImagenRedimensionable extends ResizeableObject {
 			this.rol = rol, 
 			this.canvas = null; 
 			this.estado = estado
-			this.state= null
-
+			this.state= null;
+			this.image = this.generateImage()
+			this.role = "producto";
+			this.modified = false
 			
 
 			this.element.onclick = (e) => {
@@ -64,6 +66,7 @@ class ImagenRedimensionable extends ResizeableObject {
 				e.preventDefault()
 				if(this.estado === "moving"){
 						this.estado = "selected"
+						this.modified = true
 					
 				}
 			}
@@ -100,7 +103,7 @@ class ImagenRedimensionable extends ResizeableObject {
 			this.editor.estado = ""
 			this.editor.tools = []
 			this.removeTools()		
-			console.log(this)			
+					
 			
 	}
 
@@ -115,9 +118,18 @@ class ImagenRedimensionable extends ResizeableObject {
 		this.editor.addTool(this)	
 		this.editor.estado = "editando producto"
 		super.generateTools()
-		console.log(this)
+		
 	}
 
+
+	generateImage(){	
+		const img = new Image;
+		img.src = this.source
+		img.id = this.rol	
+		img.width = this.size.width;
+		img.height =  this.size.height;
+		return img	
+	}
 	
 
 	getRects(elm){

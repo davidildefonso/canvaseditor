@@ -89,7 +89,8 @@ class ResizeableObject  {
 
 	endresizing = (e) =>  {	
 		e.preventDefault()
-		this.state = "selected"		
+		this.state = "selected"	
+		this.modified = true
 	}
 
 	moveHandle = (e) => {
@@ -170,7 +171,7 @@ class ResizeableObject  {
 				this.updatePosition()
 				this.updateToolsPosition()
 		}
-	
+	console.log(this)
 	}
 
 	updateSize(){
@@ -187,12 +188,20 @@ class ResizeableObject  {
 		let offsetHeight = this.size.height /2 
 		this.position.x = e.clientX - this.container.getBoundingClientRect().x  - offsetWidth
 		this.position.y = e.clientY - this.container.getBoundingClientRect().y - offsetHeight
-		console.log(this)
+		
 		this.updatePosition()
 
 	
 
 		this.updateToolsPosition()
+
+	
+		if(this.rol === "producto"){
+	
+			this.editor.images[1] = this
+	
+		}
+		
 	}
 
 	updatePosition(){

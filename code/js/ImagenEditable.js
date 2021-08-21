@@ -92,7 +92,8 @@ class ImagenEditable{
 		this.canvas = ""
 		this.position = ""
 		this.currentSize = ""
-		this.image = ""	
+		this.image = ""
+	
 	}
  
 	loadToEditor() {
