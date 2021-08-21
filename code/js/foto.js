@@ -225,9 +225,13 @@ const fotoFile = document.getElementById("fotoHiddenInputBtn")
 fotoFile.addEventListener('change', archivo, true)
 
 function subirFondo(){  
+console.log(editor)
 	if(editor.estado === ""){
-		fotoFile.click()
-	}                       
+	console.log(editor.images[0])
+		if(!editor.images[0])
+	
+				fotoFile.click()
+		}                       
 }
 
 

@@ -364,5 +364,8 @@ var tras=1;
 
 
 function download(){	
-	editor.downloadImagesOnCanvas();
+	if(editor.estado === ""){
+		editor.downloadImagesOnCanvas();
+	}
+	
 }

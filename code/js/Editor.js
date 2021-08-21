@@ -48,8 +48,8 @@ class Editor{
 		if(editor.estado === ""){
 				editorCanvas.width = this.currentSize.width
 				editorCanvas.height = this.currentSize.height
-				editorCanvas.style.display = "";
-		//		editorCanvas.style.display = "none";
+				//editorCanvas.style.display = "";
+				editorCanvas.style.display = "none";
 		}else if(editor.estado === "crop"){
 				editorCanvas.width = this.currentSize.width / this.images[0].drawRatio.ratio
 				editorCanvas.height = this.currentSize.height / this.images[0].drawRatio.ratio
@@ -76,7 +76,6 @@ class Editor{
 
 		for(let i = 0; i< images.length; i++){
 			if(images[i]){
-
 					let currentRole = images[i].role
 					let currentImg = images[i].image;
 					let currentContainer = images[i].container;
@@ -106,16 +105,12 @@ class Editor{
 					
 					}else if(currentRole === "fondo") {	
 
-
-
 							 hRatio = canvas.width / currentImg.naturalWidth    
 							 vRatio = canvas.height / currentImg.naturalHeight  
 							 ratio  = Math.min(vRatio, hRatio)
 
 							 centerShift_x = ( canvas.width - currentImg.naturalWidth*ratio ) / 2;
-							 centerShift_y = ( canvas.height - currentImg.naturalHeight *ratio ) / 2;	
-
-console.log(this)
+							 centerShift_y = ( canvas.height - currentImg.naturalHeight *ratio ) / 2;
 
 							canvas.width = this.currentSize.width
 							canvas.height = this.currentSize.height
@@ -123,31 +118,18 @@ console.log(this)
 							ctx.fillRect(0, 0, canvas.width, canvas.height);
 							ctx.drawImage(
 								images[i].element,
-								centerShift_x, centerShift_y, images[i].element.width, images[i].element.height	 )// ,
-		//						0, 0, canvas.width,canvas.height
-								//centerShift_x, centerShift_y,  currentImg.width, currentImg.height
-					//		)
+								centerShift_x, centerShift_y, images[i].element.width, images[i].element.height	 )
 
 
-
-
-					}else if(currentRole === "logo") {		
-
+					}else if(currentRole === "logo") {	
 							ctx.drawImage(
 								currentImg,
 								0, 0, currentImg.naturalWidth, currentImg.naturalHeight,
 								images[i].position.x - currentImg.naturalWidth, images[i].position.y,  currentRects.width, currentRects.height
 							)
-
-					}
-
-
-					
+					}					
 			}
-		}
-
-
-		
+		}	
 
 	}
 
