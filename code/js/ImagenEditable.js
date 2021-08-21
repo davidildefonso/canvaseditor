@@ -12,8 +12,7 @@ class ImagenEditable{
 		originalsource = ""
 		) 
 	{
-    this.estado = estado;
-//		this.container = contenedor;    
+    this.estado = estado;    
 		this.source = source;
 		this.tipo = tipo;
 		this.container = this.getContainerElement(contenedor); 
@@ -26,10 +25,8 @@ class ImagenEditable{
 		this.currentSize = this.getCurrentSize();
 		this.image = this.generateImage()
 		this.drawRatio = {}
-		this.originalsource = originalsource
-		
+		this.originalsource = originalsource		
   }
-
 	
 
 	getContainerElement(cont){
@@ -68,33 +65,26 @@ class ImagenEditable{
 			this.editor.images[this.role] = {
 				role : "fondo",
 				img:  this.generateImage("fondo")
-			}
-			
+			}			
 		}else{
 			console.log("editor dibujando en canvas")
-		}
-		
+		}		
 	}
 
-	removeImage(){	
-	
+	removeImage(){		
 		if(this.editor.estado === ""){
 			this.editor.containerremoveChild(this.image)
 		}else{
 			console.log("editor dibujando en canvas")
-		}
-		
-	
+		}	
 	}
 
 
-	empty(){
-	
+	empty(){	
 		this.estado = ""
 		this.container = ""    
 		this.source = ""
 		this.tipe = ""
-		//this.originalSize = originalSize;
 		this.rotation = ""
 		this.editor = ""
 		this.transparency = ""
@@ -102,8 +92,7 @@ class ImagenEditable{
 		this.canvas = ""
 		this.position = ""
 		this.currentSize = ""
-		this.image = ""
-	
+		this.image = ""	
 	}
  
 	loadToEditor() {

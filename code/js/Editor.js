@@ -12,6 +12,7 @@ class Editor{
 		this.currentSize = this.getCurrentSize();
 		this.canvas = canvas;
 		this.tools = []
+		this.productos = []
   }
 
 

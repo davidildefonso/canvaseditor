@@ -1,4 +1,4 @@
-const producto = document.getElementById("mi_imagen")
+
 
 var  para_rotar_w;
 var  para_rotar_h;
@@ -369,3 +369,4 @@ function download(){
 	}
 	
 }
+

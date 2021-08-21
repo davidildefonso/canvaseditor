@@ -28,8 +28,6 @@ class ResizeableObject  {
 			this.element.onmousedown = (e) => {
 				e.preventDefault()
 				this.setState("start_moving")
-				console.log(this.state)
-				console.log(this.editor)
 			}
 
 			this.element.onmousemove = (e) => {
@@ -41,22 +39,15 @@ class ResizeableObject  {
 
 					if(this.state === "moving"){
 						this.move(e)
-					}
-								
-					
+					}												
 			}
-
-
 
 			this.element.onmouseup = (e) => {
 				e.preventDefault()
 				this.setState("selected")
-				console.log(this.state)	
-				console.log(this.editor)
 			}
 
 			this.tools = []
-
 	}
 
 
@@ -90,30 +81,20 @@ class ResizeableObject  {
 		}
 	}
 
-
-
 	startResizing = (e) =>  {
 		e.preventDefault()
 		this.state = "resizing"
 		this.handleid = e.target.id
-		
-	
 	}
 
-	endresizing = (e) =>  {
-	
+	endresizing = (e) =>  {	
 		e.preventDefault()
-		this.state = "selected"
-	console.log(this.state)
-		
-	
+		this.state = "selected"		
 	}
 
 	moveHandle = (e) => {
 		e.preventDefault()
-		console.log(e.target.id)
 		if(this.state === "resizing"){
-
 			let handleWidth = /\d+/.exec(e.target.style.width)[0]
 			let handleHeight = /\d+/.exec(e.target.style.height)[0]
 			
@@ -124,79 +105,53 @@ class ResizeableObject  {
 			let newPosX = e.clientX - this.container.getBoundingClientRect().x 
 			let newPosY = e.clientY - this.container.getBoundingClientRect().y
 			
-			if(this.handleid === "handle_0"){			
-				
+			if(this.handleid === "handle_0"){					
 
 					this.tools[0].style.left = e.clientX - this.container.getBoundingClientRect().x + "px"
-					this.tools[0].style.top = e.clientY - this.container.getBoundingClientRect().y  + "px"
-					
-			
+					this.tools[0].style.top = e.clientY - this.container.getBoundingClientRect().y  + "px"		
 
 					this.resizeCropBox(newPosX, newPosY) 
 								
 			}else 	if(this.handleid === "handle_1"){
 			
 					this.tools[1].style.left = e.clientX - this.container.getBoundingClientRect().x + "px"
-					this.tools[1].style.top = e.clientY - this.container.getBoundingClientRect().y  + "px"
-					
-				
+					this.tools[1].style.top = e.clientY - this.container.getBoundingClientRect().y  + "px"			
 
 					this.resizeCropBox(newPosX, newPosY) 
 								
 			}else 	if(this.handleid === "handle_2"){
 			
 					this.tools[2].style.left = e.clientX - this.container.getBoundingClientRect().x + "px"
-					this.tools[2].style.top = e.clientY - this.container.getBoundingClientRect().y  + "px"
-					
-				
+					this.tools[2].style.top = e.clientY - this.container.getBoundingClientRect().y  + "px"			
 
 					this.resizeCropBox(newPosX, newPosY) 
 								
-			}else 	if(this.handleid === "handle_3"){
-			
+			}else 	if(this.handleid === "handle_3"){		
 
 					this.tools[3].style.left = e.clientX - this.container.getBoundingClientRect().x + "px"
-					this.tools[3].style.top = e.clientY - this.container.getBoundingClientRect().y  + "px"
-									
+					this.tools[3].style.top = e.clientY - this.container.getBoundingClientRect().y  + "px"								
 
 					this.resizeCropBox(newPosX, newPosY) 
 								
 			}
-		
 		}
-
-	
-		
-	
 	}
 
 	resizeCropBox(x, y){
 		if(this.state === "resizing"){
 
-			
-
-
-				
-
 				if(this.handleid === "handle_0"){
 							this.size.width =  this.size.width + this.position.x  - x 
 							this.size.height = this.size.height +  this.position.y - y
 							this.position.x = x
-							this.position.y= y
-
-
-							
+							this.position.y= y						
 						
 
 				}else if(this.handleid === "handle_1"){
 
 								this.size.width = (x - this.position.x)
 								this.size.height =  this.position.y +	this.size.height - y
-								this.position.y= y	
-					
-
-
-						
+								this.position.y= y				
 
 
 				}else if(this.handleid === "handle_2"){
@@ -204,28 +159,17 @@ class ResizeableObject  {
 							this.size.width = (x - this.position.x)
 							this.size.height = (y - this.position.y )
 
-
-					
-
-
 				}else if(this.handleid === "handle_3"){
 
 							this.size.width =  this.size.width + this.position.x  - x 
 							this.size.height = (y - this.position.y )
 							this.position.x = x
-
-
-							
-				}
-
-			
+				}		
 
 				this.updateSize()
 				this.updatePosition()
 				this.updateToolsPosition()
 		}
-
-	
 	
 	}
 
@@ -234,22 +178,21 @@ class ResizeableObject  {
 		this.element.style.height = this.size.height + "px"
 	}
 
-
-
 	setState(newState){
 		this.state = newState
 	} 
 
-
-	move(e){
-		//console.log(this.container.getBoundingClientRect())
+	move(e){	
 		let offsetWidth = this.size.width /2
 		let offsetHeight = this.size.height /2 
 		this.position.x = e.clientX - this.container.getBoundingClientRect().x  - offsetWidth
 		this.position.y = e.clientY - this.container.getBoundingClientRect().y - offsetHeight
+		console.log(this)
 		this.updatePosition()
-		this.updateToolsPosition()
 
+	
+
+		this.updateToolsPosition()
 	}
 
 	updatePosition(){
@@ -257,10 +200,7 @@ class ResizeableObject  {
 		this.element.style.left = this.position.x + "px"
 	}
 
-
-
 	updateToolsPosition(){
-
 			this.positions = [
 				{left: this.position.x + "px", top:  this.position.y + "0px"},
 				{left: this.position.x +this.size.width + "px", top: this.position.y + "0px"},
@@ -269,10 +209,13 @@ class ResizeableObject  {
 			]
 
 			for(let i = 0; i<= 3; i++){
-				this.tools[i].style.left = this.positions[i].left
-				this.tools[i].style.top = this.positions[i].top						
+				if(this.tools[i]){
+						this.tools[i].style.left = this.positions[i].left
+						this.tools[i].style.top = this.positions[i].top	
+				}
+			
+									
 			}
-
 	}
 
 	getContainer(){
@@ -288,7 +231,6 @@ class ResizeableObject  {
 		return { width, height}
 	}
 
-
 	generateElement(){
 		const div = document.createElement("div")
 		div.style.position = "absolute"
@@ -301,28 +243,16 @@ class ResizeableObject  {
 		div.setAttribute("id","cropbox")
 		div.style.zIndex = 20
 
-		
 		return div	
 	}
 
-	
-
-
-
-
 }
 
-
-
-
-
 function startResize(e){
-	console.log("startr")
 
 }
 
 function resizing(e){
-
 }
 
 function endresizing(e){
