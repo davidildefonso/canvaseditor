@@ -2,8 +2,7 @@
 
 let producto
 
-window.addEventListener("load", () => {		
-
+window.addEventListener("load", () => {
 		producto = new ImagenRedimensionable("unselected",	editor,	document.querySelector(".producto"),	"jpg",	"producto")
 
 })

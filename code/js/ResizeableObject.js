@@ -56,15 +56,15 @@ class ResizeableObject  {
 	generateTools(){	
 		const style = `
 			border-radius: 50%;
-			width: 10px;
-			height: 10px;
+			width: 50px;
+			height: 50px;
 			background: #fff;
 			opacity: 1;
 			position: absolute;
 			z-index: 21;
 			transform: translate(-50%,-50%);
 		`
-console.log(this)
+
 	
 		for(let i = 0; i <= 3; i++){
 			let handle = document.createElement("span")
@@ -82,6 +82,8 @@ console.log(this)
 	}
 
 	startResizing = (e) =>  {
+	
+	
 		e.preventDefault()
 		this.state = "resizing"
 		this.handleid = e.target.id
@@ -101,10 +103,14 @@ console.log(this)
 			
 			let offsetWidth =  handleWidth /2
 			let offsetHeight = handleHeight /2 
+			
 
 	
 			let newPosX = e.clientX - this.container.getBoundingClientRect().x 
 			let newPosY = e.clientY - this.container.getBoundingClientRect().y
+
+
+	
 			
 			if(this.handleid === "handle_0"){					
 
@@ -156,9 +162,9 @@ console.log(this)
 
 
 				}else if(this.handleid === "handle_2"){
-							
-							this.size.width = (x - this.position.x)
-							this.size.height = (y - this.position.y )
+					
+							this.size.width = (this.tools[2].getBoundingClientRect().x - this.tools[0].getBoundingClientRect().x)
+							this.size.height = (this.tools[2].getBoundingClientRect().y - this.tools[0].getBoundingClientRect().y)
 
 				}else if(this.handleid === "handle_3"){
 

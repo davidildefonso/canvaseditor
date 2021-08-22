@@ -37,7 +37,6 @@ class Editor{
 
 	
 	getCurrentSize(){
-console.log(this)
 	
 			return {
 				width: this.getContainerRects().width,
@@ -111,10 +110,6 @@ console.log(this)
 						
 						}else{
 							
-
-							//	centerShift_x = ( canvas.width - currentImg.naturalWidth*ratio ) / 2;
-						//	 	centerShift_y = ( canvas.height - currentImg.naturalHeight *ratio ) / 2;
-	
 								let imgScaledPositionX = images[i].position.x
 								let imgScaledPositionY = images[i].position.y
 								let imgScaledWidth = images[i].size.width
@@ -250,24 +245,7 @@ console.log(this)
 										}
 
 								}
-
-
-
 				
-
-								console.log("position img en el editor", imgScaledPositionX, imgScaledPositionY)
-								console.log("position img real ", realXstart, realYstart)
-								console.log("canvas width and height", canvas.width, canvas.height)
-								console.log("imagen width real: ", imgRealWidth)
-								console.log("imagen height real: ", imgRealHeight)
-								console.log("imagen width en editor (escalado): ", imgScaledWidth)
-								console.log("imagen height en editor (escalado): ", imgScaledHeight)
-								console.log("imagen width visible en editor: ", imgPortionWidth)
-								console.log("imagen height visible en editor: ", imgPortionHeight)
-								console.log("imagen width parte visible escalado  real: ", realPortionWidth)
-								console.log("imagen height parte visible escalado  real:  ", realPortionHeight)
-								
-								
 
 								ctx.drawImage(
 										images[i].element,
@@ -281,14 +259,9 @@ console.log(this)
 										imgPortionHeight
 								);
 						
-						}
-							
+						}						
 
-							// ctx.drawImage(
-							// 	currentImg,
-							//  	0, 0, currentImg.naturalWidth, currentImg.naturalHeight ,
-							// 	centerShift_x, centerShift_y, currentImg.naturalWidth * ratio , currentImg.naturalHeight * ratio
-							// );
+			
 
 					
 					}else if(currentRole === "fondo") {	
@@ -379,7 +352,8 @@ console.log(this)
 		let dataUrl = this.convertDrawToDataUrl(canvas)
 		this.updateFondo(dataUrl, this.images[0].originalsource)
 		this.removeCropBox()
-		
+		this.canvas.remove()
+		this.canvas = null	
 		
 	}
 
@@ -390,7 +364,7 @@ console.log(this)
 		this.tools[0].element.remove()
 		this.tools = [] 
 		this.estado = ""	
-			console.log(editor)
+		
 	}	
 
 	removeHandles(arr){
@@ -401,13 +375,15 @@ console.log(this)
 
 
 	downloadImagesOnCanvas(){
-	console.log(this)
+
 		this.createCanvas();
 		this.showCanvas()
 		this.drawImages(this.canvas, this.images)
 		let dataUrl =   this.convertDrawToDataUrl(this.canvas)
 		this.download(dataUrl)
-
+		
+		this.canvas.remove()
+		this.canvas = null
 	}
 
 	download(dataUrl){
@@ -435,7 +411,7 @@ console.log(this)
 
 
 	addImage(imagen_editable){
-	console.log(imagen_editable)
+
 		if(imagen_editable.role === "fondo"){
 			this.estado	= "loading fondo"
 			this.generateFondoElement(imagen_editable)

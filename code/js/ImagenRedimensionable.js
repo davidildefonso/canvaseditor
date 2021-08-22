@@ -46,6 +46,7 @@ class ImagenRedimensionable extends ResizeableObject {
 						this.estado = "start_moving"
 				}			
 				this.element.style.position = "absolute"
+				this.element.style.objectFit = ""
 				
 			}
 
@@ -122,7 +123,6 @@ class ImagenRedimensionable extends ResizeableObject {
 
 		this.editor.addTool(this)	
 		this.editor.estado = "editando producto"
-		console.log(this.positions)
 		super.generateTools()
 		
 	}

@@ -1,28 +1,27 @@
+// //let GLASSES_STATUS = ""
+// let FONDO_STATUS = ""
+// let GLASSES_SRC = ""
+// let FONDO_SRC = ""
+// let FONDO_RECTS
+// let ORIGINAL_SRC
+// let circularCursor
 
-
-let OPACITY = 1;
-let BRIGTHNESS = 100;
-
-if(window.location.protocol == 'file:'){
-  alert('To test this demo properly please use a local server such as XAMPP or WAMP. See README.md for more details.');
-}
 
 var  para_rotar_w;
 var  para_rotar_h;
 var seg=0;
 var tras=1;
 
-var resizeableImage = function(image_target, src) {
+var resizeableImage = function(imagen_redimensionable) {
   // Some variable and settings
-
+console.log(imagen_redimensionable)
   var $container,
-      orig_src = new Image(),
-      image_target = image_target[0],//$(image_target).get(0),
+      orig_src = imagen_redimensionable.source
       
       event_state = {},
       constrain = false,
-      min_width = 20, // Change as required
-      min_height = 20,
+      min_width = 60, // Change as required
+      min_height = 60,
       max_width = 2500, // Change as required
       max_height = 2500,
       resize_canvas = document.createElement('canvas');
@@ -30,43 +29,36 @@ var resizeableImage = function(image_target, src) {
 
   init = function(){
 
-			image_target.onload = function(){
-  
+		imagen_redimensionable.image.onload = function(){
+		console.log(this)
+		console.log(imagen_redimensionable)
 				para_rotar_w = this.width
 				para_rotar_h = this.height
-	
+				
 			}
-	
-		orig_src.src=image_target.src;
+	orig_src.src=imagen_redimensionable.source;
 
     // Wrap the image with the container and add resize handles
-    $(image_target).wrap('<div class="resize-container"></div>')
+    $(imagen_redimensionable.element).wrap('<div class="resize-container"></div>')
    
     .before('<span title = "presiona la tecla Shift para mantener el aspecto" class="resize-handle resize-handle-nw"></span>')
     .before('<span title = "presiona la tecla Shift para mantener el aspecto" class="resize-handle resize-handle-ne"></span>')
     .after('<span title = "presiona la tecla Shift para mantener el aspecto" class="resize-handle resize-handle-se"></span>')
+    .after('<span title = "presiona la tecla Shift para mantener el aspecto" class="resize-handle resize-handle-sw"></span>')
     .after('<span title = "presiona la tecla Shift para mantener el aspecto" class="resize-handle resize-handle-sw"></span>');
 
     // Assign the container to a variable
-    $container =  $(image_target).parent('.resize-container');
-
-		document.querySelector(".producto").style.height= "auto"
-		document.querySelector(".bg_producto").style.alignItems= "center"
-		document.querySelector(".producto").style.position= "absolute"
+    $container =  $(imagen_redimensionable.element).parent('.resize-container');
 
     // Add events
     $container.on('mousedown touchstart', '.resize-handle', startResize);
     $container.on('mousedown touchstart', 'img', startMoving);
-
-		document.getElementById("mi_imagen").style.opacity = OPACITY
-
-
     $('.js-crop').on('click', crop);
   };
 
   startResize = function(e){	
-		GLASSES_STATUS = "resizing"
-		orig_src.src = GLASSES_SRC
+		imagen_redimensionable.estado = "resizing"
+		orig_src.src = imagen_redimensionable.source
     e.preventDefault();
     e.stopPropagation();
     saveEventState(e);
@@ -75,12 +67,10 @@ var resizeableImage = function(image_target, src) {
   };
 
   endResize = function(e){
-		GLASSES_STATUS = "loaded"	
+		imagen_redimensionable.estado = "loaded"	
     e.preventDefault();
-    $(document).off('mouseup touchend', endResize);
-    $(document).off('mousemove touchmove', resizing);
-		GLASSES_SRC  = $("#mi_imagen")[0].src 
-		orig_src.src = GLASSES_SRC
+    $(document).off('mouseup touchend', endResize); 
+		orig_src.src = imagen_redimensionable.source
   };
 
   saveEventState = function(e){
@@ -164,15 +154,15 @@ var resizeableImage = function(image_target, src) {
   resizeImage = function(width, height){
 	
   
-		orig_src.src = ORIGINAL_SRC
+		orig_src.src = imagen_redimensionable.source
 
 		resize_canvas.width = width;
     resize_canvas.height = height;
     resize_canvas.getContext('2d').drawImage(orig_src, 0, 0, width, height); 
 		
-		GLASSES_SRC = resize_canvas.toDataURL("image/png")
+		imagen_redimensionable.source = resize_canvas.toDataURL("image/png")
 
-		$(image_target).attr('src', GLASSES_SRC); 
+		$(image_target).attr('src', imagen_redimensionable.source); 
 	
 		
    
@@ -253,10 +243,10 @@ var resizeableImage = function(image_target, src) {
 
   rotar=function(){
 		if(GLASSES_STATUS !== "loaded") return
-		console.log("aqui")
+		if(FONDO_STATUS !== "loaded") return
     seg++;
-console.log( $('#mi_imagen'))
-    $('#mi_imagen')
+
+    $('.resize-image')
 			.css("-moz-transform", "rotate("+seg+"deg) scaleX("+tras+")")
 			.css("-o-transform", "rotate("+seg+"deg) scaleX("+tras+")")
 			.css("-webkit-transform", "rotate("+seg+"deg) scaleX("+tras+")")
@@ -265,10 +255,10 @@ console.log( $('#mi_imagen'))
   }
   rotarm=function(){     
 		if(GLASSES_STATUS !== "loaded") return
-		console.log("aqui")
+		if(FONDO_STATUS !== "loaded") return
 
      seg--;
-     $('#mi_imagen')
+     $('.resize-image')
 		 .css("-moz-transform", "rotate("+seg+"deg) scaleX("+tras+")")
      .css("-o-transform", "rotate("+seg+"deg) scaleX("+tras+")")
      .css("-webkit-transform", "rotate("+seg+"deg) scaleX("+tras+")")
@@ -277,32 +267,12 @@ console.log( $('#mi_imagen'))
    }
    borrar=function(){
 			if(GLASSES_STATUS !== "loaded") return
-		
+			if(FONDO_STATUS !== "loaded") return
 
 	 		GLASSES_STATUS = ""
   		$('.resize-container').remove();
    }
 
-	 masTransparencia = function(){
-		console.log("gola")
-		BRIGTHNESS += 10
-		document.getElementById("mi_imagen").style.filter =
- 			"brightness("+ BRIGTHNESS  +"%)"
-		//imagen.style.opacity = 1;
-
-	}
-
-	
-	 menosTransparencia = function(){
-		
-		//document.getElementById("mi_imagen").style.opacity -= 0.1
-	BRIGTHNESS -= 10
-		document.getElementById("mi_imagen").style.filter =
- 			"brightness("+ BRIGTHNESS  +"%)"
-		
-		//imagen.style.opacity = 1;
-
-	}
 
    invetirm180=function(){
      tras=-1;
@@ -323,7 +293,8 @@ console.log( $('#mi_imagen'))
 
     aumentar = function(e){ 
 				if(GLASSES_STATUS !== "loaded") return
-		
+				if(FONDO_STATUS !== "loaded") return
+
         para_rotar_w += 15;
         para_rotar_h += 15;
         w=para_rotar_w;
@@ -334,7 +305,8 @@ console.log( $('#mi_imagen'))
 
     reducir = function(e){
 				if(GLASSES_STATUS !== "loaded") return
-		
+				if(FONDO_STATUS !== "loaded") return
+
         para_rotar_w -= 15;
         para_rotar_h -= 15;
         w=para_rotar_w;
@@ -346,11 +318,8 @@ console.log( $('#mi_imagen'))
 
 function fondo(){  
 
-console.log("click")
-console.log(FONDO_STATUS, GLASSES_STATUS)
 	if((FONDO_STATUS === "" && GLASSES_STATUS === "") || 
 			(FONDO_STATUS === "loaded" && GLASSES_STATUS === "") ||
-			(FONDO_STATUS === "" && GLASSES_STATUS === "loaded") ||
 			(FONDO_STATUS === "loaded" && GLASSES_STATUS === "loaded")
 	 ) {
 			$('#foto').click(); 
@@ -360,7 +329,6 @@ console.log(FONDO_STATUS, GLASSES_STATUS)
 
 if($("#foto").length != 0) {
   function archivo(evt) {
-	
       var foto = evt.target.files; // FileList object
       // Obtenemos la imagen del campo "file".
       for (var i = 0, f; f = foto[i]; i++) {
@@ -368,18 +336,13 @@ if($("#foto").length != 0) {
           if (!f.type.match('image.*')) {
               continue;
           }
-  
-	
-	        var reader = new FileReader();
+          var reader = new FileReader();
           reader.onload = (function (theFile) {
               return function (e) {
 								FONDO_SRC = e.target.result							
-	
 								FONDO_STATUS = "loaded"							
-	
-	console.log(FONDO_STATUS, FONDO_SRC)
-						//		$(".img-fluid").css("display",'none')
-									$(".bg_producto").css("background-image", "url(' "+ e.target.result + "')  ") 
+								$(".img-fluid").css("display",'none')
+									$(".component").css("background-image", "url(' "+ e.target.result + "')  ") 
 									$("#foto").val('');
 									};
 								})(f);
@@ -387,55 +350,45 @@ if($("#foto").length != 0) {
       }
   }
 
-  document.getElementById('foto').addEventListener('change', archivo, true);
-	FONDO_RECTS = document.querySelector(".bg_producto").getBoundingClientRect()
 
 }
 
 function borrar_fondo(){
-	
 	if(FONDO_STATUS !== "loaded") return
-	
 	if(GLASSES_STATUS === "borrando") return
-  
-	//$(".img-fluid").css("display",'')
-  console.log("aqui")
-	$(".bg_producto").removeAttr( 'style' );
-  
-	
-	/*if($(".resize-container").length != 0) {
+  $(".img-fluid").css("display",'')
+  $(".component").removeAttr( 'style' );
+  if($(".resize-container").length != 0) {
     $('.resize-container').remove();
-	}	*/
+	}	
 
 
-	//document.getElementById("contenedor_borrador").classList.add("hide")
+	document.getElementById("contenedor_borrador").classList.add("hide")
 
-//	GLASSES_STATUS = ""
+	GLASSES_STATUS = ""
 	FONDO_STATUS = ""
-  //GLASSES_SRC = ""
+  GLASSES_SRC = ""
 	FONDO_SRC = ""
 	FONDO_RECTS = null
 }
 
-//$('.imgcontent').on('click',function(e){
-  //if($('.img-fluid').css("display")!="none"){
-   // alert("debe subir una imagen primero")	
-  //}else{
+$('.imgcontent').on('click',function(e){
+  if($('.img-fluid').css("display")!="none"){
+    alert("debe subir una imagen primero")	
+  }else{
 
 	
-	//	if(FONDO_STATUS === "borrando") return
-	//	if(GLASSES_STATUS === "borrando") return
+		if(FONDO_STATUS === "borrando") return
+		if(GLASSES_STATUS === "borrando") return
 
-	 // $('.select-item').removeClass('select-item')	
-   // $(this).addClass('select-item');	
-	
-	
-	//	let srcDataUrl = getBase64Image(e.target.src)
+	  $('.select-item').removeClass('select-item')	
+    $(this).addClass('select-item');	
+		let srcDataUrl = getBase64Image(e.target.src)
 
 		
-		//ORIGINAL_SRC = srcDataUrl
+		ORIGINAL_SRC = srcDataUrl
 		
-    /*if($(".resize-container").length !== 0) {
+    if($(".resize-container").length !== 0) {
       $('.resize-container').remove();
       $('#contimgall').append('<img class="resize-image img-mont" id="mi_imagen" src="" >')
       $('#mi_imagen').attr('src',srcDataUrl)
@@ -446,18 +399,13 @@ function borrar_fondo(){
     }else{
 			$('#contimgall').append('<img class="resize-image img-mont" id="mi_imagen" src="" >')
       $('#mi_imagen').attr('src',srcDataUrl)
-    }*/
-
-//		let producto1 = document.getElementById("mi_imagen")
-	//	ORIGINAL_SRC = producto1.src
-
-		//GLASSES_SRC = producto1.src
-		//GLASSES_STATUS = "loaded"
+    }
+		GLASSES_SRC =srcDataUrl
+		GLASSES_STATUS = "loaded"
 	
-    //resizeableImage($('#mi_imagen'), GLASSES_SRC);
-	
-	//}
-//})
+    resizeableImage($('#mi_imagen'), GLASSES_SRC);
+	}
+})
 
 function getBase64Image(src){    
 	var canvas = document.createElement("canvas")     
@@ -486,41 +434,3 @@ function getBase64Image(src){
 // })
 
 
-// function masTransparencia(){
-// 	const imagen = document.getElementById("mi_imagen")
-	
-// 	imagen.style.opacity = 1;
-
-// }
-
-function menosTransparencia(){
-console.log(document.getElementById("mi_imagen").style.opacity)
-		document.getElementById("mi_imagen").style.opacity 
-
-}
-
-
-
-function resetear(){
-		console.log(ORIGINAL_SRC)
-
-console.log(document.querySelector(".resize-container"))
-		let producto = document.querySelector(".resize-container").remove()
-
-		  
-		producto = document.querySelector(".producto");
-		const img = new Image()
-		img.src = ORIGINAL_SRC
-		img.setAttribute("id", "mi_imagen")
-		producto.append(img)
-
-		GLASSES_SRC = ORIGINAL_SRC
-		GLASSES_STATUS = "loaded"
-	
-    resizeableImage($('#mi_imagen'), ORIGINAL_SRC);
-	//}
-//})
-
-
-
-}
