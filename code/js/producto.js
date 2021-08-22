@@ -14,10 +14,23 @@ function selectProducto(e){
 			producto.select()
 		}else{
 	
-			if(producto.estado === "selected"){			
-					producto.unselect()
+			const btn_ids = ["btn_resetear", "btn_borrar", "btn_recortar", "btn_menos_transparencia",
+				"btn_mas_transparencia", "btn_rotar_izquierda", "btn_rotar_derecha", "btn_reducir", "btn_agrandar"]
+			
+			if(producto.estado === "selected"){		
+				
+					if(!btn_ids.includes(e.target.id)){
+							producto.unselect()
+					}	
 			}
 			
 		}
 		
+}
+
+
+function aumentar(){
+	if(producto.estado === "selected"){
+		producto.aumentar()
+	}
 }

@@ -54,6 +54,7 @@ class ResizeableObject  {
 	
 
 	generateTools(){	
+	console.log(this.positions)
 		const style = `
 			border-radius: 50%;
 			width: 50px;
@@ -185,6 +186,14 @@ class ResizeableObject  {
 		this.element.style.height = this.size.height + "px"
 	}
 
+	increaseSize(){
+		this.size.width += 15
+		this.size.height += 15
+		this.element.style.width = this.size.width  + "px"
+		this.element.style.height = this.size.height  + "px"
+		this.updateToolsPosition()
+	}
+
 	setState(newState){
 		this.state = newState
 	} 
@@ -216,12 +225,16 @@ class ResizeableObject  {
 	}
 
 	updateToolsPosition(){
+	console.log(this.positions)
+	console.log(this.position)
+	console.log(this)
 			this.positions = [
 				{left: this.position.x + "px", top:  this.position.y + "0px"},
 				{left: this.position.x +this.size.width + "px", top: this.position.y + "0px"},
 				{left:this.size.width + this.position.x + "px", top: this.size.height + this.position.y + "px"},
 				{left: this.position.x + "0px", top: this.position.y + this.size.height + "px"}
 			]
+			console.log(this.positions)
 
 			for(let i = 0; i<= 3; i++){
 				if(this.tools[i]){

@@ -20,8 +20,9 @@ class ImagenRedimensionable extends ResizeableObject {
 			this.source = this.element.src , 		
 			this.originalSource = this.source, 
 			this.rotacion = 0,
-			this.position = this.getPosition(this.getRects(this.element)),  
 			this.size = this.getSize(this.getRects(this.element))
+			
+	
 			this.transparencia = 1, 
 			this.rol = rol, 
 			this.canvas = null; 
@@ -30,7 +31,7 @@ class ImagenRedimensionable extends ResizeableObject {
 			this.image = this.generateImage()
 			this.role = "producto";
 			this.modified = false
-			
+			this.position = this.getPosition(this.getRects(this.element)),  
 
 			this.element.onclick = (e) => {
 				e.preventDefault()
@@ -74,14 +75,14 @@ class ImagenRedimensionable extends ResizeableObject {
 
 
 			this.positions = [
-				{left: this.position.x - this.getRects(this.container).x +   "0px", 
-					top:  this.position.y - this.getRects(this.container).y  + "0px"},
-				{left: this.size.width +  this.position.x - this.getRects(this.container).x +"px",
-				 top: this.position.y -  this.getRects(this.container).y  + "0px"},
-				{left: this.size.width + this.position.x -this.getRects(this.container).x  + "px",
-				 top: this.size.height  +  this.position.y - this.getRects(this.container).y + "px"},
-				{left: this.position.x -  this.getRects(this.container).x +  "0px", 
-				top:  this.size.height + this.position.y  - this.getRects(this.container).y + "px"}
+				{left: this.position.x +   "px", 
+					top:  this.position.y +   "px"},
+				{left: this.size.width +  this.position.x +"px",
+				 top: this.position.y  + "0px"},
+				{left:  this.size.width +  this.position.x +"px",
+				 top:  this.position.y + this.size.height   + "px"},
+				{left: this.position.x +  "px", 
+				top:   this.position.y + this.size.height    + "px"}
 			]
 
 
@@ -130,6 +131,7 @@ class ImagenRedimensionable extends ResizeableObject {
 
 	generateImage(){	
 		const img = new Image;
+	
 		img.src = this.source
 		img.id = this.rol	
 		img.width = this.size.width;
@@ -147,13 +149,19 @@ class ImagenRedimensionable extends ResizeableObject {
 		return { width: rects.width, height: rects.height}
 	}
 
-	getPosition(rects){
-		return { x: rects.x, y: rects.y}
+	getPosition(rects){	
+	//{ x: rects.x, y: rects.y}
+
+		let x =  parseFloat(/\d+\.*\d*/.exec(this.element.style.left)[0])
+		let y = parseFloat(/\d+\.*\d*/.exec(this.element.style.top)[0])
+console.log(x, y)
+		return { x: x, y: y}
 	}
 
-  increaseSize() {
-    
-  }
+  aumentar() {
+		
+    this.increaseSize()
+  }	
 
 
 	reduceSize() {
