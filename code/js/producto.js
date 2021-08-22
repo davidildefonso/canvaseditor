@@ -34,3 +34,11 @@ function aumentar(){
 		producto.aumentar()
 	}
 }
+
+
+
+function reducir(){
+	if(producto.estado === "selected"){
+		producto.reducir()
+	}
+}

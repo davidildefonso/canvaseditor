@@ -164,8 +164,8 @@ console.log(x, y)
   }	
 
 
-	reduceSize() {
-    
+	reducir() {
+		this.reduceSize()
   }
 
 	rotate() {

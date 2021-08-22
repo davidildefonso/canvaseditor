@@ -187,8 +187,28 @@ class ResizeableObject  {
 	}
 
 	increaseSize(){
+		let prevWidth = this.size.width
 		this.size.width += 15
+		let ratio = this.size.width / prevWidth
+		let newHeight = ratio * this.size.height
+		
+
 		this.size.height += 15
+		this.element.style.width = this.size.width  + "px"
+		this.element.style.height =  newHeight + "px" //this.size.height  + "px"
+		this.updateToolsPosition()
+	}
+
+
+	reduceSize(){
+		
+
+		let prevWidth = this.size.width
+		this.size.width -= 15
+		let ratio = this.size.width / prevWidth
+		let newHeight = ratio * this.size.height
+
+		this.size.height  = newHeight //-= 15
 		this.element.style.width = this.size.width  + "px"
 		this.element.style.height = this.size.height  + "px"
 		this.updateToolsPosition()
