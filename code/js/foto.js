@@ -206,11 +206,26 @@
 
 let editor = new Editor("", ".bg_producto", [])
 
-let productoFoto = new ImagenEditable("",editor, ".producto","rg/img/20/102012111004.jpg","jpg",0,0,"producto")
+//let productoFoto = new ImagenEditable("",editor, ".producto","rg/img/20/102012111004.jpg","jpg",0,0,"producto")
+
+let arr = window.location.href.split("/") 
+console.log(arr)
+let productoFoto
+let logo 
+
+if(arr[arr.length -2 ] === "svg"){
+	productoFoto = new ImagenEditable("",editor, ".producto","../VD5062.svg","jpg",0,0,"producto", null, "../VD5062.svg")
+	logo = new ImagenEditable("", editor, ".logo", "../rg/img/iconos/isotipo_ithaliano.png", "png", 0, 1, "logo")
+}else{
+	productoFoto = new ImagenEditable("",editor, ".producto","VD5062.svg","jpg",0,0,"producto", null, "VD5062.svg")
+	logo = new ImagenEditable("", editor, ".logo", "rg/img/iconos/isotipo_ithaliano.png", "png", 0, 1, "logo")
+}
+
+//let productoFoto = new ImagenEditable("",editor, ".producto","VD5062.svg","jpg",0,0,"producto", null, "VD5062.svg")
 
 
 
-let logo = new ImagenEditable("", editor, ".logo", "rg/img/iconos/isotipo_ithaliano.png", "png", 0, 1, "logo")
+//let logo = new ImagenEditable("", editor, ".logo", "rg/img/iconos/isotipo_ithaliano.png", "png", 0, 1, "logo")
 
 editor.addImage(productoFoto)
 editor.addImage(logo)
@@ -245,7 +260,8 @@ function archivo(e) {
 	reader.onload = (function (){
 		return function (e) {									
 				const fondo1 = new ImagenEditable("",editor,"." + editor.container.className, e.target.result , "jpg",0, 1, "fondo" ,null,e.target.result )		
-				editor.addImage(fondo1)						
+				editor.addImage(fondo1)		
+				console.log(editor)				
 		}
 	})(foto);	
 }

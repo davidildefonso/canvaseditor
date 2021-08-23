@@ -53,18 +53,52 @@ class Editor{
 				editorCanvas.style.display = "";
 			//	editorCanvas.style.display = "none";
 		}else if(editor.estado === "crop"){
-				editorCanvas.width = this.currentSize.width / this.images[0].drawRatio.ratio
-				editorCanvas.height = this.currentSize.height / this.images[0].drawRatio.ratio
+	
+				if(this.tools.length === 1){
+					editorCanvas.width = this.currentSize.width / this.images[0].drawRatio.ratio
+					editorCanvas.height = this.currentSize.height / this.images[0].drawRatio.ratio
+					editorCanvas.style.display = "";
+				}else if(this.tools.length === 2){
+						this.getDrawRatio(this.tools[0])
+							console.log(this)
+						editorCanvas.width = this.currentSize.width / this.tools[0].drawRatio.ratio
+						editorCanvas.height = this.currentSize.height / this.tools[0].drawRatio.ratio
+						editorCanvas.style.background = "red"
+						editorCanvas.style.display = "";
+						console.log(editorCanvas)
+				
+				}
+	
+		}	else if(editor.estado === "borrando producto"){
+		console.log("auqi")
+		console.log(this.tools[0])
+				editorCanvas.width = this.tools[0].size.width
+				editorCanvas.height = this.tools[0].size.height
+				editorCanvas.style.zIndex = 16
 				editorCanvas.style.display = "";
+				editorCanvas.style.background ="transparent"
 		}			
 		editorCanvas.style.position = "absolute";		
-		editorCanvas.style.left = this.position.x + "px";
+
+		if(editor.estado === "borrando producto"){
+				editorCanvas.style.left = 0 + "px";
+		}else{
+				editorCanvas.style.left = this.position.x + "px";
+		}
+
+	
 		this.canvas = editorCanvas
 	}
 
 
 	showCanvas(){
-		document.body.appendChild(this.canvas)
+		if(editor.estado === "borrando producto"){
+			this.container.appendChild(this.canvas)
+		
+		}else{
+			document.body.appendChild(this.canvas)
+		}
+		
 	}
 
 	showElement(){
@@ -302,12 +336,118 @@ class Editor{
 	}
 
 
+	drawImageBorrar(img){
+	
+		let context = this.canvas.getContext('2d')	
+		context.drawImage(img.element, 0,0, img.element.naturalWidth, img.element.naturalHeight,
+			0,0,this.canvas.width, this.canvas.height);
+}
+
+
+
+
 	drawFondoOnCanvas(){
 			this.createCanvas();
 			this.showCanvas()
 			this.drawCropImage(this.canvas, this.images[0],this.tools[0])
 		
 	}
+
+	drawProductoOnCanvas(){
+			this.createCanvas();
+			this.showCanvas()
+			console.log(this)
+			this.drawCropProducto(this.canvas, this.tools[0],this.tools[1])
+		
+	}
+
+		drawCropProducto(canvas, img, cropbox){			
+		 	console.log(canvas, img, cropbox)
+		 	let ctx = canvas.getContext("2d")
+		 	ctx.fillStyle = "black";
+		 	ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+		 	var centerShift_x = ( canvas.width - img.image.naturalWidth ) /2 //* img.drawRatio.ratio / 2;
+		 	var centerShift_y = ( canvas.height - img.image.naturalHeight ) /2 //* img.drawRatio.ratio / 2;						
+						
+		
+		 	let imgX = cropbox.position.x / img.drawRatio.ratio
+		 	let imgY = cropbox.position.y / img.drawRatio.ratio
+		 	let imgWidth = cropbox.size.width / img.drawRatio.ratio
+		 	let imgHeight = cropbox.size.height / img.drawRatio.ratio	
+
+		 	let editorCanvasRatio = this.currentSize.width / this.currentSize.height
+		 	let scaleWidth, scaleHeight	
+
+		 	if(img.drawRatio.side === "height"){
+		 			scaleHeight = canvas.height
+		 			scaleWidth = canvas.height * editorCanvasRatio
+					
+		 	}else if(img.drawRatio.side === "width"){
+		 			scaleWidth = canvas.width
+		 			scaleHeight = canvas.width / editorCanvasRatio		
+		 	}	
+		
+		 	 canvas.width = imgWidth
+		 	 canvas.height = imgHeight
+
+		 	// ctx.drawImage(
+		 	// 	img.image,
+		 	// 	Math.abs(cropbox.position.x - img.centerShift_x )/ img.drawRatio.ratio, Math.abs(cropbox.position.y - img.centerShift_y )/ img.drawRatio.ratio, imgWidth,  imgHeight,
+		 	// 	0,0,canvas.width, canvas.height	)	
+
+				 
+		 	ctx.drawImage(
+		 		img.image,
+				imgX,
+				imgY,
+				imgWidth, 
+				Math.abs(centerShift_y - (cropbox.position.y + cropbox.size.height) / img.drawRatio.ratio),						
+				centerShift_x,
+				centerShift_y,
+				imgWidth,
+				Math.abs(centerShift_y - (cropbox.position.y + cropbox.size.height) / img.drawRatio.ratio)
+			)	
+
+console.log(cropbox.position)
+console.log( centerShift_x )
+console.log(centerShift_y )
+console.log(img.drawRatio)
+console.log(Math.abs(centerShift_y - (cropbox.position.y + cropbox.size.height) / img.drawRatio.ratio))
+
+		console.log(
+		 		img.image,
+		 		Math.abs(cropbox.position.x - centerShift_x )/ img.drawRatio.ratio, 
+				 Math.abs(cropbox.position.y - centerShift_y )/ img.drawRatio.ratio,
+				  imgWidth,  
+					centerShift_y - cropbox.position.y / img.drawRatio.ratio,
+		 		0,0,canvas.width, canvas.height	)	
+
+
+		// /* ESTO NO ESCALA LA IMAGEN AL EDITOR SINO QUE SE MANTIENE EN EL TAMAÑO CORTADO */
+		// 	// ctx.drawImage(
+		// 	// img.image,
+		// 	// (cropbox.position.x - img.centerShift_x )/ img.drawRatio.ratio, (cropbox.position.y - img.centerShift_y )/ img.drawRatio.ratio, imgWidth,  imgHeight,
+		// 	// centerShift_x + (cropbox.position.x )/ img.drawRatio.ratio, centerShift_y +  (cropbox.position.y )/ img.drawRatio.ratio, imgWidth, imgHeight)		
+			console.log(canvas)
+			console.log(this)
+			this.generateDataImage()
+		 
+
+		// 	this.updateFondo(dataUrl, this.images[0].originalsource)
+		// 	this.removeCropBox()
+		 	this.canvas.remove()
+		 	this.canvas = null	
+		
+	}
+
+
+	generateDataImage(){
+		console.log(this)
+		
+		this.updateProducto(this.canvas.toDataURL(), this.images[1].originalsource)
+	}
+
 
 	drawCropImage(canvas, img, cropbox){			
 		let ctx = canvas.getContext("2d")
@@ -350,6 +490,9 @@ class Editor{
 		// centerShift_x + (cropbox.position.x )/ img.drawRatio.ratio, centerShift_y +  (cropbox.position.y )/ img.drawRatio.ratio, imgWidth, imgHeight)		
 		
 		let dataUrl = this.convertDrawToDataUrl(canvas)
+
+		console.log(this)
+
 		this.updateFondo(dataUrl, this.images[0].originalsource)
 		this.removeCropBox()
 		this.canvas.remove()
@@ -409,6 +552,15 @@ class Editor{
 			editor.addImage(newfondo)
 	}
 
+	updateProducto(dataurl, originalSource){			
+			console.log(dataurl)
+			console.log(this)
+		//	this.images[1].element.src = dataurl
+			const newprod = new ImagenEditable("",editor,"." + editor.container.className, dataurl , "jpg",0, 0, "producto" ,null, originalSource )
+			this.removeImage("producto")			
+			this.addImage(newprod)
+	}
+
 
 	addImage(imagen_editable){
 
@@ -418,6 +570,8 @@ class Editor{
 		}else if(imagen_editable.role === "producto"){
 		
 			this.images[1] = imagen_editable
+			this.insertImage(imagen_editable)
+
 		}else if(imagen_editable.role === "logo"){
 			this.images[2] = imagen_editable
 		}
@@ -432,6 +586,19 @@ class Editor{
 		img.width = imagen_editable.currentSize.width;
 		img.height =  imagen_editable.currentSize.height;
 		return img	
+	}
+
+	getDrawRatio(imgRes){
+		let ratioWidth = this.currentSize.width / imgRes.image.naturalWidth
+		let ratioHeight = this.currentSize.height / imgRes.image.naturalHeight
+
+		if(ratioWidth < ratioHeight){				
+			imgRes.drawRatio.ratio = ratioWidth
+			imgRes.drawRatio.side = "height"
+		}else{
+			imgRes.drawRatio.ratio = ratioHeight
+			imgRes.drawRatio.side = "width"
+		}
 	}
 
 	generateFondoElement(imagen_editable){		
@@ -507,7 +674,12 @@ class Editor{
 			fondo.empty()
 			this.images[0] = ""
 			document.getElementById("fondo").remove()
-		}	
+		}	else if(role === "producto"){
+			console.log("remove")
+			this.images[1].empty
+			this.images[1] = ""
+			document.getElementById("producto").remove()
+		}
 	}
 
 	loadImage(role,img){
@@ -544,9 +716,19 @@ class Editor{
 
 	createCropBox(){
 		const cb = new ResizeableObject("unselected", this, { width: 200, height: 200})
+		console.log(this)
+
 		this.addTool(cb)	
-		this.container.appendChild(this.tools[0].element)	
-		this.tools[0].generateTools()
+		if(this.tools.length === 1){
+			this.container.appendChild(this.tools[0].element)	
+			this.tools[0].generateTools()
+		}else if(this.tools.length === 2){
+			this.container.appendChild(this.tools[1].element)	
+			this.tools[1].generateTools()
+		}
+		// this.container.appendChild(this.tools[0].element)	
+		// this.tools[0].generateTools()
+		
 		
 	}
 
@@ -558,6 +740,18 @@ class Editor{
 		document.getElementById("fondo").style.zIndex = 17;
 		document.getElementById("producto").style.display = "none";
 	}
+
+	hideFondo(){
+		console.log("gola")
+		console.log(this)
+		if(document.getElementById("fondo")){
+			document.getElementById("fondo").style.display = "none";
+		}
+		
+
+	}
+
+	
 
 	sendFondoToBack(){
 		

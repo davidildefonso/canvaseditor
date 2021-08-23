@@ -11,12 +11,12 @@
 		<meta name="author" content="https://marketing70.com/">
 		<meta name="theme-color" content="#2F4E6F"/>		
 		
-		<link rel="shortcut icon" href="rg/img/iconos/favicon.png">
-		<link rel="apple-touch-icon" href="rg/img/iconos/apple-touch-icon.png">
-		<link rel="apple-touch-icon" sizes="72x72" href="rg/img/iconos/apple-touch-icon-72x72.png">
-		<link rel="apple-touch-icon" sizes="114x114" href="rg/img/iconos/apple-touch-icon-114x114.png">
+		<link rel="shortcut icon" href="../rg/img/iconos/favicon.png">
+		<link rel="apple-touch-icon" href="../rg/img/iconos/apple-touch-icon.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="../rg/img/iconos/apple-touch-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="../rg/img/iconos/apple-touch-icon-114x114.png">
 		
-		<link rel="stylesheet" href="code/css/montaggio.css" />
+		<link rel="stylesheet" href="../code/css/montaggio.css" />
 	</head>
 	<body>
   
@@ -30,10 +30,10 @@
                         </div>
                         <div class="botones_final">
                             <div onclick="download()" class="descargar_foto">
-                                <span><img src="rg/img/iconos/guardar_producto.png" alt=""></span>
+                                <span><img src="../rg/img/iconos/guardar_producto.png" alt=""></span>
                             </div>
                             <div class="comprar_foto">
-                                <span><img src="rg/img/iconos/comprar_producto.png" alt=""></span>
+                                <span><img src="../rg/img/iconos/comprar_producto.png" alt=""></span>
                             </div>
                         </div>
                     </div>
@@ -43,24 +43,24 @@
                         <div class="bg_botones">
                             <div class="botones_foto">
                                 <div  class="subir_foto" onclick="subirFondo();" >
-                                    <span><img src="rg/img/iconos/subir_foto.png" alt=""></span>
+                                    <span><img src="../rg/img/iconos/subir_foto.png" alt=""></span>
                                 </div>
                                 <div class="recortar_foto" onclick="recortarFondo()"  >
-                                    <span><img src="rg/img/iconos/recortar_foto.png" alt=""></span>
+                                    <span><img src="../rg/img/iconos/recortar_foto.png" alt=""></span>
                                 </div>
                                 <div class="eliminar_foto" onclick="eliminarFondo();"  >
-                                    <span><img src="rg/img/iconos/eliminar_foto.png" alt=""></span>
+                                    <span><img src="../rg/img/iconos/eliminar_foto.png" alt=""></span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="app">
                         <div class="logo">
-                            <!-- <img src="rg/img/iconos/isotipo_ithaliano.png" alt=""> -->
+                            <!-- <img src="../rg/img/iconos/isotipo_ithaliano.png" alt=""> -->
                         </div>
                         <div class="bg_producto">
                             <div class="producto">
-                                <!-- <img id="mi_imagen" src="rg/img/20/102012111004.jpg" alt=""> -->
+                                <!-- <img id="mi_imagen" src="../rg/img/20/102012111004.jpg" alt=""> -->
 														
                             </div>
 																<canvas id="glassesCanvas"></canvas>
@@ -77,32 +77,39 @@
                         <div class="bg_botones">
                             <div class="botones_producto">
                                 <div   class="agrandar_producto"  onclick="aumentar();">
-                                    <span><img id="btn_agrandar" src="rg/img/iconos/agrandar_producto.png" alt=""></span>
+                                    <span><img id="btn_agrandar" src="../rg/img/iconos/agrandar_producto.png" alt=""></span>
                                 </div>
                                 <div   class="reducir_producto"  onclick="reducir();">
-                                    <span><img id="btn_reducir" src="rg/img/iconos/reducir_producto.png" alt=""></span>
+                                    <span><img id="btn_reducir" src="../rg/img/iconos/reducir_producto.png" alt=""></span>
                                 </div>
                                 <div   class="rotar_derecha"  onclick="rotar();">
-                                    <span><img id="btn_rotar_derecha" src="rg/img/iconos/rotar_derecha.png" alt=""></span>
+                                    <span><img id="btn_rotar_derecha" src="../rg/img/iconos/rotar_derecha.png" alt=""></span>
                                 </div>
                                 <div   class="rotar_izquierda" onclick="rotarm();">
-                                    <span><img id="btn_rotar_izquierda" src="rg/img/iconos/rotar_izquierda.png" alt=""></span>
+                                    <span><img id="btn_rotar_izquierda" src="../rg/img/iconos/rotar_izquierda.png" alt=""></span>
                                 </div>
                                 <div  class="mas_transparencia" onclick= "masTransparencia()">
-                                    <span><img  id="btn_mas_transparencia" src="rg/img/iconos/transparencia_mas.png" alt=""></span>
+                                    <span><img  id="btn_mas_transparencia" src="../rg/img/iconos/transparencia_mas.png" alt=""></span>
                                 </div>
                                 <div  class="menos_transparencia" onclick="menosTransparencia()" >
-                                    <span><img id="btn_menos_transparencia" src="rg/img/iconos/transparencia_menos.png" alt=""></span>
+                                    <span><img id="btn_menos_transparencia" src="../rg/img/iconos/transparencia_menos.png" alt=""></span>
                                 </div>
-                                <div   class="borrar_producto" name="recortar aqui"  onclick="recortar()" >
-                                    <span><img  id="btn_recortar" src="rg/img/iconos/recortar_producto.png" alt=""></span>
+                                <div   class="borrar_producto" name="cambiar color aqui"  onclick="cambiarColor()" >
+                                    <span><img   id="btn_recortar" src="../rg/img/iconos/recortar_producto.png" alt="">
+																			<input 
+																				style= "position: absolute;
+																					right: 8%;top: 60%;z-index: 1;
+																					color: transparent;border: none;
+																					height: 1px;width: 1px;background: transparent;" 
+																					type="color" id="favcolor" name="favcolor" value="#ff0000">
+																		</span>
                                 </div>
                                 <div  id= "btn_borrar" class="borrar_producto" onclick = "borrar()">
-                                    <span><img src="rg/img/iconos/borrar_producto.png" id= "btn_borrar" alt=""></span>
+                                    <span><img src="../rg/img/iconos/borrar_producto.png" id= "btn_borrar" alt=""></span>
                                 </div>
 																
                                 <div   class="resetear_producto" onclick = "resetear()">
-                                    <span><img id="btn_resetear" src="rg/img/iconos/producto_original.png" alt=""></span>
+                                    <span><img id="btn_resetear" src="../rg/img/iconos/producto_original.png" alt=""></span>
                                 </div>
                             </div>
                         </div>
@@ -121,23 +128,23 @@
 		<div id="circularcursor"></div>
 		<div id="circularcursor2"></div>
 	
-		<script src="code/lib/jquery-latest.js"></script>
-		<script src="code/js/component.js"></script>
-		<script src="code/js/ImagenEditable.js"></script>
-		<script src="code/js/ImagenMovil.js"></script>
-		<script src = "code/js/ResizeableObject.js"></script>
-		<script src="code/js/ImagenRedimensionable.js"></script>
-		<script src="code/js/Editor.js"></script>
+		<script src="../code/lib/jquery-latest.js"></script>
+		<script src="../code/js/component.js"></script>
+		<script src="../code/js/ImagenEditable.js"></script>
+		<script src="../code/js/ImagenMovil.js"></script>
+		<script src = "../code/js/ResizeableObject.js"></script>
+		<script src="../code/js/ImagenRedimensionable.js"></script>
+		<script src="../code/js/Editor.js"></script>
 	
-		<script src="code/js/funciones.js"></script>
-		<script src="code/js/app.js"></script>
+		<script src="../code/js/funciones.js"></script>
+		<script src="../code/js/app.js"></script>
 	
-		<script src="code/js/component.js"></script>
-		<script src="borrador.js"></script>
-		<script src="borradorLentes.js"></script>		
+		<script src="../code/js/component.js"></script>
+		<script src="../borrador.js"></script>
+		<script src="../borradorLentes.js"></script>		
 
-		<script src = "code/js/foto.js"></script>		
-		<script src="code/js/producto.js"></script>
+		<script src = "../code/js/foto.js"></script>		
+		<script src="../code/js/producto.js"></script>
 	</body>
 </html>
 

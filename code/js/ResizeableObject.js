@@ -11,6 +11,7 @@ class ResizeableObject  {
 			this.position =   { x: 0, y: 0 } //this.getPosition() 
 			this.size = this.getSize(size)
 			this.element = this.generateElement()
+			this.opacity =  1
 
 			this.positions = [
 				{left: "0px", top: "0px"},
@@ -188,6 +189,26 @@ class ResizeableObject  {
 		this.element.style.height = this.size.height + "px"
 	}
 
+	addTransparency(){
+		this.editor.images[1] = this
+		console.log(this)
+		this.opacity += 0.1
+
+		this.element.style.opacity = this.opacity
+
+		
+	}
+
+	reduceTransparency(){
+		this.editor.images[1] = this
+		this.opacity -= 0.1
+
+		this.element.style.opacity = this.opacity
+
+		
+	}
+
+
 	increaseSize(){
 		this.editor.images[1] = this
 		console.log(this.editor)
@@ -221,7 +242,18 @@ class ResizeableObject  {
 
 
 	rotate(){
+		this.editor.images[1] = this
+		console.log(this.editor)
 		console.log(this)
+		this.rotacion += 5
+		this.element.style.transform = "rotate(" + this.rotacion + "deg)"
+		//transform", "rotate("+seg+"deg) scaleX("+tras+")")
+	}
+
+	rotateback(){
+		this.editor.images[1] = this
+		this.rotacion -= 5
+		this.element.style.transform = "rotate(" + this.rotacion + "deg)"
 	}
 
 	setState(newState){

@@ -22,7 +22,7 @@ class ImagenRedimensionable extends ResizeableObject {
 			this.rotacion = 0,
 			this.size = this.getSize(this.getRects(this.element))
 			this.originalRects =this.getRects(document.getElementById("producto"))
-
+			this.drawRatio = {}
 		
 			
 	
@@ -187,8 +187,38 @@ console.log(x, y)
 		this.reduceSize()
   }
 
+	masTransparencia(){
+		this.modified = true
+    this.addTransparency()
+	}
+
+	menosTransparencia(){
+		this.modified = true
+    this.reduceTransparency()
+	}
+
 	rotar(){
+		this.modified = true
 		this.rotate()
+	}
+
+	recortar(){
+		this.modified = true
+		console.log(this)
+		if(this.editor.estado === "editando producto"){	
+			this.editor.estado = "crop"
+			this.editor.showCropBox()
+			this.editor.hideFondo()		
+			
+		}else if(this.editor.estado === "crop"){
+			console.log("dibujar")
+			this.editor.drawProductoOnCanvas()
+		}	
+	}
+
+	rotarm(){
+		this.modified = true
+		this.rotateback()
 	}
 
 	resetear(){	
@@ -197,6 +227,119 @@ console.log(x, y)
 	}
 
 
+	guardarImagen(){
+		var image = this.editor.canvas.toDataURL("image/png");
+		this.editor.canvas.style.display = "none"
+		this.editor.canvas  = null
+		console.log(image)
+		this.element.src = image
+		this.element.style.display = ""
 
+		this.tools.forEach(t => t.style.display = "")
+
+		this.estado = "selected"
+		this.editor.estado = "editando producto"
+
+
+	//	glassesCanvas.style.zIndex = 1;
+	
+		// GLASSES_SRC = image
+		// document.querySelector(".bg_producto").style.backgroundImage =
+		// 'url(' + FONDO_SRC + ')';
+
+		// document.querySelector(".bg_producto").style.
+		// backgroundPosition = "center"
+
+		// document.querySelector(".bg_producto").style.
+		// backgroundRepeat = "no-repeat"
+
+		// document.querySelector(".bg_producto").style.
+		// backgroundSize = "cover"
+
+		
+		// const imgElm = document.createElement("img")
+		// imgElm.setAttribute("id", "imgtest")
+		// document.body.appendChild(imgElm)
+		// document.querySelector("#imgtest").src = GLASSES_SRC
+		// document.getElementById("mi_imagen").src =  document.querySelector("#imgtest").src 
+		// GLASSES_STATUS = "loaded"
+		// document.querySelector("#imgtest").remove()
+		// btnBorradorLentes.addEventListener("click", borrarLentes)
+		// btnBorradorLentes.removeEventListener("click", guardarImagenLentes )
+		// document.querySelector(".resize-container").style.display = "block"
+	}
+
+
+	borrar(){
+		console.log("borrar")
+		console.log(this)
+		this.element.style.display = "none"
+		this.tools.forEach(t => t.style.display = "none")
+
+		this.estado = "borrando"
+		this.editor.estado = "borrando producto"
+		this.editor.createCanvas()
+		this.editor.showCanvas()
+		this.editor.drawImageBorrar(this)
+
+		this.isPress = false;
+		this.old = null;
+
+		this.editor.canvas.addEventListener("click", () => console.log("click"))
+
+		this.editor.canvas.addEventListener('mousedown',  (e) => {
+		console.log("click")
+				this.isPress = true;
+				this.old = {x: e.offsetX, y: e.offsetY};
+				
+		});
+
+		this.editor.canvas.addEventListener('mousemove',  (e) => {
+			console.log(this)
+			if (this.isPress) {
+				var x = e.offsetX;
+				var y = e.offsetY;
+				console.log(this)
+				let ctx = this.editor.canvas.getContext('2d')
+				ctx.globalCompositeOperation = 'destination-out';
+				ctx.beginPath();		
+				ctx.arc(x, y, 10, 0, 2 * Math.PI);
+				ctx.fill();
+				ctx.lineWidth = 20;
+				ctx.beginPath();
+				ctx.moveTo(this.old.x, this.old.y);
+				ctx.lineTo(x, y);
+				ctx.stroke();
+				this.old = {x: x, y: y};
+			}
+			// const circularCursor = document.getElementById("circularcursor")
+			// circularCursor.style.zIndex = 1;
+
+			// circularCursor.style.left =  e.pageX
+			// +"px";
+			// circularCursor.style.top = e.pageY  +"px";
+			// glassesCanvas.classList.add("hide-cursor")
+
+
+		});
+
+		this.editor.canvas.addEventListener('mouseup',  (e) => 	{
+			this.isPress = false;
+			
+		});
+
+	}
+
+
+	changeColor(color){
+		this.color = color;
+		this.updateColor()
+	}
+
+
+	updateColor(){
+		this.element.style.color = this.color
+		console.log(this)
+	}
 
 }

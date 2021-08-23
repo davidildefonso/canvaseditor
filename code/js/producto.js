@@ -52,12 +52,55 @@ function rotar(){
 	}
 }
 
+function rotarm(){
+	if(producto.estado === "selected"){
+		producto.rotarm()
+	}
+}
+
+function recortar(){
+	if(producto.estado === "selected"){
+	console.log(producto)
+		producto.recortar()
+	}
+}
+
+
+function cambiarColor(){
+	document.getElementById("favcolor").click()
+	console.log(producto)
+	//producto.changeColor()
+
+}
+
+document.getElementById("favcolor").addEventListener("change", (e) =>{
+	
+	producto.changeColor(e.target.value)
+
+})
+
+
+
+
+
+function borrar(){
+	if(producto.estado === "selected"){
+		console.log(producto)
+		producto.borrar()
+	}else if(producto.estado === "borrando"){
+		console.log(producto)
+		producto.guardarImagen()
+	}
+}
+
 
 function resetear(){
 	if(producto.estado === "selected"){
 		resetearEditor()
 	}
 }
+
+
 
 function resetearEditor(){
 	document.querySelector(".producto").innerHTML = ""
@@ -85,3 +128,18 @@ function resetearEditor(){
 
 }
 
+
+function masTransparencia(){
+
+	if(producto.estado === "selected"){
+			producto.masTransparencia()
+	}
+
+}
+
+function menosTransparencia(){
+	if(producto.estado === "selected"){
+			producto.menosTransparencia()
+	}
+	
+}
