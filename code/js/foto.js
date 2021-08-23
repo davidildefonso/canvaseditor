@@ -214,8 +214,48 @@ let productoFoto
 let logo 
 
 if(arr[arr.length -2 ] === "svg"){
-	productoFoto = new ImagenEditable("",editor, ".producto","../VD5062.svg","jpg",0,0,"producto", null, "../VD5062.svg")
+
+
+
+//	productoFoto = new ImagenEditable("",editor, ".producto","../VD5062.svg","svg",0,0,"producto", null, "../VD5062.svg")
+	productoFoto = new SvgObject("",editor, ".producto","../VD5062.svg","svg",0,0,"producto", null, "../VD5062.svg")
 	logo = new ImagenEditable("", editor, ".logo", "../rg/img/iconos/isotipo_ithaliano.png", "png", 0, 1, "logo")
+
+
+	
+	document.getElementById("favcolor").addEventListener("change", (e) =>{
+
+		if(productoFoto.estado === "selected"){
+			productoFoto.changeColor(e.target.value)
+		}
+		
+		
+
+	})
+
+	// fetch("../VD5062.svg")
+  // .then(response => {
+  //   return response.text()
+  // })
+  // .then(data => {
+	// 	console.log(data)
+	// 	let container = document.querySelector(".producto")
+	// 	console.log(container)
+	// 	container.innerHTML += `<div id="producto_wrap" ></div>`
+	// 	document.getElementById("producto_wrap").innerHTML = data
+	// 	let svgColorContainer = document.querySelector("defs style")
+	// 	let colorText = svgColorContainer.textContent
+	// 	console.log(colorText.trim())
+	// 	let originalColor = /#.{6}/.exec(colorText.trim())[0]
+	// 	console.log(originalColor)
+	// 	console.log(productoFoto)
+		
+	
+  // });
+
+
+
+
 }else{
 	productoFoto = new ImagenEditable("",editor, ".producto","VD5062.svg","jpg",0,0,"producto", null, "VD5062.svg")
 	logo = new ImagenEditable("", editor, ".logo", "rg/img/iconos/isotipo_ithaliano.png", "png", 0, 1, "logo")
@@ -286,3 +326,66 @@ function recortarFondo(){
 	}
 
 }
+
+
+
+
+
+
+
+
+( function( window, document )
+{
+    'use strict';
+ 
+    var file     = '../VD5062.svg',
+        revision = 1;
+ 
+    if( !document.createElementNS || !document.createElementNS( '../VD5062.svg', 'svg' ).createSVGRect )
+        return true;
+ 
+    var isLocalStorage = 'localStorage' in window && window[ 'localStorage' ] !== null,
+        request,
+        data,
+        insertIT = function()
+        {
+            document.body.insertAdjacentHTML( 'afterbegin', data );
+        },
+        insert = function()
+        {
+            if( document.body ) insertIT();
+            else document.addEventListener( 'DOMContentLoaded', insertIT );
+        };
+ 
+    if( isLocalStorage && localStorage.getItem( 'inlineSVGrev' ) == revision )
+    {
+        data = localStorage.getItem( 'inlineSVGdata' );
+        if( data )
+        {
+            insert();
+            return true;
+        }
+    }
+ 
+    try
+    {
+        request = new XMLHttpRequest();
+        request.open( 'GET', file, true );
+        request.onload = function()
+        {
+            if( request.status >= 200 && request.status < 400 )
+            {
+                data = request.responseText;
+                insert();
+                if( isLocalStorage )
+                {
+                    localStorage.setItem( 'inlineSVGdata',  data );
+                    localStorage.setItem( 'inlineSVGrev',   revision );
+                }
+            }
+        }
+        request.send();
+    }
+    catch( e ){}
+ 
+}( window, document ) );

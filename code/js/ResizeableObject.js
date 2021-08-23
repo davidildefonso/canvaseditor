@@ -3,6 +3,7 @@ class ResizeableObject  {
 		estado,
 		editor,  
 		size
+		
 	)
 	{
 			this.state = estado
@@ -69,6 +70,7 @@ class ResizeableObject  {
 
 	
 		for(let i = 0; i <= 3; i++){
+		console.log(this)
 			let handle = document.createElement("span")
 			handle.setAttribute("id", "handle_" + i)
 			handle.setAttribute("style", style)

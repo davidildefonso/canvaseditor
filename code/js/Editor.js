@@ -563,7 +563,7 @@ console.log(Math.abs(centerShift_y - (cropbox.position.y + cropbox.size.height) 
 
 
 	addImage(imagen_editable){
-
+console.log(imagen_editable)
 		if(imagen_editable.role === "fondo"){
 			this.estado	= "loading fondo"
 			this.generateFondoElement(imagen_editable)
