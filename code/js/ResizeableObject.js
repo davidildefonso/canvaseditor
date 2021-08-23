@@ -57,8 +57,8 @@ class ResizeableObject  {
 	console.log(this.positions)
 		const style = `
 			border-radius: 50%;
-			width: 50px;
-			height: 50px;
+			width: 30px;
+			height: 30px;
 			background: #fff;
 			opacity: 1;
 			position: absolute;
@@ -212,6 +212,11 @@ class ResizeableObject  {
 		this.element.style.width = this.size.width  + "px"
 		this.element.style.height = this.size.height  + "px"
 		this.updateToolsPosition()
+	}
+
+
+	rotate(){
+		console.log(this)
 	}
 
 	setState(newState){

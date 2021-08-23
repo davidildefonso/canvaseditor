@@ -42,3 +42,16 @@ function reducir(){
 		producto.reducir()
 	}
 }
+
+function rotar(){
+	if(producto.estado === "selected"){
+		producto.rotar()
+	}
+}
+
+
+function resetear(){
+	if(producto.estado === "selected"){
+		producto.resetear()
+	}
+}

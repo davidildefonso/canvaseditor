@@ -21,6 +21,9 @@ class ImagenRedimensionable extends ResizeableObject {
 			this.originalSource = this.source, 
 			this.rotacion = 0,
 			this.size = this.getSize(this.getRects(this.element))
+			this.originalRects =this.getRects(document.getElementById("producto"))
+
+		
 			
 	
 			this.transparencia = 1, 
@@ -31,7 +34,10 @@ class ImagenRedimensionable extends ResizeableObject {
 			this.image = this.generateImage()
 			this.role = "producto";
 			this.modified = false
-			this.position = this.getPosition(this.getRects(this.element)),  
+			this.position = this.getPosition(this.getRects(this.element))
+
+
+			this.originalPosition  = { x: this.position.x , y: this.position.y}
 
 			this.element.onclick = (e) => {
 				e.preventDefault()
@@ -43,6 +49,7 @@ class ImagenRedimensionable extends ResizeableObject {
 			this.element.onmousedown = (e) => {
 				e.preventDefault()
 				this.removeTools()
+				console.log(this)
 				if(this.estado === "selected"){
 						this.estado = "start_moving"
 				}			
@@ -138,6 +145,8 @@ class ImagenRedimensionable extends ResizeableObject {
 		img.height =  this.size.height;
 		return img	
 	}
+
+	
 	
 
 	getRects(elm){
@@ -168,23 +177,52 @@ console.log(x, y)
 		this.reduceSize()
   }
 
-	rotate() {
-    
-  }
+	rotar(){
+		this.rotate()
+	}
 
-	crop() {
-    
-  }
+	resetear(){
+		console.log(this)
+		let newproducto = new ImagenRedimensionable("unselected",	editor,	document.querySelector(".producto"),	"jpg",	"producto")
+		//this.reset()
+		this.source = this.originalSource		
+		this.rotacion = 0
+		this.size = this.getSize(this.originalRects)
+		this.transparencia = 1
+		this.canvas = null
+		this.estado = "unselected"
+		this.state= null;
+		this.image = this.generateImage()
+		this.modified = false
+		this.position = this.originalPosition
+		console.log(this.image)
+		this.image.style.top = this.position.y + "px"
+		this.image.style.left = this.position.x +"px"
+		this.image.style.position = "absolute"
 
-	erase() {
-    
-  }
+		
+		//this.element = contenedor.querySelector("#producto");
+		this.element = this.image
 
-	reset() {
-    
-  }
+		this.positions = [
+			{left: this.position.x +   "px", 
+				top:  this.position.y +   "px"},
+			{left: this.size.width +  this.position.x +"px",
+				top: this.position.y  + "0px"},
+			{left:  this.size.width +  this.position.x +"px",
+				top:  this.position.y + this.size.height   + "px"},
+			{left: this.position.x +  "px", 
+			top:   this.position.y + this.size.height    + "px"}
+		]
+	
+		this.unselect()
+
+		document.getElementById("producto").remove()
+		this.container.appendChild(this.image)
 
 
+	console.log(this)
 
 
+	}
 }
