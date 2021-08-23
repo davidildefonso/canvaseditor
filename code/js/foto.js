@@ -257,7 +257,8 @@ if(arr[arr.length -2 ] === "svg"){
 
 
 }else{
-	productoFoto = new ImagenEditable("",editor, ".producto","VD5062.svg","jpg",0,0,"producto", null, "VD5062.svg")
+
+	productoFoto = new ImagenEditable("",editor, ".producto","plop.jpg","jpg",0,0,"producto", null, "VD5062.svg")
 	logo = new ImagenEditable("", editor, ".logo", "rg/img/iconos/isotipo_ithaliano.png", "png", 0, 1, "logo")
 }
 

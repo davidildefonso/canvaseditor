@@ -159,7 +159,8 @@ function resetearEditor(){
 
 
 	}else{
-		productoFoto = new ImagenEditable("",editor, ".producto","rg/img/20/102012111004.jpg","jpg",0,0,"producto")
+		//productoFoto = new ImagenEditable("",editor, ".producto","rg/img/20/102012111004.jpg","jpg",0,0,"producto")
+			productoFoto = new ImagenEditable("",editor, ".producto","plop.jpg","jpg",0,0,"producto")
 		logo = new ImagenEditable("", editor, ".logo", "rg/img/iconos/isotipo_ithaliano.png", "png", 0, 1, "logo")
 	}
 
