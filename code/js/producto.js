@@ -3,14 +3,17 @@
 let producto
 
 window.addEventListener("load", () => {
-		producto = new ImagenRedimensionable("unselected",	editor,	document.querySelector(".producto"),	"jpg",	"producto")
+		producto = new ImagenRedimensionable("unselected",	editor,	document.querySelector(".producto"),	"jpg",	"producto")		
+		
 
 })
 
 window.addEventListener("click", selectProducto)
 
 function selectProducto(e){
+
 		if(e.target.id === "producto"){
+
 			producto.select()
 		}else{
 	
@@ -52,6 +55,33 @@ function rotar(){
 
 function resetear(){
 	if(producto.estado === "selected"){
-		producto.resetear()
+		resetearEditor()
 	}
 }
+
+function resetearEditor(){
+	document.querySelector(".producto").innerHTML = ""
+	document.querySelector(".logo").innerHTML = ""
+	console.log("aqui")
+	editor = new Editor("", ".bg_producto", [])
+	productoFoto = new ImagenEditable("",editor, ".producto","rg/img/20/102012111004.jpg","jpg",0,0,"producto")
+	logo = new ImagenEditable("", editor, ".logo", "rg/img/iconos/isotipo_ithaliano.png", "png", 0, 1, "logo")
+
+	editor.addImage(productoFoto)
+	editor.addImage(logo)
+
+	editor.images.forEach(img => {	
+		if(img)	editor.insertImage(img)
+	});
+
+	console.log(editor)
+
+	setTimeout(() => {
+			producto = new ImagenRedimensionable("unselected",	editor,	document.querySelector(".producto"),	"jpg",	"producto")	
+	console.log(producto)
+	}, 1000)
+
+	
+
+}
+

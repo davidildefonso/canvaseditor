@@ -520,7 +520,7 @@ class Editor{
 	empty(){
     this.estado = "";
 		this.container = ""    
-		this.images = "";
+		this.images = [];
 		this.position = ""
 		this.currentSize = ""
 		this.canvas = ""	
@@ -565,6 +565,9 @@ class Editor{
 		this.estado = ""
 	
 	}
+
+
+	
 
 }
 

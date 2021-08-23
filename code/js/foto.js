@@ -204,9 +204,11 @@
 
 
 
-const editor = new Editor("", ".bg_producto", [])
+let editor = new Editor("", ".bg_producto", [])
 
 let productoFoto = new ImagenEditable("",editor, ".producto","rg/img/20/102012111004.jpg","jpg",0,0,"producto")
+
+
 
 let logo = new ImagenEditable("", editor, ".logo", "rg/img/iconos/isotipo_ithaliano.png", "png", 0, 1, "logo")
 
@@ -217,7 +219,7 @@ editor.images.forEach(img => {
 	if(img)	editor.insertImage(img)
 });
 
-
+console.log(editor)
 
 
 const fotoFile = document.getElementById("fotoHiddenInputBtn")

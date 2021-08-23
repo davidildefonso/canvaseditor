@@ -83,6 +83,8 @@ class ResizeableObject  {
 	}
 
 	startResizing = (e) =>  {
+		this.editor.images[1] = this
+		console.log(this.editor)
 	
 	
 		e.preventDefault()
@@ -187,6 +189,8 @@ class ResizeableObject  {
 	}
 
 	increaseSize(){
+		this.editor.images[1] = this
+		console.log(this.editor)
 		let prevWidth = this.size.width
 		this.size.width += 15
 		let ratio = this.size.width / prevWidth
@@ -201,7 +205,8 @@ class ResizeableObject  {
 
 
 	reduceSize(){
-		
+		this.editor.images[1] = this
+		console.log(this.editor)
 
 		let prevWidth = this.size.width
 		this.size.width -= 15
