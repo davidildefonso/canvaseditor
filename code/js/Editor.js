@@ -47,41 +47,64 @@ class Editor{
 
 	createCanvas(){
 		const editorCanvas = document.createElement("canvas")	
+		editorCanvas.id = "editor_canvas"
 		if(editor.estado === ""){
 				editorCanvas.width = this.currentSize.width
 				editorCanvas.height = this.currentSize.height
-				editorCanvas.style.display = "";
+				//editorCanvas.style.display = "";
 			//	editorCanvas.style.display = "none";
-		}else if(editor.estado === "crop"){
+		}else if(editor.estado === "editando producto"){
 	
 				if(this.tools.length === 1){
-					editorCanvas.width = this.currentSize.width / this.images[0].drawRatio.ratio
-					editorCanvas.height = this.currentSize.height / this.images[0].drawRatio.ratio
-					editorCanvas.style.display = "";
+			
+					// editorCanvas.width = this.currentSize.width / this.images[0].drawRatio.ratio
+					// editorCanvas.height = this.currentSize.height / this.images[0].drawRatio.ratio
+					// editorCanvas.style.display = "";
+
+
+					this.getDrawRatio(this.images[1])
+					console.log(this)
+					editorCanvas.width = this.currentSize.width / this.images[1].drawRatio.ratio
+					editorCanvas.height = this.currentSize.height / this.images[1].drawRatio.ratio
+				//	editorCanvas.style.display = "";
+					editorCanvas.style.display = "none";
+
 				}else if(this.tools.length === 2){
-						this.getDrawRatio(this.tools[0])
-							console.log(this)
+						this.getDrawRatio(this.images[1])
+						
 						editorCanvas.width = this.currentSize.width / this.tools[0].drawRatio.ratio
 						editorCanvas.height = this.currentSize.height / this.tools[0].drawRatio.ratio
 						editorCanvas.style.background = "red"
-						editorCanvas.style.display = "";
-						console.log(editorCanvas)
+					//	editorCanvas.style.display = "";
+					editorCanvas.style.display = "none";
+				
 				
 				}
 	
-		}	else if(editor.estado === "borrando producto"){
-		console.log("auqi")
-		console.log(this.tools[0])
+		}	else if(this.estado === "borrando producto"){
+console.log(this)
+				let containerRects= this.container.getBoundingClientRect()
+			
+
+
 				editorCanvas.width = this.tools[0].size.width
 				editorCanvas.height = this.tools[0].size.height
 				editorCanvas.style.zIndex = 16
 				editorCanvas.style.display = "";
 				editorCanvas.style.background ="transparent"
+
+				// 	let centerShift_x = ( containerRects.width -   editorCanvas.width  ) / 2;
+				// let		 centerShift_y = ( containerRects.height -   editorCanvas.height ) / 2;		
+
+				// editorCanvas.style.top = this.tools[0].position.y + "px"
+				// editorCanvas.style.left = this.tools[0].position.x + "px"
+
 		}			
 		editorCanvas.style.position = "absolute";		
 
 		if(editor.estado === "borrando producto"){
-				editorCanvas.style.left = 0 + "px";
+				editorCanvas.style.top = this.tools[0].position.y + "px"
+				editorCanvas.style.left = this.tools[0].position.x + "px"
 		}else{
 				editorCanvas.style.left = this.position.x + "px";
 		}
@@ -94,7 +117,8 @@ class Editor{
 	showCanvas(){
 		if(editor.estado === "borrando producto"){
 			this.container.appendChild(this.canvas)
-		
+			this.images[1].canvasSize = { width: this.canvas.width, height: this.canvas.height}
+			this.images[1].canvasPosition = { x: this.tools[0].position.x, y: this.tools[0].position.y}
 		}else{
 			document.body.appendChild(this.canvas)
 		}
@@ -113,7 +137,7 @@ class Editor{
 
 		for(let i = 0; i< images.length; i++){
 			if(images[i]){
-					let currentRole = images[i].role
+					let currentRole = images[i].role || images[i].rol
 					let currentImg = images[i].image;
 					let currentContainer = images[i].container;
 					let currentRects = currentContainer.getBoundingClientRect()
@@ -337,10 +361,12 @@ class Editor{
 
 
 	drawImageBorrar(img){
-	
+	console.log(img)
 		let context = this.canvas.getContext('2d')	
+		console.log(img.element, 0,0, img.element.naturalWidth, img.element.naturalHeight,
+			0,0,img.canvasSize.width, img.canvasSize.height)
 		context.drawImage(img.element, 0,0, img.element.naturalWidth, img.element.naturalHeight,
-			0,0,this.canvas.width, this.canvas.height);
+			0,0,img.canvasSize.width, img.canvasSize.height);
 }
 
 
@@ -354,102 +380,120 @@ class Editor{
 	}
 
 	drawProductoOnCanvas(){
+	console.log(this)
 			this.createCanvas();
 			this.showCanvas()
-			console.log(this)
-			this.drawCropProducto(this.canvas, this.tools[0],this.tools[1])
 		
+		//	this.drawCropProducto(this.canvas, this.images[1],this.tools[1])
+		this.drawCropProducto(this.canvas, this.images[1],this.tools[0])
 	}
 
-		drawCropProducto(canvas, img, cropbox){			
-		 	console.log(canvas, img, cropbox)
-		 	let ctx = canvas.getContext("2d")
-		 	ctx.fillStyle = "black";
-		 	ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-		 	var centerShift_x = ( canvas.width - img.image.naturalWidth ) /2 //* img.drawRatio.ratio / 2;
-		 	var centerShift_y = ( canvas.height - img.image.naturalHeight ) /2 //* img.drawRatio.ratio / 2;						
-						
+	drawCropProducto(canvas, img, cropbox){			
+			console.log(canvas,img, cropbox)
 		
-		 	let imgX = cropbox.position.x / img.drawRatio.ratio
-		 	let imgY = cropbox.position.y / img.drawRatio.ratio
-		 	let imgWidth = cropbox.size.width / img.drawRatio.ratio
-		 	let imgHeight = cropbox.size.height / img.drawRatio.ratio	
+		let ctx = canvas.getContext("2d")
+		ctx.fillStyle = "black";
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-		 	let editorCanvasRatio = this.currentSize.width / this.currentSize.height
-		 	let scaleWidth, scaleHeight	
-
-		 	if(img.drawRatio.side === "height"){
-		 			scaleHeight = canvas.height
-		 			scaleWidth = canvas.height * editorCanvasRatio
+		var img_centerShift_x =  ( img.editor.currentSize.width - img.size.width ) / 2;
+		var img_centerShift_y = ( img.editor.currentSize.height - img.size.height ) / 2;						
+		
+		
+		var centerShift_x = ( canvas.width - img.image.naturalWidth ) / 2;
+		var centerShift_y = ( canvas.height - img.image.naturalHeight ) / 2;						
 					
-		 	}else if(img.drawRatio.side === "width"){
-		 			scaleWidth = canvas.width
-		 			scaleHeight = canvas.width / editorCanvasRatio		
-		 	}	
 		
-		 	 canvas.width = imgWidth
-		 	 canvas.height = imgHeight
+		let imgX = cropbox.position.x / img.drawRatio.ratio
+		let imgY = cropbox.position.y / img.drawRatio.ratio
+		let imgWidth = cropbox.size.width / img.drawRatio.ratio
+		let imgHeight = cropbox.size.height / img.drawRatio.ratio	
 
-		 	// ctx.drawImage(
-		 	// 	img.image,
-		 	// 	Math.abs(cropbox.position.x - img.centerShift_x )/ img.drawRatio.ratio, Math.abs(cropbox.position.y - img.centerShift_y )/ img.drawRatio.ratio, imgWidth,  imgHeight,
-		 	// 	0,0,canvas.width, canvas.height	)	
+		let editorCanvasRatio = this.currentSize.width / this.currentSize.height
+		let scaleWidth, scaleHeight	
 
-				 
-		 	ctx.drawImage(
-		 		img.image,
-				imgX,
-				imgY,
-				imgWidth, 
-				Math.abs(centerShift_y - (cropbox.position.y + cropbox.size.height) / img.drawRatio.ratio),						
-				centerShift_x,
-				centerShift_y,
-				imgWidth,
-				Math.abs(centerShift_y - (cropbox.position.y + cropbox.size.height) / img.drawRatio.ratio)
-			)	
+		if(img.drawRatio.side === "height"){
+				scaleHeight = canvas.height
+				scaleWidth = canvas.height * editorCanvasRatio
+				
+		}else if(img.drawRatio.side === "width"){
+				scaleWidth = canvas.width
+				scaleHeight = canvas.width / editorCanvasRatio		
+		}	
+	
+		canvas.width = imgWidth
+		canvas.height = imgHeight
 
-console.log(cropbox.position)
-console.log( centerShift_x )
-console.log(centerShift_y )
-console.log(img.drawRatio)
-console.log(Math.abs(centerShift_y - (cropbox.position.y + cropbox.size.height) / img.drawRatio.ratio))
-
-		console.log(
-		 		img.image,
-		 		Math.abs(cropbox.position.x - centerShift_x )/ img.drawRatio.ratio, 
-				 Math.abs(cropbox.position.y - centerShift_y )/ img.drawRatio.ratio,
-				  imgWidth,  
-					centerShift_y - cropbox.position.y / img.drawRatio.ratio,
-		 		0,0,canvas.width, canvas.height	)	
+		ctx.drawImage(
+			img.image,
+			(cropbox.position.x - img_centerShift_x )/ img.drawRatio.ratio, (cropbox.position.y - img_centerShift_y )/ img.drawRatio.ratio, imgWidth,  imgHeight,
+			0,0,canvas.width, canvas.height	)	
 
 
-		// /* ESTO NO ESCALA LA IMAGEN AL EDITOR SINO QUE SE MANTIENE EN EL TAMAÑO CORTADO */
-		// 	// ctx.drawImage(
-		// 	// img.image,
-		// 	// (cropbox.position.x - img.centerShift_x )/ img.drawRatio.ratio, (cropbox.position.y - img.centerShift_y )/ img.drawRatio.ratio, imgWidth,  imgHeight,
-		// 	// centerShift_x + (cropbox.position.x )/ img.drawRatio.ratio, centerShift_y +  (cropbox.position.y )/ img.drawRatio.ratio, imgWidth, imgHeight)		
-			console.log(canvas)
-			console.log(this)
+		// let imgX = cropbox.position.x / img.drawRatio.ratio
+		// let imgY = cropbox.position.y / img.drawRatio.ratio
+		// let imgWidth =  img.size.width  //cropbox.size.width / img.drawRatio.ratio
+		// let imgHeight =  img.size.height // cropbox.size.height / img.drawRatio.ratio	
+
+		// let editorCanvasRatio = this.currentSize.width / this.currentSize.height
+		// let scaleWidth, scaleHeight	
+
+		// if(img.drawRatio.side === "height"){
+		// 		scaleHeight = canvas.height
+		// 		scaleWidth = canvas.height * editorCanvasRatio
+				
+		// }else if(img.drawRatio.side === "width"){
+		// 		scaleWidth = canvas.width
+		// 		scaleHeight = canvas.width / editorCanvasRatio		
+		// }	
+	
+		// canvas.width = cropbox.size.width
+		// canvas.height = cropbox.size.height
+		// console.log(cropbox.position)
+		// console.log(centerShift_x)
+		// console.log(	img.image,
+		// 	 Math.max((cropbox.position.x - centerShift_x), 0)/ img.drawRatio.ratio , 
+		// 	  Math.max((cropbox.position.y - centerShift_y), 0)/ img.drawRatio.ratio ,
+		// 		(cropbox.position.x + cropbox.size.width  - centerShift_x)/ img.drawRatio.ratio, 
+		// 	 (cropbox.position.y + cropbox.size.height - centerShift_y)/ img.drawRatio.ratio ,
+		// 	0,0,canvas.width, canvas.height)
+
+		// ctx.drawImage(
+		// 	img.image,
+		// 	 Math.max((cropbox.position.x - centerShift_x), 0)/ img.drawRatio.ratio , 
+		// 	  Math.max((cropbox.position.y - centerShift_y), 0)/ img.drawRatio.ratio ,
+		// 		(cropbox.position.x + cropbox.size.width  - centerShift_x)/ img.drawRatio.ratio, 
+		// 	 (cropbox.position.y + cropbox.size.height - centerShift_y)/ img.drawRatio.ratio ,
+		// 	0,0,canvas.width, canvas.height	)	
+
+	/* ESTO NO ESCALA LA IMAGEN AL EDITOR SINO QUE SE MANTIENE EN EL TAMAÑO CORTADO */
+		// ctx.drawImage(
+		// img.image,
+		// (cropbox.position.x - img.centerShift_x )/ img.drawRatio.ratio, (cropbox.position.y - img.centerShift_y )/ img.drawRatio.ratio, imgWidth,  imgHeight,
+		// centerShift_x + (cropbox.position.x )/ img.drawRatio.ratio, centerShift_y +  (cropbox.position.y )/ img.drawRatio.ratio, imgWidth, imgHeight)		
+		
+		
 			this.generateDataImage()
 		 
 
 		// 	this.updateFondo(dataUrl, this.images[0].originalsource)
 		// 	this.removeCropBox()
-		 	this.canvas.remove()
+
+
+//		 	this.canvas.remove()
 		 	this.canvas = null	
 		
 	}
 
 
 	generateDataImage(){
-		console.log(this)
+	
 		
 		this.updateProducto(this.canvas.toDataURL(), this.images[1].originalsource)
 	}
 
 
-	drawCropImage(canvas, img, cropbox){			
+	drawCropImage(canvas, img, cropbox){		
+	
 		let ctx = canvas.getContext("2d")
 		ctx.fillStyle = "black";
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -491,7 +535,7 @@ console.log(Math.abs(centerShift_y - (cropbox.position.y + cropbox.size.height) 
 		
 		let dataUrl = this.convertDrawToDataUrl(canvas)
 
-		console.log(this)
+	
 
 		this.updateFondo(dataUrl, this.images[0].originalsource)
 		this.removeCropBox()
@@ -553,27 +597,38 @@ console.log(Math.abs(centerShift_y - (cropbox.position.y + cropbox.size.height) 
 	}
 
 	updateProducto(dataurl, originalSource){			
-			console.log(dataurl)
-			console.log(this)
+
 		//	this.images[1].element.src = dataurl
-			const newprod = new ImagenEditable("",editor,"." + editor.container.className, dataurl , "jpg",0, 0, "producto" ,null, originalSource )
+		//	const newprod = new ImagenRedimensionable("",editor,"." + editor.container.className, dataurl , "jpg", "producto" ,null, originalSource )
+		const newprod = new ImagenRedimensionable("",editor,".producto" , "jpg", "producto" ,dataurl, originalSource )
+		//	productoFoto = new ImagenRedimensionable("", editor, ".producto", "jpg", "producto", "plop.jpg")
 			this.removeImage("producto")			
 			this.addImage(newprod)
+			console.log(newprod)
 	}
 
 
 	addImage(imagen_editable){
-console.log(imagen_editable)
+
 		if(imagen_editable.role === "fondo"){
 			this.estado	= "loading fondo"
 			this.generateFondoElement(imagen_editable)
-		}else if(imagen_editable.role === "producto"){
+		}else if(imagen_editable.rol === "producto"){
 		
 			this.images[1] = imagen_editable
-			this.insertImage(imagen_editable)
+			console.log(this, imagen_editable)
 
+			if(this.images[1].tipe !== "svg"){
+				this.insertImage(imagen_editable)
+			}
+
+			
+		
 		}else if(imagen_editable.role === "logo"){
+
 			this.images[2] = imagen_editable
+			console.log(this)
+			this.insertImage(imagen_editable)
 		}
 
 	}
@@ -655,16 +710,19 @@ console.log(imagen_editable)
 
 
 	insertImage(img){	
+
 		if(img.role === "fondo"){
 			img.container.appendChild(this.generateFondo(img));
-		}else if(img.role === "producto"){
-			img.container.appendChild(img.generateElement());
+		}else if(img.rol === "producto"){
+		
+			img.container.appendChild(img.image);
 		}	
 		else{
 		
 			img.container.appendChild(this.generateImage(img));
 		}
 		img.estado= "loaded"
+		
 	}
 
 
@@ -675,10 +733,15 @@ console.log(imagen_editable)
 			this.images[0] = ""
 			document.getElementById("fondo").remove()
 		}	else if(role === "producto"){
-			console.log("remove")
+		
 			this.images[1].empty
 			this.images[1] = ""
 			document.getElementById("producto").remove()
+		}else if(role === "logo"){
+			console.log(this)
+			this.images[2].empty
+			this.images[2] = ""
+			document.getElementById("logo").remove()
 		}
 	}
 
@@ -715,8 +778,9 @@ console.log(imagen_editable)
 	}
 
 	createCropBox(){
+	console.log(this)
 		const cb = new ResizeableObject("unselected", this, { width: 200, height: 200})
-		console.log(this)
+
 
 		this.addTool(cb)	
 		if(this.tools.length === 1){
@@ -742,8 +806,7 @@ console.log(imagen_editable)
 	}
 
 	hideFondo(){
-		console.log("gola")
-		console.log(this)
+
 		if(document.getElementById("fondo")){
 			document.getElementById("fondo").style.display = "none";
 		}

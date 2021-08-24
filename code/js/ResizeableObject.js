@@ -24,15 +24,17 @@ class ResizeableObject  {
 			
 			this.element.onclick = (e) => {
 				e.preventDefault()
-				this.setState("selected")
+			//	this.setState("selected")
 			}
 			
 			this.element.onmousedown = (e) => {
+				console.log(this)
 				e.preventDefault()
 				this.setState("start_moving")
 			}
 
 			this.element.onmousemove = (e) => {
+
 					e.preventDefault()
 					if(this.state === "start_moving"){
 						this.state = "moving"
@@ -45,6 +47,7 @@ class ResizeableObject  {
 			}
 
 			this.element.onmouseup = (e) => {
+				console.log(this)
 				e.preventDefault()
 				this.setState("selected")
 			}
@@ -56,7 +59,7 @@ class ResizeableObject  {
 	
 
 	generateTools(){	
-	console.log(this.positions)
+
 		const style = `
 			border-radius: 50%;
 			width: 30px;
@@ -70,15 +73,19 @@ class ResizeableObject  {
 
 	
 		for(let i = 0; i <= 3; i++){
-		console.log(this)
+		
 			let handle = document.createElement("span")
 			handle.setAttribute("id", "handle_" + i)
 			handle.setAttribute("style", style)
 			handle.style.left = this.positions[i].left
-			handle.style.top = this.positions[i].top		
+			handle.style.top = this.positions[i].top	
+				handle.addEventListener("touchstart", this.startResizing)
+			handle.addEventListener("touchmove", this.moveHandle)
+			handle.addEventListener("touchend", this.endresizing)	
 			handle.addEventListener("mousedown", this.startResizing)
 			handle.addEventListener("mousemove", this.moveHandle)
 			handle.addEventListener("mouseup", this.endresizing)
+		
 			this.container.appendChild(handle)	
 			this.tools = this.tools.concat(handle)
 			this.tools.push[handle]
@@ -86,23 +93,27 @@ class ResizeableObject  {
 	}
 
 	startResizing = (e) =>  {
-		this.editor.images[1] = this
-		console.log(this.editor)
+		
+		// console.log(this.editor)
+		// 	console.log(this)
+		// this.editor.images[1] = this
 	
 	
-		e.preventDefault()
+	
+		//e.preventDefault()
 		this.state = "resizing"
 		this.handleid = e.target.id
 	}
 
 	endresizing = (e) =>  {	
-		e.preventDefault()
+		//e.preventDefault()
 		this.state = "selected"	
 		this.modified = true
 	}
 
 	moveHandle = (e) => {
-		e.preventDefault()
+
+		//e.preventDefault()
 		if(this.state === "resizing"){
 			let handleWidth = /\d+/.exec(e.target.style.width)[0]
 			let handleHeight = /\d+/.exec(e.target.style.height)[0]
@@ -193,7 +204,7 @@ class ResizeableObject  {
 
 	addTransparency(){
 		this.editor.images[1] = this
-		console.log(this)
+		
 		this.opacity += 0.1
 
 		this.element.style.opacity = this.opacity
@@ -213,7 +224,7 @@ class ResizeableObject  {
 
 	increaseSize(){
 		this.editor.images[1] = this
-		console.log(this.editor)
+	
 		let prevWidth = this.size.width
 		this.size.width += 15
 		let ratio = this.size.width / prevWidth
@@ -229,7 +240,7 @@ class ResizeableObject  {
 
 	reduceSize(){
 		this.editor.images[1] = this
-		console.log(this.editor)
+		
 
 		let prevWidth = this.size.width
 		this.size.width -= 15
@@ -245,8 +256,7 @@ class ResizeableObject  {
 
 	rotate(){
 		this.editor.images[1] = this
-		console.log(this.editor)
-		console.log(this)
+
 		this.rotacion += 5
 		this.element.style.transform = "rotate(" + this.rotacion + "deg)"
 		//transform", "rotate("+seg+"deg) scaleX("+tras+")")
@@ -263,6 +273,8 @@ class ResizeableObject  {
 	} 
 
 	move(e){	
+
+	console.log(this)
 		let offsetWidth = this.size.width /2
 		let offsetHeight = this.size.height /2 
 		this.position.x = e.clientX - this.container.getBoundingClientRect().x  - offsetWidth
@@ -289,16 +301,14 @@ class ResizeableObject  {
 	}
 
 	updateToolsPosition(){
-	console.log(this.positions)
-	console.log(this.position)
-	console.log(this)
+	
 			this.positions = [
 				{left: this.position.x + "px", top:  this.position.y + "0px"},
 				{left: this.position.x +this.size.width + "px", top: this.position.y + "0px"},
 				{left:this.size.width + this.position.x + "px", top: this.size.height + this.position.y + "px"},
 				{left: this.position.x + "0px", top: this.position.y + this.size.height + "px"}
 			]
-			console.log(this.positions)
+			
 
 			for(let i = 0; i<= 3; i++){
 				if(this.tools[i]){
@@ -324,18 +334,23 @@ class ResizeableObject  {
 	}
 
 	generateElement(){
-		const div = document.createElement("div")
-		div.style.position = "absolute"
-		div.style.width = this.size.width + "px"
-		div.style.height = this.size.height + "px"
-		div.style.top = this.position.y
-		div.style.left = this.position.x
-		div.style.border = "2px solid #fff"
-		div.style.background = "transparent"
-		div.setAttribute("id","cropbox")
-		div.style.zIndex = 20
+	
+		if(this.rol !== "producto" && this.role !== "producto"){
+					const div = document.createElement("div")
+					div.style.position = "absolute"
+					div.style.width = this.size.width + "px"
+					div.style.height = this.size.height + "px"
+					div.style.top = this.position.y
+					div.style.left = this.position.x
+					div.style.border = "2px solid #fff"
+					div.style.background = "transparent"
+					div.setAttribute("id","cropbox")
+					div.style.zIndex = 20
 
-		return div	
+					return div	
+		
+		}
+
 	}
 
 }

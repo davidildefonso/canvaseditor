@@ -53,20 +53,18 @@ class SvgObject extends ResizeableObject {
 			return response.text()
 		})
 		.then(data => {
-			console.log(data)
-
-
+			
 			let producto_div = document.querySelector(this.container)
 			producto_div.innerHTML += data
 			console.log(producto_div)
 			this.container = producto_div
 			let producto_svg = document.getElementById("producto")
-
-			producto_svg.style.width = "100%";
-			producto_svg.style.display = "flex"
+			console.log(producto_div.getBoundingClientRect())
+//			producto_svg.style.width = "100%";
+	//		producto_svg.style.display = "flex"
 			producto_svg.style.position = "absolute"
 			producto_svg.style.height = "auto"
-			console.log(producto_svg)
+			//producto_svg.style.pointerEvents = "none"
 
 			this.element = producto_svg
 
@@ -75,15 +73,52 @@ class SvgObject extends ResizeableObject {
 
 			this.size =  this.getSize(this.getRects(this.element))
 			this.originalRects = this.getRects(document.getElementById("producto"))
-			this.position =  { x : this.element.getBoundingClientRect().x - this.container.getBoundingClientRect().x,
-					y : this.element.getBoundingClientRect().y - this.container.getBoundingClientRect().y
-			 } //this.getPosition(this.getRects(this.element))
-
-			console.log(this.element.getBoundingClientRect())
+			// this.position =  { x : this.element.getBoundingClientRect().x - this.container.getBoundingClientRect().x,
+			// 		y : this.element.getBoundingClientRect().y - this.container.getBoundingClientRect().y
+			//  } //this.getPosition(this.getRects(this.element))
+console.log(this.editor)
+		//	console.log(this.element.getBoundingClientRect())
 			console.log(this.container.getBoundingClientRect())
+
+			this.originalSize = { width : this.element.width.baseVal.value, height: this.element.height.baseVal.value }
+
+			this.ratioSvg = this.originalSize.width / this.originalSize.height
+
+				let ratio
+
+			if(this.ratioSvg > 1){
+				ratio =   this.originalSize.width / this.editor.currentSize.width
+				this.size.height = 0.5 * this.originalSize.height / ratio
+				this.size.width = 0.5 * this.originalSize.width / ratio
+			}else{
+				ratio =   this.originalSize.height / this.editor.currentSize.height
+				this.size.height = 0.5 * this.originalSize.height / ratio
+				this.size.width = 0.5 * this.originalSize.width / ratio
+			}
+
+console.log(this.editor.currentSize, this.size )
+			let centerShift_y =  (this.editor.currentSize.height - this.size.height) /2
+			let centerShift_x =  (this.editor.currentSize.width - this.size.width) /2
+console.log(centerShift_y, centerShift_x)
+			this.position =  { x:  centerShift_x, y: centerShift_y}
+			
+
+
 			this.originalPosition  =   { x: this.position.x , y: this.position.y}
 
 
+
+			this.element.style.width = this.size.width;
+			this.element.style.height = this.size.height;
+
+			this.element.style.top = this.position.y;
+			this.element.style.left = this.position.x;
+			
+
+	//		producto_svg.style.display = "flex"
+
+			console.log(this)
+			
 
 			this.element.onclick = (e) => {
 				e.preventDefault()
@@ -139,9 +174,14 @@ class SvgObject extends ResizeableObject {
 			]
 
 
+			console.log(this)
 
+			
+			
+			this.editor.addImage(this)
 
-
+				//	this.updatePosition()
+					
 			//container.style.background = "red"
 
 			//this.element = document.getElementById("producto")
@@ -157,7 +197,6 @@ class SvgObject extends ResizeableObject {
 			// console.log(this)
 
 
-			console.log(this.element)
 
 			return producto_svg
 		
@@ -303,7 +342,7 @@ console.log(this)
 		console.log(image)
 		this.element.src = image
 		this.element.style.display = ""
-
+		
 		this.tools.forEach(t => t.style.display = "")
 
 		this.estado = "selected"
@@ -356,7 +395,55 @@ console.log(this)
 
 		this.editor.canvas.addEventListener("click", () => console.log("click"))
 
-		this.editor.canvas.addEventListener('mousedown',  (e) => {
+
+		this.editor.canvas.addEventListener('touchstart',  (e) => {
+				e.preventDefault();
+		console.log("click")
+				this.isPress = true;
+				this.old = {x: e.offsetX, y: e.offsetY};
+				
+		});
+
+		this.editor.canvas.addEventListener('touchmove',  (e) => {
+		e.preventDefault();
+			console.log(this)
+			if (this.isPress) {
+				var x = e.offsetX;
+				var y = e.offsetY;
+				console.log(this)
+				let ctx = this.editor.canvas.getContext('2d')
+				ctx.globalCompositeOperation = 'destination-out';
+				ctx.beginPath();		
+				ctx.arc(x, y, 10, 0, 2 * Math.PI);
+				ctx.fill();
+				ctx.lineWidth = 20;
+				ctx.beginPath();
+				ctx.moveTo(this.old.x, this.old.y);
+				ctx.lineTo(x, y);
+				ctx.stroke();
+				this.old = {x: x, y: y};
+			}
+			// const circularCursor = document.getElementById("circularcursor")
+			// circularCursor.style.zIndex = 1;
+
+			// circularCursor.style.left =  e.pageX
+			// +"px";
+			// circularCursor.style.top = e.pageY  +"px";
+			// glassesCanvas.classList.add("hide-cursor")
+
+
+		});
+
+		this.editor.canvas.addEventListener('touchend',  (e) => 	{
+		e.preventDefault();
+			this.isPress = false;
+			
+		});
+
+
+
+
+					this.editor.canvas.addEventListener('mousedown',  (e) => {
 		console.log("click")
 				this.isPress = true;
 				this.old = {x: e.offsetX, y: e.offsetY};
@@ -397,7 +484,19 @@ console.log(this)
 			
 		});
 
+
+
+
+
 	}
+
+
+
+
+
+
+
+
 
 
 	changeColor(color){
@@ -406,7 +505,7 @@ console.log(this)
 		let path = this.element.querySelectorAll(".fil0")
 		let arr = Array.from(path)
 		arr.forEach(p =>p.style.fill = color)
-		
+
 	}
 
 

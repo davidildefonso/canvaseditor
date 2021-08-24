@@ -108,7 +108,7 @@ class ImagenEditable{
 
 	removeImage(){		
 		if(this.editor.estado === ""){
-			this.editor.containerremoveChild(this.image)
+			this.editor.container.removeChild(this.image)
 		}else{
 			console.log("editor dibujando en canvas")
 		}	

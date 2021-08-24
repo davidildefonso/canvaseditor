@@ -95,15 +95,19 @@
                                 <div  class="menos_transparencia" onclick="menosTransparencia()" >
                                     <span><img id="btn_menos_transparencia" src="../rg/img/iconos/transparencia_menos.png" alt=""></span>
                                 </div>
-                                <div   class="borrar_producto" name="cambiar color aqui"  onclick="cambiarColor()" >
+                                <div   class="borrar_producto" name="cambiar color aqui"  onclick="toggleColores()" >
                                     <span><img   id="btn_recortar" src="../rg/img/iconos/recortar_producto.png" alt="">
-																			<input 
+																			<!-- <input 
 																				style= "position: absolute;
 																					right: 8%;top: 60%;z-index: 1;
 																					color: transparent;border: none;
 																					height: 1px;width: 1px;background: transparent;" 
-																					type="color" id="favcolor" name="favcolor" value="#ff0000">
+																					type="color" id="favcolor" name="favcolor" value="#ff0000"> -->
 																		</span>
+
+																		<div id ="colores">
+
+																		</div>
                                 </div>
                                 <div  id= "btn_borrar" class="borrar_producto" onclick = "borrar()">
                                     <span><img src="../rg/img/iconos/borrar_producto.png" id= "btn_borrar" alt=""></span>
