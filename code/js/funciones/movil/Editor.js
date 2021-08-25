@@ -555,6 +555,7 @@ console.log(this)
 	}	
 
 	removeHandles(arr){
+	
 		arr.forEach(element => {
 			element.remove()
 		});

@@ -1,128 +1,52 @@
-
-
-// let producto
-
-// window.addEventListener("load", () => {
-// //onsole.log(document.getElementById("producto"))
-// 	if(document.getElementById("producto")){
-// console.log(productoFoto)
-// 			if(productoFoto.tipe !== "svg"	){
-// 				producto = new ImagenRedimensionable("unselected",	editor,	document.querySelector(".producto"),	"jpg",	"producto")
-// 			}
-				
-// 	}
-		
-		
-
-// })
-
-
-
 window.addEventListener("click", selectProducto)
 
+
 function selectProducto(e){
-	//event.stopPropagation()
-
 	if(e.target.id === "producto"){
-		if(editor.estado !== "editando producto"){
-				editor.images[1].select()
-		}else{
-			if(editor.images[1].estado === "selected"){
-				editor.images[1].select()
-			}
-		}
-		
-			// if(productoFoto){
-			// 	if(productoFoto.tipe !== "svg"){
-				
-			// 		productoFoto.estado === "selected"
-			// 	}else{
-			// 		productoFoto.select()
-			// 	}
-				
-			// }else if(productoFoto){
-			// 	if(productoFoto.tipe === "svg"){
-			// 		productoFoto.select()
-			// 	}else{
-			// 		productoFoto.select()
-			// 	}
-			// }
-
-			
-		}else{
-
+		if(editor.images[1].estado !== "selected"){
+			if(editor.estado !== "editando producto"){
+				editor.images[1].select()			
+			}	
+		}	
+	}else{
 			const btn_ids = ["btn_resetear", "btn_borrar", "btn_recortar", "btn_menos_transparencia", "cropbox", "editor_canvas",
 				"btn_mas_transparencia", "btn_rotar_izquierda", "btn_rotar_derecha", "btn_reducir", "btn_agrandar", "favcolor",
-				"handle_1", "handle_2", "handle_3", "handle_0"
-				  ] // "eliminar_fondo", "subir_fondo", "recortar_fondo" 
-		
-						if(!btn_ids.includes(e.target.id)){
+				"handle_1", "handle_2", "handle_3", "handle_0",  "eliminar_fondo",  "recortar_fondo" 
+				  ] 
 
-								if(editor.estado !== "editando fondo"){
-								
-										editor.images[1].unselect()
-								
-								}
-								
-						}	
-
-						
-		
-			// if(productoFoto){
-			// 	if(productoFoto.tipe !== "svg"){
-			// 		if(productoFoto.estado === "selected"){		
-						
-			// 				if(!btn_ids.includes(e.target.id)){
-			// 						productoFoto.unselect()
-			// 				}	
-			// 		}
-			// 	}else{
-					
-			// 	}
-				
-			// }else if(productoFoto){
-			// 	if(productoFoto.estado === "selected"){		
-						
-			// 				if(!btn_ids.includes(e.target.id)){
-			// 						productoFoto.unselect()
-			// 				}	
-			// 		}
-			// }
-
-
-		
-			
+			if(!btn_ids.includes(e.target.id)){
+					if(editor.estado !== "editando fondo" && editor.images[1].estado === "selected" ){
+						editor.images[1].unselect()
+					}
+			}					
 		}
-
-
-		
 }
 
 
 function aumentar(){
-	if(editor.images[1].estado === "selected"){
-		editor.images[1].aumentar()
-	}
+	editor.images[1].unselect()
+	editor.images[1].aumentar()
+	editor.images[1].select()
 }
 
 
 
 function reducir(){
-	if(editor.images[1].estado === "selected"){
-		editor.images[1].reducir()
-	}
+	editor.images[1].unselect()
+	editor.images[1].reducir()
+	editor.images[1].select()
 }
 
 function rotar(){
-	if(editor.images[1].estado === "selected"){
-		editor.images[1].rotar()
-	}
+	editor.images[1].unselect()
+	editor.images[1].rotar()
+
 }
 
 function rotarm(){
-	if(editor.images[1].estado === "selected"){
-		editor.images[1].rotarm()
-	}
+	editor.images[1].unselect()
+	editor.images[1].rotarm()
+
 }
 
 function recortar(){
@@ -145,7 +69,7 @@ function borrar(){
 	
 		editor.images[1].borrar()
 	}else if(editor.images[1].estado === "borrando"){
-		console.log(editor.images[1])
+	
 		editor.images[1].guardarImagen(editor.images[1].canvasPosition, editor.images[1].canvasSize)
 	}
 }
@@ -189,7 +113,7 @@ function resetearEditor(){
 	
 	editor.addImage(productoFoto)
  	editor.addImage(logo)
- console.log(editor)
+
 
 //	editor.insertImage(editor.images[1])
 	//editor.insertImage(editor.images[2])

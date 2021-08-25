@@ -23,12 +23,15 @@ class ResizeableObject  {
 
 			
 			this.element.onclick = (e) => {
-				e.preventDefault()
-			//	this.setState("selected")
+			//	e.preventDefault()
+				// console.log(this)
+				// if(this.estado === "loaded"){
+				// 	this.estado = "selected"
+				// }
 			}
 			
 			this.element.onmousedown = (e) => {
-				console.log(this)
+			
 				e.preventDefault()
 				this.setState("start_moving")
 			}
@@ -47,7 +50,7 @@ class ResizeableObject  {
 			}
 
 			this.element.onmouseup = (e) => {
-				console.log(this)
+			
 				e.preventDefault()
 				this.setState("selected")
 			}
@@ -259,6 +262,9 @@ class ResizeableObject  {
 
 		this.rotacion += 5
 		this.element.style.transform = "rotate(" + this.rotacion + "deg)"
+	
+		//this.updatePositionAfterRotation()
+		//this.updateToolsAfterRotation({x: this.position.x, y: this.position.y, alpha: 5 * 2 *Math.PI /360})
 		//transform", "rotate("+seg+"deg) scaleX("+tras+")")
 	}
 
@@ -274,7 +280,7 @@ class ResizeableObject  {
 
 	move(e){	
 
-	console.log(this)
+
 		let offsetWidth = this.size.width /2
 		let offsetHeight = this.size.height /2 
 		this.position.x = e.clientX - this.container.getBoundingClientRect().x  - offsetWidth
@@ -298,6 +304,30 @@ class ResizeableObject  {
 	updatePosition(){
 		this.element.style.top = this.position.y + "px"
 		this.element.style.left = this.position.x + "px"
+	}
+
+	updatePositionAfterRotation(){
+		let rectsnew = this.element.getBoundingClientRect()
+		this.position = { x: rectsnew.left, y: rectsnew.top}
+		this.size = { width: rectsnew.width, height: rectsnew.height}
+	
+	
+	}
+
+	updateToolsAfterRotation({x,y, alpha}){
+
+		//change here
+
+	
+			this.positions = [
+				{left: x + "px", top: y + "px" },
+				{left: x +  this.size.width *0.1 + "px",
+				 top:   y -  this.size.width*0.1 + "px"},
+				{left:  x +  this.size.width * Math.cos(alpha) - this.size.height * Math.sin(alpha) + "px", 
+				top:  y +  this.size.width * Math.sin(alpha) +  this.size.height * Math.cos(alpha) + "px"},
+				{left: x -  this.size.height * Math.sin(alpha) + "px",
+				 top:  y +  this.size.height * Math.cos(alpha) + "px"}
+			]
 	}
 
 	updateToolsPosition(){

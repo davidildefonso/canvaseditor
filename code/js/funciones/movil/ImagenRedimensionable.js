@@ -62,6 +62,10 @@ class ImagenRedimensionable extends ResizeableObject {
 	}
 
 	select(){
+		if(this.estado !== "selected" && this.estado !== "moving"
+			&& this.estado !== "crop" && this.estado !== "borrando"
+		)
+		
 
 			this.estado = "selected"
 			this.showResizeableImage()			
@@ -75,7 +79,7 @@ class ImagenRedimensionable extends ResizeableObject {
 			this.editor.estado = ""
 			this.editor.tools = []
 			this.removeTools()		
-					console.log(this.editor)
+					
 			
 	}
 
@@ -157,7 +161,9 @@ class ImagenRedimensionable extends ResizeableObject {
 
 	rotar(){
 		this.modified = true
+		
 		this.rotate()
+		this.removeTools()
 	}
 
 	recortar(){
@@ -201,7 +207,9 @@ class ImagenRedimensionable extends ResizeableObject {
 
 	rotarm(){
 		this.modified = true
+			this.removeTools()
 		this.rotateback()
+		console.log(this)
 	}
 
 	resetear(){	
@@ -450,20 +458,21 @@ console.log(pos, size)
 
 					
 
-						// this.element.onclick = (e) => {
-						// console.log(this)
-						// 		e.preventDefault()
-						// 	//	this.select()
+						this.element.onclick = (e) => {
+						
+								e.preventDefault()
+								this.select()
 
 
-						// }
+						}
 
 						this.element.onmousedown = (e) => {
 						
 							e.preventDefault()
 							this.removeTools()
-						
-							if(this.estado === "selected"){
+						console.log(this)
+						console.log(this.editor.estado === "editando producto")
+							if(this.estado === "selected" && this.editor.estado === "editando producto"){
 								this.estado = "start_moving"
 							}			
 							this.element.style.position = "absolute"
