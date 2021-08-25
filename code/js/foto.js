@@ -1,5 +1,3 @@
-
-
 const fotoFile = document.getElementById("fotoHiddenInputBtn")
 fotoFile.addEventListener('change', archivo, true)
 
@@ -26,11 +24,9 @@ function archivo(e) {
 				const fondo1 = new ImagenEditable("",editor,"." + editor.container.className, e.target.result , "jpg",0, 1, "fondo" ,null,e.target.result )		
 				editor.addImage(fondo1)	
 				document.getElementById("subir_fondo").style.backgroundColor = ""	
-		}
-	
+		}	
 	})(foto);	
 }
-
 
 function eliminarFondo(){
 	if(editor.images[0] && editor.estado === ""){

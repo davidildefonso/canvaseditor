@@ -3,13 +3,12 @@ class ResizeableObject  {
 		estado,
 		editor,  
 		size
-		
 	)
 	{
 			this.state = estado
 			this.editor = editor
 			this.container =  this.getContainer()
-			this.position =   { x: 0, y: 0 } //this.getPosition() 
+			this.position =   { x: 0, y: 0 } 
 			this.size = this.getSize(size)
 			this.element = this.generateElement()
 			this.opacity =  1
@@ -22,23 +21,48 @@ class ResizeableObject  {
 			]
 
 			
-			this.element.onclick = (e) => {
+			//this.element.onclick = (e) => {
 			//	e.preventDefault()
 				// console.log(this)
 				// if(this.estado === "loaded"){
 				// 	this.estado = "selected"
 				// }
+			//}
+
+
+			const  touchmove = (e) => {				
+				e.preventDefault()
+				if(this.state === "start_moving"){
+					this.state = "moving"
+					return
+				} 
+
+				if(this.state === "moving"){
+					this.move(e)
+				}	
+			}
+
+			const touchend = (e) => {
+				this.setState("selected")
+			}
+
+			const  touchstart = (e) => {	
+				this.setState("start_moving")
 			}
 			
+			this.element.addEventListener("touchstart", touchstart)
+			this.element.addEventListener("touchmove", touchmove)
+			this.element.addEventListener("touchend", touchend)
+		
 			this.element.onmousedown = (e) => {
 			
-				e.preventDefault()
+			//	e.preventDefault()
 				this.setState("start_moving")
 			}
 
 			this.element.onmousemove = (e) => {
 
-					e.preventDefault()
+			//		e.preventDefault()
 					if(this.state === "start_moving"){
 						this.state = "moving"
 						return
@@ -51,7 +75,7 @@ class ResizeableObject  {
 
 			this.element.onmouseup = (e) => {
 			
-				e.preventDefault()
+		//		e.preventDefault()
 				this.setState("selected")
 			}
 
@@ -82,7 +106,7 @@ class ResizeableObject  {
 			handle.setAttribute("style", style)
 			handle.style.left = this.positions[i].left
 			handle.style.top = this.positions[i].top	
-				handle.addEventListener("touchstart", this.startResizing)
+			handle.addEventListener("touchstart", this.startResizing)
 			handle.addEventListener("touchmove", this.moveHandle)
 			handle.addEventListener("touchend", this.endresizing)	
 			handle.addEventListener("mousedown", this.startResizing)
@@ -115,48 +139,53 @@ class ResizeableObject  {
 	}
 
 	moveHandle = (e) => {
+		e.preventDefault()
 
-		//e.preventDefault()
+		let eventX, eventY
+		if(e.type === "touchmove"){
+			eventX = e.touches[0].clientX
+			eventY = e.touches[0].clientY
+		}else{
+			eventY = e.clientY
+			eventX = e.clientX
+		}
+
 		if(this.state === "resizing"){
+			
 			let handleWidth = /\d+/.exec(e.target.style.width)[0]
 			let handleHeight = /\d+/.exec(e.target.style.height)[0]
 			
 			let offsetWidth =  handleWidth /2
 			let offsetHeight = handleHeight /2 
 			
-
-	
-			let newPosX = e.clientX - this.container.getBoundingClientRect().x 
-			let newPosY = e.clientY - this.container.getBoundingClientRect().y
-
-
-	
+			let newPosX = eventX - this.container.getBoundingClientRect().x 
+			let newPosY = eventY - this.container.getBoundingClientRect().y
 			
 			if(this.handleid === "handle_0"){					
 
-					this.tools[0].style.left = e.clientX - this.container.getBoundingClientRect().x + "px"
-					this.tools[0].style.top = e.clientY - this.container.getBoundingClientRect().y  + "px"		
+					this.tools[0].style.left = eventX - this.container.getBoundingClientRect().x + "px"
+					this.tools[0].style.top = eventY - this.container.getBoundingClientRect().y  + "px"		
 
 					this.resizeCropBox(newPosX, newPosY) 
 								
 			}else 	if(this.handleid === "handle_1"){
 			
-					this.tools[1].style.left = e.clientX - this.container.getBoundingClientRect().x + "px"
-					this.tools[1].style.top = e.clientY - this.container.getBoundingClientRect().y  + "px"			
+					this.tools[1].style.left = eventX - this.container.getBoundingClientRect().x + "px"
+					this.tools[1].style.top = eventY - this.container.getBoundingClientRect().y  + "px"			
 
 					this.resizeCropBox(newPosX, newPosY) 
 								
 			}else 	if(this.handleid === "handle_2"){
 			
-					this.tools[2].style.left = e.clientX - this.container.getBoundingClientRect().x + "px"
-					this.tools[2].style.top = e.clientY - this.container.getBoundingClientRect().y  + "px"			
+					this.tools[2].style.left = eventX - this.container.getBoundingClientRect().x + "px"
+					this.tools[2].style.top = eventY - this.container.getBoundingClientRect().y  + "px"			
 
 					this.resizeCropBox(newPosX, newPosY) 
 								
 			}else 	if(this.handleid === "handle_3"){		
 
-					this.tools[3].style.left = e.clientX - this.container.getBoundingClientRect().x + "px"
-					this.tools[3].style.top = e.clientY - this.container.getBoundingClientRect().y  + "px"								
+					this.tools[3].style.left = eventX - this.container.getBoundingClientRect().x + "px"
+					this.tools[3].style.top = eventY	 - this.container.getBoundingClientRect().y  + "px"								
 
 					this.resizeCropBox(newPosX, newPosY) 
 								
@@ -279,26 +308,26 @@ class ResizeableObject  {
 	} 
 
 	move(e){	
-
+		let eventX, eventY
+		if(e.type === "touchmove"){
+			eventX = e.touches[0].clientX
+			eventY = e.touches[0].clientY
+		}else{
+			eventY = e.clientY
+			eventX = e.clientX
+		}
 
 		let offsetWidth = this.size.width /2
 		let offsetHeight = this.size.height /2 
-		this.position.x = e.clientX - this.container.getBoundingClientRect().x  - offsetWidth
-		this.position.y = e.clientY - this.container.getBoundingClientRect().y - offsetHeight
+		this.position.x = eventX - this.container.getBoundingClientRect().x  - offsetWidth
+		this.position.y = eventY - this.container.getBoundingClientRect().y - offsetHeight
 		
 		this.updatePosition()
-
-	
-
 		this.updateToolsPosition()
-
 	
-		if(this.rol === "producto"){
-	
+		if(this.rol === "producto"){	
 			this.editor.images[1] = this
-	
 		}
-		
 	}
 
 	updatePosition(){
@@ -310,15 +339,10 @@ class ResizeableObject  {
 		let rectsnew = this.element.getBoundingClientRect()
 		this.position = { x: rectsnew.left, y: rectsnew.top}
 		this.size = { width: rectsnew.width, height: rectsnew.height}
-	
-	
 	}
 
 	updateToolsAfterRotation({x,y, alpha}){
-
-		//change here
-
-	
+		//change here	
 			this.positions = [
 				{left: x + "px", top: y + "px" },
 				{left: x +  this.size.width *0.1 + "px",
@@ -330,23 +354,19 @@ class ResizeableObject  {
 			]
 	}
 
-	updateToolsPosition(){
-	
+	updateToolsPosition(){	
 			this.positions = [
 				{left: this.position.x + "px", top:  this.position.y + "0px"},
 				{left: this.position.x +this.size.width + "px", top: this.position.y + "0px"},
 				{left:this.size.width + this.position.x + "px", top: this.size.height + this.position.y + "px"},
 				{left: this.position.x + "0px", top: this.position.y + this.size.height + "px"}
-			]
-			
+			]			
 
 			for(let i = 0; i<= 3; i++){
 				if(this.tools[i]){
 						this.tools[i].style.left = this.positions[i].left
 						this.tools[i].style.top = this.positions[i].top	
-				}
-			
-									
+				}							
 			}
 	}
 
@@ -363,8 +383,7 @@ class ResizeableObject  {
 		return { width, height}
 	}
 
-	generateElement(){
-	
+	generateElement(){	
 		if(this.rol !== "producto" && this.role !== "producto"){
 					const div = document.createElement("div")
 					div.style.position = "absolute"
@@ -385,13 +404,3 @@ class ResizeableObject  {
 
 }
 
-function startResize(e){
-
-}
-
-function resizing(e){
-}
-
-function endresizing(e){
-
-}

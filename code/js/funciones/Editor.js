@@ -761,27 +761,15 @@ class Editor{
 		this.canvas = ""	
 	}
 
-	loadToEditor() {
-
-  }
-
-	eraseFromEditor(){
 	
-	}
-
-	changeTransparency(){
-	
-	}
 
 	addTool(object){
 		this.tools.push(object)
 	}
 
-	createCropBox(){
+	showCropBox(){
 
 		const cb = new ResizeableObject("unselected", this, { width: 200, height: 200})
-
-
 		this.addTool(cb)	
 		if(this.tools.length === 1){
 			this.container.appendChild(this.tools[0].element)	
@@ -790,15 +778,9 @@ class Editor{
 			this.container.appendChild(this.tools[1].element)	
 			this.tools[1].generateTools()
 		}
-		// this.container.appendChild(this.tools[0].element)	
-		// this.tools[0].generateTools()
-		
-		
 	}
 
-	showCropBox(){
-		this.createCropBox()
-	}
+
 
 	sendFondoToFront(){
 		document.getElementById("fondo").style.zIndex = 17;
