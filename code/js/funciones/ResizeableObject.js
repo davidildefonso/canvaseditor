@@ -391,6 +391,9 @@ class ResizeableObject  {
 					div.style.height = this.size.height + "px"
 					div.style.top = this.position.y
 					div.style.left = this.position.x
+
+					// CREAR SHADOW CON BORDER
+				//	div.style.border = "250px solid rgba(0,0,0,0.5)"
 					div.style.border = "2px solid #fff"
 					div.style.background = "transparent"
 					div.setAttribute("id","cropbox")
