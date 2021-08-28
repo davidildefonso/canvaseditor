@@ -24,36 +24,48 @@ function selectProducto(e){
 
 
 function aumentar(){
-	editor.images[1].unselect()
-	editor.images[1].aumentar()
-	editor.images[1].select()
+console.log(editor.estado)
+	if(editor.estado === "" || editor.estado === "editando producto" ){
+		editor.images[1].unselect()
+		editor.images[1].aumentar()
+		editor.images[1].select()	
+	}
+
+
+
 }
 
 
 
 function reducir(){
-	editor.images[1].unselect()
-	editor.images[1].reducir()
-	editor.images[1].select()
+	if(editor.estado === "" || editor.estado === "editando producto" ){
+		editor.images[1].unselect()
+		editor.images[1].reducir()
+		editor.images[1].select()	
+	}
+
 }
 
 function rotar(){
-	editor.images[1].unselect()
-	editor.images[1].rotar()
+	if(editor.estado === "" || editor.estado === "editando producto" ){
+			editor.images[1].unselect()
+			editor.images[1].rotar()
+	
+	}
+
+
 
 }
 
 function rotarm(){
-	editor.images[1].unselect()
-	editor.images[1].rotarm()
-
+	if(editor.estado === "" || editor.estado === "editando producto" ){		
+		editor.images[1].unselect()
+		editor.images[1].rotarm()
+	}
 }
 
 function recortar(){
-
 	if(editor.images[1].estado === "selected" || editor.images[1].estado === "crop"){
-	
-
 		editor.images[1].recortar()
 	}
 }
@@ -64,33 +76,42 @@ function recortar(){
 
 
 function borrar(){
-
 	if(editor.images[1].estado === "selected"){
-	
 		editor.images[1].borrar()
 	}else if(editor.images[1].estado === "borrando"){
-	
 		editor.images[1].guardarImagen(editor.images[1].canvasPosition, editor.images[1].canvasSize)
 	}
 }
 
 
 function resetear(){
-	if(editor.images[1].estado === "selected"){
-		resetearEditor()
+
+	if(editor.estado === "" || editor.estado === "editando producto" ){
+			editor.images[1].unselect()
+			resetearEditor()
+			
+		
 	}
+
 }
 
 
 
 function resetearEditor(){
-	
 	document.querySelector(".producto").innerHTML = ""
 	document.querySelector(".logo").innerHTML = ""
-	
+
+	let nuevo_fondo
+	if(document.getElementById("fondo")){
+		nuevo_fondo = editor.images[0]
+		document.getElementById("fondo").remove()
+	}
+
+
 	editor = new Editor("", ".bg_producto", [])
-	editor.images = []
-	
+
+//	editor.images = []
+
 	let arr = window.location.href.split("/") 
 
 	if(arr[arr.length -2 ] === "svg"){
@@ -110,10 +131,13 @@ function resetearEditor(){
 			logo = new ImagenEditable("", editor, ".logo", "rg/img/iconos/isotipo_ithaliano.png", "png", 0, 1, "logo")
 	}
 
-	
+console.log(editor)	
 	editor.addImage(productoFoto)
  	editor.addImage(logo)
 
+	if(nuevo_fondo){
+		editor.addImage(nuevo_fondo)
+	}
 
 //	editor.insertImage(editor.images[1])
 	//editor.insertImage(editor.images[2])
@@ -136,16 +160,22 @@ function resetearEditor(){
 
 
 function masTransparencia(){
+	if(editor.estado === ""  || editor.estado === "editando producto" ){
+		editor.images[1].unselect()
+		editor.images[1].masTransparencia()
+		editor.images[1].select()
 
-	if(editor.images[1].estado === "selected"){
-			editor.images[1].masTransparencia()
 	}
-
+	
 }
 
 function menosTransparencia(){
-	if(editor.images[1].estado === "selected"){
-			editor.images[1].menosTransparencia()
+	console.log(editor.estado)
+	if(editor.estado === "" || editor.estado === "editando producto" ){
+		editor.images[1].unselect()
+		editor.images[1].menosTransparencia()
+		editor.images[1].select()
+	
 	}
 	
 }

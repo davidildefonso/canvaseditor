@@ -42,12 +42,7 @@ class ImagenRedimensionable extends ResizeableObject {
 			this.originalPosition  = { x: this.position.x , y: this.position.y}
 			
 			
-			
-
-			
-
-
-
+		
 	
 	}
 
@@ -132,6 +127,7 @@ class ImagenRedimensionable extends ResizeableObject {
 		document.querySelector("#producto").onload = function(){
 	
 		}
+		
 		let x =  parseFloat(/\d+\.*\d*/.exec(this.element.style.left)[0])
 		let y = parseFloat(/\d+\.*\d*/.exec(this.element.style.top)[0])
 
@@ -456,15 +452,81 @@ class ImagenRedimensionable extends ResizeableObject {
 					//	this.updatePosition()
 						this.editor.addImage(this)
 
-					
-
-						this.element.onclick = (e) => {
 						
-								e.preventDefault()
-								this.select()
+						const  touchmove = (e) => {				
+							e.preventDefault()
+							if(this.estado === "start_moving"){
+								this.estado = "moving"
+								return
+							} 
 
+							if(this.estado === "moving"){
+								this.move(e)
+							}	
+						}
+
+						const touchend = (e) => {
+							
+							if(this.estado === "moving"){
+								this.estado = "selected"
+								this.modified = true
+								this.unselect()
+							}
 
 						}
+
+						const  touchstart = (e) => {	
+						
+							this.removeTools()
+				
+							if(this.estado === "selected" && this.editor.estado === "editando producto"){
+								this.estado = "start_moving"
+							}			
+							this.element.style.position = "absolute"
+							this.element.style.objectFit = ""
+
+						}
+						
+						this.element.addEventListener("touchstart", touchstart)
+						this.element.addEventListener("touchmove", touchmove)
+						this.element.addEventListener("touchend", touchend)
+					
+
+					// 	this.element.onmousedown = (e) => {
+						
+					// 	//	e.preventDefault()
+					// 		this.setState("start_moving")
+					// 	}
+
+					// 	this.element.onmousemove = (e) => {
+
+					// 	//		e.preventDefault()
+					// 			if(this.state === "start_moving"){
+					// 				this.state = "moving"
+					// 				return
+					// 			} 
+
+					// 			if(this.state === "moving"){
+					// 				this.move(e)
+					// 			}												
+					// 	}
+
+					// 	this.element.onmouseup = (e) => {
+						
+					// //		e.preventDefault()
+					// 		this.setState("selected")
+					// 	}
+
+
+//**///* */
+
+						// this.element.onclick = (e) => {
+						
+						// 		e.preventDefault()
+						// 		this.select()
+
+
+						// }
 
 						this.element.onmousedown = (e) => {
 						
@@ -499,7 +561,7 @@ class ImagenRedimensionable extends ResizeableObject {
 					
 							e.preventDefault()
 							if(this.estado === "moving"){
-								this.estado = "selected"
+								this.unselect()
 								this.modified = true
 
 							}
