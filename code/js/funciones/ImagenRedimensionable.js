@@ -186,12 +186,14 @@ class ImagenRedimensionable extends ResizeableObject {
 		
 			//this.editor.removeHandles(this.editor.tools[1].tools)		
 		//	this.editor.tools[1].element.remove()
+
 			this.editor.removeHandles(this.editor.tools[0].tools)		
 			this.editor.tools[0].element.remove()
 			this.editor.tools = [] 
 			this.editor.estado = ""	
 			this.estado = "loaded"
 			this.tools = []
+			this.editor.images[0].element.style.display = ""
 		
 		
 

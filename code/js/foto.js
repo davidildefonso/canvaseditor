@@ -2,9 +2,11 @@ const fotoFile = document.getElementById("fotoHiddenInputBtn")
 fotoFile.addEventListener('change', archivo, true)
 
 function subirFondo(){  
+
 	document.getElementById("subir_fondo").style.backgroundColor = "#cdd"
 	editor.images[1].unselect()
 	if(!editor.images[0])	
+	
 			fotoFile.click()	
 			setTimeout(() => {
 				document.getElementById("subir_fondo").style.backgroundColor = ""
@@ -13,6 +15,7 @@ function subirFondo(){
 
 
 function archivo(e) {
+	
 	const foto = e.target.files[0]
 	
 	if (!foto.type.match('image.*')) return
@@ -21,9 +24,12 @@ function archivo(e) {
 	
 	reader.onload = (function (){
 		return function (e) {									
-				const fondo1 = new ImagenEditable("",editor,"." + editor.container.className, e.target.result , "jpg",0, 1, "fondo" ,null,e.target.result )		
+				const fondo1 = new ImagenEditable("",editor,"." + editor.container.className, e.target.result , "jpg",0, 1, "fondo" ,null,e.target.result )	
+			
 				editor.addImage(fondo1)	
 				document.getElementById("subir_fondo").style.backgroundColor = ""	
+				console.log(this)
+				fotoFile.value = null
 		}	
 	})(foto);	
 }
