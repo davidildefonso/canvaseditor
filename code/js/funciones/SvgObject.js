@@ -116,50 +116,180 @@ class SvgObject extends ResizeableObject {
 	//		producto_svg.style.display = "flex"
 
 	
-			
 
-			this.element.onclick = (e) => {
-				e.preventDefault()
-				this.estado === "selected"
-				
-			
-			}
-			
-			this.element.onmousedown = (e) => {
-				e.preventDefault()
-				this.removeTools()
-			
-				if(this.estado === "selected"){
-						this.estado = "start_moving"
-				}			
-				this.element.style.position = "absolute"
-				this.element.style.objectFit = ""
-				
-			}
 
-			this.element.onmousemove = (e) => {
-					e.preventDefault()
-					if(this.estado === "start_moving"){
-						this.estado = "moving"
-						
-					} 
 
-					if(this.estado === "moving"){
-						this.move(e)
-					}		
-															
-			}
 
-			this.element.onmouseup = (e) => {
-				e.preventDefault()
-				if(this.estado === "moving"){
-						this.estado = "selected"
-						this.modified = true
-					
-				}
-			}
 
 		
+						const  touchmove = (e) => {				
+							e.preventDefault()
+							if(this.estado === "start_moving"){
+								this.estado = "moving"
+								return
+							} 
+
+							if(this.estado === "moving"){
+								this.move(e)
+							}	
+						}
+
+						const touchend = (e) => {
+							
+							if(this.estado === "moving"){
+								this.estado = "selected"
+								this.modified = true
+								this.unselect()
+							}
+
+						}
+
+						const  touchstart = (e) => {	
+						
+							this.removeTools()
+				
+							if(this.estado === "selected" && this.editor.estado === "editando producto"){
+								this.estado = "start_moving"
+							}			
+							this.element.style.position = "absolute"
+							this.element.style.objectFit = ""
+
+						}
+						
+						this.element.addEventListener("touchstart", touchstart)
+						this.element.addEventListener("touchmove", touchmove)
+						this.element.addEventListener("touchend", touchend)
+					
+
+					// 	this.element.onmousedown = (e) => {
+						
+					// 	//	e.preventDefault()
+					// 		this.setState("start_moving")
+					// 	}
+
+					// 	this.element.onmousemove = (e) => {
+
+					// 	//		e.preventDefault()
+					// 			if(this.state === "start_moving"){
+					// 				this.state = "moving"
+					// 				return
+					// 			} 
+
+					// 			if(this.state === "moving"){
+					// 				this.move(e)
+					// 			}												
+					// 	}
+
+					// 	this.element.onmouseup = (e) => {
+						
+					// //		e.preventDefault()
+					// 		this.setState("selected")
+					// 	}
+
+
+//**///* */
+
+						// this.element.onclick = (e) => {
+						
+						// 		e.preventDefault()
+						// 		this.select()
+
+
+						// }
+
+						this.element.onmousedown = (e) => {
+						
+							e.preventDefault()
+							this.removeTools()
+				
+							if(this.estado === "selected" && this.editor.estado === "editando producto"){
+								this.estado = "start_moving"
+							}			
+							this.element.style.position = "absolute"
+							this.element.style.objectFit = ""
+
+						}
+
+						this.element.onmousemove = (e) => {
+						
+							e.preventDefault()
+							if(this.estado === "start_moving"){
+								this.estado = "moving"
+								
+							} 
+
+							if(this.estado === "moving"){
+								
+								this.move(e)
+
+							}		
+																	
+						}
+
+						this.element.onmouseup = (e) => {
+					
+							e.preventDefault()
+							if(this.estado === "moving"){
+								this.unselect()
+								this.modified = true
+
+							}
+						}
+		
+
+
+
+
+
+
+
+			// this.element.onclick = (e) => {
+			// 	e.preventDefault()
+			// 	this.estado === "selected"
+				
+			
+			// }
+			
+			// this.element.onmousedown = (e) => {
+			// 	e.preventDefault()
+			// 	this.removeTools()
+			
+			// 	if(this.estado === "selected"){
+			// 			this.estado = "start_moving"
+			// 	}			
+			// 	this.element.style.position = "absolute"
+			// 	this.element.style.objectFit = ""
+				
+			// }
+
+			// this.element.onmousemove = (e) => {
+			// 		e.preventDefault()
+			// 		if(this.estado === "start_moving"){
+			// 			this.estado = "moving"
+						
+			// 		} 
+
+			// 		if(this.estado === "moving"){
+			// 			this.move(e)
+			// 		}		
+															
+			// }
+
+			// this.element.onmouseup = (e) => {
+			// 	e.preventDefault()
+			// 	if(this.estado === "moving"){
+			// 			this.estado = "selected"
+			// 			this.modified = true
+					
+			// 	}
+			// }
+
+
+
+
+
+
+
 			this.positions = [
 				{left: this.position.x +   "px", 
 					top:  this.position.y +   "px"},
