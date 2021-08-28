@@ -55,15 +55,16 @@ class ResizeableObject  {
 			this.element.addEventListener("touchend", touchend)
 		
 			this.element.onmousedown = (e) => {
-			
+		
 			//	e.preventDefault()
 				this.setState("start_moving")
 			}
 
 			this.element.onmousemove = (e) => {
-
+	
 			//		e.preventDefault()
 					if(this.state === "start_moving"){
+					
 						this.state = "moving"
 						return
 					} 
@@ -98,6 +99,8 @@ class ResizeableObject  {
 			transform: translate(-50%,-50%);
 		`
 
+
+		this.updateToolsPosition()
 	
 		for(let i = 0; i <= 3; i++){
 		
@@ -308,6 +311,7 @@ class ResizeableObject  {
 	} 
 
 	move(e){	
+
 		let eventX, eventY
 		if(e.type === "touchmove"){
 			eventX = e.touches[0].clientX
@@ -317,12 +321,52 @@ class ResizeableObject  {
 			eventX = e.clientX
 		}
 
+		
+
 		let offsetWidth = this.size.width /2
 		let offsetHeight = this.size.height /2 
-		this.position.x = eventX - this.container.getBoundingClientRect().x  - offsetWidth
-		this.position.y = eventY - this.container.getBoundingClientRect().y - offsetHeight
+
+
+	//	this.position.x = eventX - this.container.getBoundingClientRect().x  - offsetWidth
+	//	this.position.y = eventY - this.container.getBoundingClientRect().y - offsetHeight
 		
-		this.updatePosition()
+		//this.updatePosition()
+
+
+		let containerWidth = this.container.getBoundingClientRect().width
+		
+		let containerHeight = this.container.getBoundingClientRect().height 
+
+		let containerX = this.container.getBoundingClientRect().x
+		let containerY = this.container.getBoundingClientRect().y
+
+
+	
+		let borderTop = eventY - containerY - offsetHeight
+		let borderLeft =  eventX - containerX - offsetWidth
+		let borderBottom = containerY + containerHeight - eventY - offsetHeight
+		let borderRight = containerX + containerWidth - eventX - offsetWidth
+
+
+
+					this.element.style.borderWidth = "" + borderTop + "px " + borderRight + "px "
+						+ borderBottom + "px " + borderLeft + "px"
+
+					this.element.style.borderColor = "rgba(0, 0, 0, 0.5)"
+
+
+					this.element.style.borderStyle = " solid"		
+
+
+
+
+
+
+		this.element.style.top = 0 + "px" //this.position.y + "px"
+		this.element.style.left = 0 + "px" // this.position.x + "px"
+
+
+
 		this.updateToolsPosition()
 	
 		if(this.rol === "producto"){	
@@ -331,6 +375,34 @@ class ResizeableObject  {
 	}
 
 	updatePosition(){
+
+				
+
+		let containerWidth = this.container.getBoundingClientRect().width
+		
+		let containerHeight = this.container.getBoundingClientRect().height 
+
+	
+		let borderTop = this.position.y
+		let borderLeft = this.position.x
+		let borderBottom = containerHeight - (this.position.y + this.size.height)
+		let borderRight = containerWidth - (this.position.x + this.size.width)
+
+
+
+					this.element.style.borderWidth = "" + borderTop + "px " + borderRight + "px "
+						+ borderBottom + "px " + borderLeft + "px"
+
+					this.element.style.borderColor = "rgba(0, 0, 0, 0.5)"
+
+
+					this.element.style.borderStyle = " solid"		
+
+
+
+
+
+
 		this.element.style.top = this.position.y + "px"
 		this.element.style.left = this.position.x + "px"
 	}
@@ -355,6 +427,8 @@ class ResizeableObject  {
 	}
 
 	updateToolsPosition(){	
+
+
 			this.positions = [
 				{left: this.position.x + "px", top:  this.position.y + "0px"},
 				{left: this.position.x +this.size.width + "px", top: this.position.y + "0px"},
@@ -384,17 +458,47 @@ class ResizeableObject  {
 	}
 
 	generateElement(){	
+
+		
+		
+
+		let containerWidth = this.container.getBoundingClientRect().width
+		
+		let containerHeight = this.container.getBoundingClientRect().height 
+
+		this.position.x = containerWidth * 0.25
+		this.position.y = containerHeight * 0.25
+		this.size.width = containerWidth * 0.5
+		this.size.height = containerHeight * 0.5
+
+
+		let borderTop = this.position.y
+		let borderLeft = this.position.x
+		let borderBottom = containerHeight - (this.position.y + this.size.height)
+		let borderRight = containerWidth - (this.position.x + this.size.width)
+
+
+
+
 		if(this.rol !== "producto" && this.role !== "producto"){
 					const div = document.createElement("div")
 					div.style.position = "absolute"
 					div.style.width = this.size.width + "px"
 					div.style.height = this.size.height + "px"
 					div.style.top = this.position.y
-					div.style.left = this.position.x
+					div.style.left = this.position.x		
+				
+			//		div.style.border = "2px solid #fff"}
+			// CREAR SHADOW CON BORDER
 
-					// CREAR SHADOW CON BORDER
-				//	div.style.border = "250px solid rgba(0,0,0,0.5)"
-					div.style.border = "2px solid #fff"
+					div.style.borderWidth = "" + borderTop + "px " + borderRight + "px "
+						+ borderBottom + "px " + borderLeft + "px"
+
+					div.style.borderColor = "rgba(0, 0, 0, 0.5)"
+
+
+					div.style.borderStyle = " solid"		
+
 					div.style.background = "transparent"
 					div.setAttribute("id","cropbox")
 					div.style.zIndex = 20

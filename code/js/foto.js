@@ -28,7 +28,7 @@ function archivo(e) {
 			
 				editor.addImage(fondo1)	
 				document.getElementById("subir_fondo").style.backgroundColor = ""	
-				console.log(this)
+			
 				fotoFile.value = null
 		}	
 	})(foto);	
