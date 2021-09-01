@@ -164,7 +164,7 @@ class ImagenRedimensionable extends ResizeableObject {
 
 	recortar(){
 		this.modified = true
-
+console.log(this)
 		if(this.estado === "selected"){	
 		
 			this.editor.tools = []

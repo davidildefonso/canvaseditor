@@ -347,15 +347,24 @@ class ResizeableObject  {
 		let borderBottom = containerY + containerHeight - eventY - offsetHeight
 		let borderRight = containerX + containerWidth - eventX - offsetWidth
 
+		
+		this.border = { 
+				top: eventY - containerY - offsetHeight, 
+				right:  eventX - containerX - offsetWidth,
+				bottom: containerY + containerHeight - eventY - offsetHeight,
+				left: containerX + containerWidth - eventX - offsetWidth }
 
 
-					this.element.style.borderWidth = "" + borderTop + "px " + borderRight + "px "
-						+ borderBottom + "px " + borderLeft + "px"
-
-					this.element.style.borderColor = "rgba(0, 0, 0, 0.5)"
+console.log(this.border)
 
 
-					this.element.style.borderStyle = " solid"		
+		this.element.style.borderWidth = "" + borderTop + "px " + borderRight + "px "
+			+ borderBottom + "px " + borderLeft + "px"
+
+		this.element.style.borderColor = "rgba(0, 0, 0, 0.5)"
+
+
+		this.element.style.borderStyle = " solid"		
 
 
 
@@ -387,8 +396,7 @@ class ResizeableObject  {
 		let borderLeft = this.position.x
 		let borderBottom = containerHeight - (this.position.y + this.size.height)
 		let borderRight = containerWidth - (this.position.x + this.size.width)
-
-
+		
 
 					this.element.style.borderWidth = "" + borderTop + "px " + borderRight + "px "
 						+ borderBottom + "px " + borderLeft + "px"
@@ -428,7 +436,7 @@ class ResizeableObject  {
 
 	updateToolsPosition(){	
 
-
+console.log(this.border)
 			this.positions = [
 				{left: this.position.x + "px", top:  this.position.y + "0px"},
 				{left: this.position.x +this.size.width + "px", top: this.position.y + "0px"},
